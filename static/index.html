@@ -1,0 +1,23 @@
+<html>
+<head>
+<meta charset="utf-8" />
+<title>HoneyProxy</title>
+<script>
+function log(msg){
+	console.log(msg);
+	document.getElementById("log").innerText += msg+"\n";
+};
+var webSocketURL = decodeURIComponent(location.hash).replace("#","");
+var ws = new WebSocket(webSocketURL);
+ws.onopen = function(e){log("Connection etablished");};
+ws.onmessage = function(e){log(window.atob(e.data));};
+
+//ws.send("ping");
+</script>
+</head>
+<body>
+<h3>Log</h3>
+<pre id="log">
+</pre>
+</body>
+</html>
