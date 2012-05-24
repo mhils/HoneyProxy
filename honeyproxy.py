@@ -16,73 +16,58 @@
 
 
 import gui.session
-import os 
+import sys
+sys.path.append("./mitmproxy") #git submodules "hack"
 
-from libmproxy import controller, proxy
+from optparse import OptionParser
+
+from libmproxy import proxy as mproxy, cmdline as mcmdline
 
 from twisted.web.server import Site 
 from twisted.web.static import File
 from twisted.internet import reactor, task
-from lib.websockets import WebSocketsResource
 
-class HoneyProxyMaster(controller.Master):
-    def __init__(self, server, sessionFactory):
-        controller.Master.__init__(self, server)
-        self.sessionFactory = sessionFactory
-
-    def start(self):
-        #see controller.Master.run()
-        global should_exit
-        should_exit = False
-        self.server.start_slave(controller.Slave, self.masterq)
-        
-    def tick(self):
-        if not should_exit:
-            controller.Master.tick(self, self.masterq)
-        else:
-            self.shutdown()
-
-    def handle_request(self, msg):
-        #hid = (msg.host, msg.port)
-        #if msg.headers["cookie"]:
-        #    self.stickyhosts[hid] = msg.headers["cookie"]
-        #elif hid in self.stickyhosts:
-        #    msg.headers["cookie"] = self.stickyhosts[hid]
-        print "request to "+msg.host
-        self.sessionFactory.write(msg.host)
-        msg._ack()
-
-    def handle_response(self, msg):
-        #hid = (msg.request.host, msg.request.port)
-        #if msg.headers["set-cookie"]:
-        #    self.stickyhosts[hid] = msg.headers["set-cookie"]
-        print "response from "+msg.request.host
-        gui.session.GuiSession()
-        msg._ack()
+from libhproxy.websockets import WebSocketsResource
+from libhproxy import proxy as hproxy, cmdline as hcmdline, version
 
 def main():
-    #TODO add libmproxy options - evaluate OptionsParser (see mitmdump / mitmproxy)
-    config = proxy.ProxyConfig(
-        cacert = os.path.expanduser("~/.mitmproxy/mitmproxy-ca.pem")
-    )
     
+    
+    #config stuff
+    parser = OptionParser(
+                usage = "%prog [options] [filter]",
+                version= version.NAMEVERSION,
+            )
+    mcmdline.common_options(parser)
+    hcmdline.fix_options(parser) #remove some mitmproxy stuff
+    
+    options, args = parser.parse_args() #@UnusedVariable
+    
+    
+    
+    #set up proxy server
+    proxyconfig = mproxy.process_proxy_options(parser, options)
+    try:
+        server = mproxy.ProxyServer(proxyconfig, options.port, options.addr)
+    except mproxy.ProxyServerError, v:
+        print >> sys.stderr, "%(name)s:" % version.NAME, v.args[0]
+        sys.exit(1)
+
+    #set up HoneyProxy GUI
     guiSessionFactory = gui.session.GuiSessionFactory()
     websocketRes = WebSocketsResource(guiSessionFactory)
-    
-    server = proxy.ProxyServer(config, 8080)
-    m = HoneyProxyMaster(server, guiSessionFactory)
-    
-    
-    
-    
     reactor.listenTCP(8082, Site(websocketRes))
-    reactor.listenTCP(8081, Site(File("./gui/static")))
+    reactor.listenTCP(8081, Site(File("./gui/static")))    
+    
+    #HoneyProxy Master
+    m = hproxy.HoneyProxyMaster(server, None, guiSessionFactory)
     m.start()
     
+    #debug
     import urllib, webbrowser
     webbrowser.open("http://localhost:8081/#"+urllib.quote("ws://localhost:8082"))
     
-    
+    #run!
     l = task.LoopingCall(m.tick)
     l.start(0.01) # call every 10ms
     reactor.run()
