@@ -21,7 +21,7 @@ sys.path.append("./mitmproxy") #git submodules "hack"
 
 from optparse import OptionParser
 
-from libmproxy import proxy as mproxy, cmdline as mcmdline
+from libmproxy import proxy as mproxy, cmdline as mcmdline, dump
 
 from twisted.web.server import Site 
 from twisted.web.static import File
@@ -40,10 +40,15 @@ def main():
             )
     mcmdline.common_options(parser)
     hcmdline.fix_options(parser) #remove some mitmproxy stuff
-    
+
     options, args = parser.parse_args() #@UnusedVariable
     
-    
+    if args:
+        filt = " ".join(args)
+    else:
+        filt = None
+        
+    dumpoptions = dump.Options(**mcmdline.get_common_options(options))
     
     #set up proxy server
     proxyconfig = mproxy.process_proxy_options(parser, options)
@@ -60,7 +65,7 @@ def main():
     reactor.listenTCP(8081, Site(File("./gui/static")))    
     
     #HoneyProxy Master
-    m = hproxy.HoneyProxyMaster(server, None, guiSessionFactory)
+    m = hproxy.HoneyProxyMaster(server, dumpoptions, filt, guiSessionFactory)
     m.start()
     
     #debug
