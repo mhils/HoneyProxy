@@ -22,11 +22,11 @@ def fix_options(parser):
     remove_option(parser,"-v")
     
     #client replay
-    parser.option_groups.remove(parser.get_option_group("-c"))
+    parser.has_option("-c") and parser.option_groups.remove(parser.get_option_group("-c"))
     remove_option(parser,"-c")
     
     #server replay
-    parser.option_groups.remove(parser.get_option_group("-k"))
+    parser.has_option("-S") and parser.option_groups.remove(parser.get_option_group("-S"))
     
     remove_option(parser,"-S")
     remove_option(parser,"-k")
