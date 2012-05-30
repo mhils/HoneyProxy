@@ -68,13 +68,15 @@ def main():
     m = hproxy.HoneyProxyMaster(server, dumpoptions, filt, guiSessionFactory)
     m.start()
     
-    #debug
+    #start gui
     import urllib, webbrowser
     webbrowser.open("http://localhost:8081/#"+urllib.quote("ws://localhost:8082"))
     
     #run!
     l = task.LoopingCall(m.tick)
     l.start(0.01) # call every 10ms
+    reactor.addSystemEventTrigger("before", "shutdown", m.shutdown)
+    
     reactor.run()
     
 

@@ -47,11 +47,6 @@ class HoneyProxyMaster(FlowMaster):
         should_exit = False
         self.server.start_slave(controller.Slave, self.masterq)
         
-        #Shut down gracefully on SIGTERM.
-        def cleankill(*args, **kwargs):
-            self.shutdown()
-        signal.signal(signal.SIGTERM, cleankill)
-        
     def tick(self):
         if not should_exit:
             controller.Master.tick(self, self.masterq)
@@ -78,6 +73,8 @@ class HoneyProxyMaster(FlowMaster):
         
         if flow:
             response._ack()
+            if self.o.wfile:
+                self.fwriter.add(flow)
             print "response from "+flow.request.host
             
         return flow

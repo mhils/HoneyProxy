@@ -3,7 +3,8 @@ def remove_option(parser, options):
     if(type(options) == str):
         options = [options]
     for option in options:
-        parser.has_option(option) and parser.remove_option(option)
+        if parser.has_option(option):
+            parser.remove_option(option)
 
 def fix_options(parser):
     '''Fix mitmproxy proxy options - we don't want all features to be present in HoneyProxy'''
@@ -22,11 +23,13 @@ def fix_options(parser):
     remove_option(parser,"-v")
     
     #client replay
-    parser.has_option("-c") and parser.option_groups.remove(parser.get_option_group("-c"))
+    if parser.has_option("-c"):
+        parser.option_groups.remove(parser.get_option_group("-c"))
     remove_option(parser,"-c")
     
     #server replay
-    parser.has_option("-S") and parser.option_groups.remove(parser.get_option_group("-S"))
+    if parser.has_option("-S"):
+        parser.option_groups.remove(parser.get_option_group("-S"))
     
     remove_option(parser,"-S")
     remove_option(parser,"-k")
