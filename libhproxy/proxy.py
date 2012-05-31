@@ -1,14 +1,15 @@
 from libmproxy import flow, controller, filt
 from libmproxy.flow import FlowMaster
-import signal, os
+import os
+from flowcollection import FlowCollection
 
 class HoneyProxyMaster(FlowMaster):
     def __init__(self, server, options, filtstr, sessionFactory):
         FlowMaster.__init__(self, server, flow.State())        
         
         self.sessionFactory = sessionFactory
-        
         self.o = options
+        self.flows = FlowCollection()
         self.anticache = options.anticache
         self.anticomp = options.anticomp
         
@@ -73,6 +74,7 @@ class HoneyProxyMaster(FlowMaster):
         
         if flow:
             response._ack()
+            self.flows.addFlow(flow)
             if self.o.wfile:
                 self.fwriter.add(flow)
             print "response from "+flow.request.host

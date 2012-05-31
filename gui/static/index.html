@@ -7,9 +7,13 @@ function log(msg){
 	console.log(msg);
 	document.getElementById("log").innerText += msg+"\n";
 };
-var webSocketURL = decodeURIComponent(location.hash).replace("#","");
+var urlData = JSON.parse(decodeURIComponent(location.hash).replace("#",""));
+var webSocketURL = urlData.ws;
+var authKey = urlData.auth;
 var ws = new WebSocket(webSocketURL);
-ws.onopen = function(e){log("Connection etablished");};
+ws.onopen = function(e){
+	ws.send(JSON.stringify({action:"auth",key:authKey}));
+	log("Connection etablished");};
 ws.onmessage = function(e){log(window.atob(e.data));};
 
 //ws.send("ping");

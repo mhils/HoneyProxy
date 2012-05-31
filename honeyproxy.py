@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright (C) 2012 Maximilian Hils
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +18,7 @@
 
 
 import gui.session
-import sys
+import sys, json
 sys.path.append("./mitmproxy") #git submodules "hack"
 
 from optparse import OptionParser
@@ -70,7 +72,13 @@ def main():
     
     #start gui
     import urllib, webbrowser
-    webbrowser.open("http://localhost:8081/#"+urllib.quote("ws://localhost:8082"))
+    
+    urlData = urllib.quote(json.dumps({
+                          "ws": "ws://localhost:8082",
+                          "auth": guiSessionFactory.authKey
+                          }))
+    
+    webbrowser.open("http://localhost:8081/#"+urlData)
     
     #run!
     l = task.LoopingCall(m.tick)
