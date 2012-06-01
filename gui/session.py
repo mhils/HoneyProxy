@@ -20,7 +20,7 @@ class GuiSession(Protocol):
         try:
             data = json.loads(data)
         except ValueError:
-            self.factory.write("Cannot decode WebSocket request.")
+            self.factory.msg("Cannot decode WebSocket request.")
             return
         if not "action" in data:
             return
@@ -28,15 +28,15 @@ class GuiSession(Protocol):
         if data.get("action") == "auth" and data.get("key") == self.factory.authKey and not self.authenticated:
             self.authenticated = True
             self.factory.sessions.add(self)
-            self.factory.write("Authenticated.")
+            self.factory.msg("Authenticated.")
             return
             
         if not self.authenticated:
-            self.factory.write("Unauthorized request to WebSocket API.")
+            self.factory.msg("Unauthorized request to WebSocket API.")
             return
         
         def notImplemented():
-            self.factory.write("Unimplemented function call")
+            self.factory.msg("Unimplemented function call")
             raise NotImplementedError()
         
         def read(data):
@@ -72,14 +72,14 @@ class GuiSessionFactory(Factory):
         self.authKey = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(32))
 
     def write(self,msg):
-        #print "Sending \""+msg+"\""
-        #import base64
-        #msg = base64.b64encode(msg) # somewhat crazy unicode bugs.
         #print msg
-        import time
-        print "prepare@"+str(time.time())
+        #import time
+        #print "prepare@"+str(time.time())
         msg = msg.decode('latin1').encode('utf-8')
-        print "send@"+str(time.time())
+        #print "send@"+str(time.time())
         for session in self.sessions:
                 session.transport.write(msg)
+    def msg(self,msg,data={}):
+        data["msg"] = msg
+        self.write(json.dumps(data,separators=(',',':')))
     protocol = GuiSession

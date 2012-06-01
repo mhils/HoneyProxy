@@ -5,11 +5,14 @@
 <script>
 function log(msg){
 	console.timeEnd(1);
-	console.log("done");
-	console.log(msg);
-	document.getElementById("log").innerText += msg+"\n";
-	msg = JSON.parse(msg);
-	document.getElementById("log").innerHTML += '<img src="data:image/png;base64,'+window.btoa(msg.response.content)+'">"'
+	console.log("onmessage");
+	//console.log(msg);
+	//document.getElementById("log").innerText += msg+"\n";
+	try {
+	data = JSON.parse(msg);
+	document.getElementById("log").innerText += data.msg+"\n";
+	document.getElementById("log").innerHTML += '<img src="data:image/png;base64,'+window.btoa(data.response.content)+'">"'
+	} catch(e) {}
 };
 var urlData = JSON.parse(decodeURIComponent(location.hash).replace("#",""));
 var webSocketURL = urlData.ws;

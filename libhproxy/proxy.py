@@ -67,8 +67,8 @@ class HoneyProxyMaster(FlowMaster):
         
         if flow:
             request._ack()
-            print "request to "+request.host
-            self.sessionFactory.write(request.host)
+            #print "request to "+request.host
+            #self.sessionFactory.write(request.host)
             
         return flow
 
@@ -77,9 +77,10 @@ class HoneyProxyMaster(FlowMaster):
         
         if flow:
             response._ack()
-            self.flows.addFlow(flow)
+            flowId = self.flows.addFlow(flow)
             if self.o.wfile:
                 self.fwriter.add(flow)
-            print "response from "+flow.request.host
+            #print "response from "+flow.request.host
+            self.sessionFactory.msg("newflow",{"id":flowId})
             
         return flow

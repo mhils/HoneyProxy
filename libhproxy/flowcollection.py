@@ -22,4 +22,5 @@ class FlowCollection:
     def addFlow(self, flow):
         self._flows.append(flow)
         self._flows_json.append(json.dumps(flow._get_state(),ensure_ascii=None))
+        return len(self._flows)-1
         
