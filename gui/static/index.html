@@ -4,8 +4,12 @@
 <title>HoneyProxy</title>
 <script>
 function log(msg){
+	console.timeEnd(1);
+	console.log("done");
 	console.log(msg);
 	document.getElementById("log").innerText += msg+"\n";
+	msg = JSON.parse(msg);
+	document.getElementById("log").innerHTML += '<img src="data:image/png;base64,'+window.btoa(msg.response.content)+'">"'
 };
 var urlData = JSON.parse(decodeURIComponent(location.hash).replace("#",""));
 var webSocketURL = urlData.ws;
@@ -14,7 +18,7 @@ var ws = new WebSocket(webSocketURL);
 ws.onopen = function(e){
 	ws.send(JSON.stringify({action:"auth",key:authKey}));
 	log("Connection etablished");};
-ws.onmessage = function(e){log(window.atob(e.data));};
+ws.onmessage = function(e){log(/*window.atob(*/e.data/*)*/);};
 
 //ws.send("ping");
 </script>

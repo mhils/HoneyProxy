@@ -31,6 +31,8 @@ from twisted.internet import reactor, task
 
 from libhproxy.websockets import WebSocketsResource
 from libhproxy import proxy as hproxy, cmdline as hcmdline, version
+from libhproxy.honey import HoneyProxy
+
 
 def main():
     
@@ -67,8 +69,9 @@ def main():
     reactor.listenTCP(8081, Site(File("./gui/static")))    
     
     #HoneyProxy Master
-    m = hproxy.HoneyProxyMaster(server, dumpoptions, filt, guiSessionFactory)
-    m.start()
+    p = hproxy.HoneyProxyMaster(server, dumpoptions, filt, guiSessionFactory)
+    HoneyProxy.setProxyMaster(p)
+    p.start()
     
     #start gui
     import urllib, webbrowser
@@ -81,9 +84,9 @@ def main():
     webbrowser.open("http://localhost:8081/#"+urlData)
     
     #run!
-    l = task.LoopingCall(m.tick)
+    l = task.LoopingCall(p.tick)
     l.start(0.01) # call every 10ms
-    reactor.addSystemEventTrigger("before", "shutdown", m.shutdown)
+    reactor.addSystemEventTrigger("before", "shutdown", p.shutdown)
     
     reactor.run()
     

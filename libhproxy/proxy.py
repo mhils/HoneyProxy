@@ -41,6 +41,9 @@ class HoneyProxyMaster(FlowMaster):
             err = self.load_script(options.script)
             if err:
                 raise Exception(err)
+            
+    def getFlowCollection(self):
+        return self.flows
 
     def start(self):
         #see controller.Master.run()
