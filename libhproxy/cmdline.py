@@ -29,7 +29,8 @@ def fix_options(parser):
     
     #server replay
     if parser.has_option("-S"):
-        parser.option_groups.remove(parser.get_option_group("-S"))
+        if parser.get_option_group("-S") in parser.option_groups:
+            parser.option_groups.remove(parser.get_option_group("-S"))
     
     remove_option(parser,"-S")
     remove_option(parser,"-k")

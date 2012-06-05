@@ -81,6 +81,6 @@ class HoneyProxyMaster(FlowMaster):
             if self.o.wfile:
                 self.fwriter.add(flow)
             #print "response from "+flow.request.host
-            self.sessionFactory.msg("newflow",{"id":flowId})
+            self.sessionFactory.msg("newflow",{"data":self.flows.getFlowsAsJSON()[flowId]})
             
         return flow

@@ -41,8 +41,8 @@ class GuiSession(Protocol):
         
         def read(data):
             f = HoneyProxy.getProxyMaster().getFlowCollection()
-            if "id" in data:
-                self.factory.write(f.getFlowsAsJSON()[data.get("id")])
+            if "id" in data and data["id"] != "all":
+                self.factory.msg("read",{"id":data.get("id"), "data": f.getFlowsAsJSON()[data.get("id")]})
             else:
                 import time
                 print time.time()
@@ -50,7 +50,7 @@ class GuiSession(Protocol):
                 print time.time()
                 #flows = map(lambda x: x._get_state(), f.getFlows())
                 #print flows
-                self.factory.write(flows)#json.dumps(flows, None, None, None, None, None, None, None, None, None))
+                self.factory.msg("read",{"id":"all","data": flows})#json.dumps(flows, None, None, None, None, None, None, None, None, None))
         
         try:
             {
@@ -81,5 +81,6 @@ class GuiSessionFactory(Factory):
                 session.transport.write(msg)
     def msg(self,msg,data={}):
         data["msg"] = msg
-        self.write(json.dumps(data,separators=(',',':')))
+        self.write(json.dumps(data,separators=(',',':'),encoding='latin1'))
+        #del data["msg"]
     protocol = GuiSession
