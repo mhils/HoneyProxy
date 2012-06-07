@@ -3,6 +3,10 @@ from libmproxy.flow import FlowMaster
 import os
 from flowcollection import FlowCollection
 
+class ProxyError(Exception): pass
+
+#HoneyProxyMaster has some similarities to DumpMaster, 
+#but we don't want the server/client replay stuff to be in HoneyProxy
 class HoneyProxyMaster(FlowMaster):
     def __init__(self, server, options, filtstr, sessionFactory):
         FlowMaster.__init__(self, server, flow.State())        
@@ -41,6 +45,18 @@ class HoneyProxyMaster(FlowMaster):
             err = self.load_script(options.script)
             if err:
                 raise Exception(err)
+            
+        if options.rfile:
+            path = os.path.expanduser(options.rfile)
+            try:
+                f = file(path, "r")
+                freader = flow.FlowReader(f)
+            except IOError, v:
+                raise ProxyError(v.strerror)
+            try:
+                self.load_flows(freader)
+            except flow.FlowReadError, v:
+                raise ProxyError(v)
             
     def getFlowCollection(self):
         return self.flows

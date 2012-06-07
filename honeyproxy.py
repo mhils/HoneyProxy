@@ -18,7 +18,7 @@
 
 
 import gui.session
-import sys, json
+import sys, json, urllib
 sys.path.append("./mitmproxy") #git submodules "hack"
 
 from optparse import OptionParser
@@ -56,33 +56,43 @@ def main():
     
     #set up proxy server
     proxyconfig = mproxy.process_proxy_options(parser, options)
-    try:
-        server = mproxy.ProxyServer(proxyconfig, options.port, options.addr)
-    except mproxy.ProxyServerError, v:
-        print >> sys.stderr, "%(name)s:" % version.NAME, v.args[0]
-        sys.exit(1)
+    
+    if options.no_server:
+        server = mproxy.DummyServer(proxyconfig)
+    else:
+        try:
+            server = mproxy.ProxyServer(proxyconfig, options.port, options.addr)
+        except mproxy.ProxyServerError, v:
+            print >> sys.stderr, "%(name)s:" % version.NAME, v.args[0]
+            sys.exit(1)
 
     #set up HoneyProxy GUI
-    guiSessionFactory = gui.session.GuiSessionFactory()
+    guiSessionFactory = gui.session.GuiSessionFactory(options.apiauth)
     websocketRes = WebSocketsResource(guiSessionFactory)
-    reactor.listenTCP(8082, Site(websocketRes))
-    reactor.listenTCP(8081, Site(File("./gui/static")))    
+    reactor.listenTCP(options.apiport, Site(websocketRes))
+    reactor.listenTCP(options.guiport, Site(File("./gui/static")))    
     
     #HoneyProxy Master
     p = hproxy.HoneyProxyMaster(server, dumpoptions, filt, guiSessionFactory)
     HoneyProxy.setProxyMaster(p)
     p.start()
     
-    #start gui
-    import urllib, webbrowser
-    
+    wsURL = "ws://localhost:"+str(options.apiport)
     urlData = urllib.quote(json.dumps({
-                          "ws": "ws://localhost:8082",
-                          "auth": guiSessionFactory.authKey
-                          }))
+          "ws": wsURL,
+          "auth": guiSessionFactory.authKey
+          }))
+    guiURL = "http://localhost:"+options.guiport+"/#"+urlData
     
-    webbrowser.open("http://localhost:8081/#"+urlData)
-    
+    if not options.nogui:
+        #start gui
+        import webbrowser
+        webbrowser.open(guiURL)
+    else:
+        print "GUI: "+guiURL
+        print "WebSocket API URL: "+wsURL
+        print "Auth key: "+ guiSessionFactory.authKey
+        
     #run!
     l = task.LoopingCall(p.tick)
     l.start(0.01) # call every 10ms

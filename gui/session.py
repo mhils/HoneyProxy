@@ -44,13 +44,8 @@ class GuiSession(Protocol):
             if "id" in data and data["id"] != "all":
                 self.factory.msg("read",{"id":data.get("id"), "data": f.getFlowsAsJSON()[data.get("id")]})
             else:
-                import time
-                print time.time()
                 flows = f.getFlowsAsSingleJSON()
-                print time.time()
-                #flows = map(lambda x: x._get_state(), f.getFlows())
-                #print flows
-                self.factory.msg("read",{"id":"all","data": flows})#json.dumps(flows, None, None, None, None, None, None, None, None, None))
+                self.factory.msg("read",{"id":"all","data": flows})
         
         try:
             {
@@ -67,10 +62,13 @@ class GuiSession(Protocol):
 
 #WebSocket GUI Session Management
 class GuiSessionFactory(Factory):
-    def __init__(self):
+    def __init__(self,authKey):
         self.sessions = set()
-        self.authKey = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(32))
-
+        if(authKey == None or authKey == ""):
+            self.authKey = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(32))
+        else:
+            self.authKey = authKey
+            
     def write(self,msg):
         #print msg
         #import time
