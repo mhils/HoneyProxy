@@ -82,7 +82,7 @@ def main():
           "ws": wsURL,
           "auth": guiSessionFactory.authKey
           }))
-    guiURL = "http://localhost:"+options.guiport+"/#"+urlData
+    guiURL = "http://localhost:"+str(options.guiport)+"/#"+urlData
     
     if not options.nogui:
         #start gui
