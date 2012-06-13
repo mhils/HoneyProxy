@@ -42,10 +42,10 @@ class GuiSession(Protocol):
         def read(data):
             f = HoneyProxy.getProxyMaster().getFlowCollection()
             if "id" in data and data["id"] != "all":
-                self.factory.msg("read",{"id":data.get("id"), "data": f.getFlowsAsJSON()[data.get("id")]})
+                self.factory.msg("read",{"id":data.get("id"), "data": f.getFlowsAsJSON()[data.get("id")]},transport=self.transport)
             else:
                 flows = f.getFlowsAsSingleJSON()
-                self.factory.msg("read",{"id":"all","data": flows})
+                self.factory.msg("read",{"id":"all","data": flows},transport=self.transport)
         
         try:
             {
@@ -69,16 +69,19 @@ class GuiSessionFactory(Factory):
         else:
             self.authKey = authKey
             
-    def write(self,msg):
+    def write(self,msg,transport):
         #print msg
         #import time
         #print "prepare@"+str(time.time())
         msg = msg.decode('latin1').encode('utf-8')
         #print "send@"+str(time.time())
-        for session in self.sessions:
-                session.transport.write(msg)
-    def msg(self,msg,data={}):
+        if(transport == None):
+            for session in self.sessions:
+                    session.transport.write(msg)
+        else:
+            transport.write(msg)
+    def msg(self,msg,data={},transport=None):
         data["msg"] = msg
-        self.write(json.dumps(data,separators=(',',':'),encoding='latin1'))
+        self.write(json.dumps(data,separators=(',',':'),encoding='latin1'),transport=transport)
         #del data["msg"]
     protocol = GuiSession
