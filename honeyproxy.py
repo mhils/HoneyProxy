@@ -33,6 +33,9 @@ from libhproxy.websockets import WebSocketsResource
 from libhproxy import proxy as hproxy, cmdline as hcmdline, version
 from libhproxy.honey import HoneyProxy
 
+from autobahn.websocket import WebSocketServerFactory, \
+                               WebSocketServerProtocol, \
+                               listenWS
 
 def main():
     
@@ -67,9 +70,12 @@ def main():
             sys.exit(1)
 
     #set up HoneyProxy GUI
-    guiSessionFactory = gui.session.GuiSessionFactory(options.apiauth)
-    websocketRes = WebSocketsResource(guiSessionFactory)
-    reactor.listenTCP(options.apiport, Site(websocketRes))
+    guiSessionFactory = gui.session.GuiSessionFactory("ws://localhost:"+str(options.apiport),options.apiauth)
+    
+    listenWS(guiSessionFactory)
+    
+    #websocketRes = WebSocketsResource(guiSessionFactory)
+    #reactor.listenTCP(options.apiport, Site(websocketRes))
     reactor.listenTCP(options.guiport, Site(File("./gui/static")))    
     
     #HoneyProxy Master
