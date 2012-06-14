@@ -17,28 +17,52 @@
 <h3>Log</h3>
 
 <table id="traffictable">
-<thead>
-	<tr>
-		<th colspan=2>Name</th>
-		<th>Method</th>
-		<th>Type</th>
-		<th>Size</th>
-		<th>Time</th>
-	</tr>
-</thead>
-<tbody id="traffic">
-
-</tbody>
+	<colgroup span="6">
+		<col style="width: 1%; ">
+		<col style="width: 41.5%; ">
+		<col style="width: 7.5%; ">
+		<col style="width: 7.5%; ">
+		<col style="width: 12.5%; ">
+		<col style="width: 10%; ">
+		<col style="width: 20%; ">
+	</colgroup>
+	<thead>
+		<tr>
+			<th><!-- SSL --></th>
+			<th>Name</th>
+			<th>Method</th>
+			<th>Status</th>
+			<th>Type</th>
+			<th>Size</th>
+			<th>Time</th>
+		</tr>
+	</thead>
+	<tbody id="traffic">
+	</tbody>
 </table>
 
 <pre id="log">
 </pre>
 <script id=template-flow type="text/html">
-<td colspan=2><%= get("request").path %></td>
-<td><%= get("request").method %></td>
-<td><%= get("response").code %></td>
-<td><%= get("response").content.length %></td>
-<td><%= get("response").timestamp %></td>
+<td class=ssl>
+	</td>
+<td class=name-column>
+	<img class=icon>
+	<%= getFilename() %>
+	<div class=subtitle><%= getFullPath() %></div>
+	</td>
+<td class=method>
+	<%= get("request").method %></td>
+<td class=responsecode>
+	<%= get("response").code %></td>
+<td class=contenttype>
+	<%= getContentType() %></td>
+<td class=size>
+	<%= getContentSize() %></td>
+<td class=time>
+	<%= get("request").timestamp %><br>
+	<%= Math.floor((get("response").timestamp - get("request").timestamp) * 1000) %>ms
+	</td>
 </script>
 
 </tr>

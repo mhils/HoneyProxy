@@ -6,7 +6,55 @@ $(function(){
 	
 	
 	var Flow = Backbone.Model.extend({
-		
+		_processName: function(){
+			var params = this.get("request").path.split("?");
+			var path = params.shift().split("/")
+			var filename = path.pop();
+			this.set("filename", filename==="" ? "/" : filename );
+			this.set("fullpath", this.get("request").scheme + "://" + this.get("request").host + ":" + this.get("request").port + path.join("/") + "/" );
+		},
+		getFilename: function(){
+			if(!this.has("filename"))
+				this._processName();
+			return this.get("filename");
+		},
+		getFullPath: function(){
+			if(!this.has("fullpath"))
+				this._processName();
+			return this.get("fullpath");
+		},
+		getContentSize: function(){
+			if(!this.has("contentSize"))
+			{
+				var prefix = ["B","KB","MB","GB"];
+				var size = this.get("response").content.length;
+				while(size > 1024 && prefix.length > 1){
+					prefix.shift();
+					size = size / 1024;
+				}
+				this.set("contentSize",Math.floor(size)+prefix.shift());
+			}
+			return this.get("contentSize");
+			
+		},
+		getContentType: function(){
+			if(!this.has("contentType"))
+				if(this.has("response"))
+				{
+					var contentType = _.find(this.get("response").headers, function(header){
+						return !!header[0].match(/Content-Type/i);
+					});
+					if(contentType)	
+						this.set("contentType", contentType[1].split(";")[0]);
+				}
+			return this.get("contentType");
+		},
+		getCategory: function(){
+			return "none";
+		},
+		getRequestScheme: function(){
+			return this.get("request").scheme;
+		}
 	});
 	
 	var Traffic = Backbone.Collection.extend({
@@ -80,6 +128,8 @@ $(function(){
 		render: function() {
 			var html = this.template(this.model);
 			this.$el.html(html);
+			this.$el.addClass("category-"+this.model.getCategory())
+			this.$el.addClass("request-scheme-"+this.model.getRequestScheme())
 			return this;
 		}
 	});
