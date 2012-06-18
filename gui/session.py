@@ -74,7 +74,7 @@ class GuiSessionFactory(WebSocketServerFactory):
         #print msg
         #import time
         #print "prepare@"+str(time.time())
-        msg = msg.decode('latin1').encode('utf-8')
+        #msg = msg.decode('latin1').encode('utf-8')
         #print "send@"+str(time.time())
         msg = self.prepareMessage(msg)
         if(client == None):
