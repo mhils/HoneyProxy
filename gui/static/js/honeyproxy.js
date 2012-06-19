@@ -1,9 +1,49 @@
-$(function(){
+
 	
 	var HoneyProxy = {};
 	
 	_.extend(HoneyProxy, Backbone.Events);
+		
+	/**
+	 * A model factory that returns a new instance of the model that .matches() the given arguments
+	 */
+	function modelFactory(models,fallback) {
+		
+		/**
+		 * Create an instance of Cls with the given arguments
+		 */
+		function newCall(Cls,args){
+			//based on http://stackoverflow.com/a/8843181/934719
+			return new (Function.bind.apply(Cls, 
+					[0].concat(Array.prototype.slice.call(args))) //[0].concat(arguments.asArray())
+					);
+		}
+		
+		return function factory() {
+			var data = {
+					contentType : getContentTypeFromHeaders(arguments[0].response.headers)
+			}
+			
+			var model = _.find(models,function(m){
+				if("matches" in m) {
+					var x = m.matches(data);
+					return x;
+				}
+				return false;
+			});
+			model = model || fallback;
+
+			return newCall(model,arguments);
+		}
+		
+	}
 	
+	function getContentTypeFromHeaders(headers){
+		var contentType = _.find(headers, function(header){
+			return !!header[0].match(/Content-Type/i);
+		});
+		return contentType ? contentType[1].split(";")[0] : undefined;
+	}
 	
 	var Flow = Backbone.Model.extend({
 		_processName: function(){
@@ -41,11 +81,9 @@ $(function(){
 			if(!this.has("contentType"))
 				if(this.has("response"))
 				{
-					var contentType = _.find(this.get("response").headers, function(header){
-						return !!header[0].match(/Content-Type/i);
-					});
+					var contentType = getContentTypeFromHeaders(this.get("response").headers);
 					if(contentType)	
-						this.set("contentType", contentType[1].split(";")[0]);
+						this.set("contentType", contentType);
 				}
 			return this.get("contentType");
 		},
@@ -54,14 +92,54 @@ $(function(){
 		},
 		getRequestScheme: function(){
 			return this.get("request").scheme;
+		},
+		matches: function(){
+			return false;
 		}
 	});
 	
+	var ImageFlow = Flow.extend({
+		getCategory: function(){
+			return "image";
+		}
+		
+	}, {matches: function(data){
+		if(data.contentType)
+			return !!data.contentType.match(/image/i);
+		return false;
+	}});
+	
+	var DocumentFlow = Flow.extend({
+		getCategory: function(){
+			return "document";
+		}
+		
+	}, {matches: function(data){
+		if(data.contentType)
+			return !!data.contentType.match(/text/i);
+		return false;
+	}});
+	
+	var CSSFlow = DocumentFlow.extend({
+		getCategory: function(){
+			return "css";
+		}
+	}, {matches: function(data){
+		if(data.contentType)
+			return !!data.contentType.match(/css/i);
+		return false;
+	}});
+	
+	var flowFactory = modelFactory([ImageFlow,CSSFlow,DocumentFlow],Flow);
+	
+	
 	var Traffic = Backbone.Collection.extend({
-		  model: Flow
+		  model: flowFactory
 	});
 	
 	var traffic = new Traffic;
+	
+$(function(){
 	
 	function sendWS(msg){
 		ws.send(JSON.stringify(msg));
@@ -82,7 +160,6 @@ $(function(){
 			break;
 		case "read":
 			console.timeEnd("fetch")
-			console.profileEnd();
 			if(e.id in Backbone._syncrequests)
 			{
 				var req = Backbone._syncrequests[e.id];
@@ -118,9 +195,8 @@ $(function(){
 	}
 	HoneyProxy.on("authenticated",function(){
 		console.time("fetch");
-		console.profile();
 		traffic.fetch();
-	})
+	});
 	
 	var FlowView = Backbone.View.extend({
 		template: _.template($("#template-flow").html()),

@@ -49,3 +49,10 @@
 .category-none {
 	
 }
+#traffic .category-css .icon {
+	content: url(../images/resourceCSSIcon.png);
+}
+
+#traffic .category-document .icon {
+	content: url(../images/resourceDocumentIcon.png);
+}
