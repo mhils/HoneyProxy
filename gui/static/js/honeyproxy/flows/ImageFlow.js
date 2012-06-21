@@ -8,4 +8,4 @@ HoneyProxy.ImageFlow = HoneyProxy.Flow.extend({
 		return !!data.contentType.match(/image/i);
 	return false;
 }});
-HoneyProxy.flowModels.push(HoneyProxy.ImageFlow);
+HoneyProxy.flowModels.unshift(HoneyProxy.ImageFlow);

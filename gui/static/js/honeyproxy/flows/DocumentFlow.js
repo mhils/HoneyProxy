@@ -8,4 +8,4 @@ HoneyProxy.DocumentFlow = HoneyProxy.Flow.extend({
 		return !!data.contentType.match(/text/i);
 	return false;
 }});
-HoneyProxy.flowModels.push(HoneyProxy.DocumentFlow);
+HoneyProxy.flowModels.unshift(HoneyProxy.DocumentFlow);
