@@ -3,6 +3,30 @@
 	box-sizing: border-box;
 }
 
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+header {
+	overflow: auto;
+	display: block;
+	height: 75px;
+	padding: 0.5em;
+	background-color: #eeeeee;
+}
+
+#splitter {
+	width: 100%;
+}
+
+.vsplitbar {
+	width: 3px;
+	background-color: hsl(0, 0%, 64%);
+	background-clip: content-box;
+	padding: 0 1px;
+}
+
 #traffic tr:nth-child(2n){
     background-color: hsla(0,0%,0%,0.07);
 }

@@ -24,42 +24,41 @@
 	<script src="./js/honeyproxy/Traffic.js"></script>
 	<script src="./js/honeyproxy/TrafficView.js"></script>
 	
-	
-	
-	
 </head>
 <body>
-<h3>Log</h3>
+<header>
+<h3>HoneyProxy</h3>
+</header>
 <div id="splitter">
-<div>
-	<table id="traffictable">
-		<colgroup span="6">
-			<col style="width: 1%; ">
-			<col style="width: 41.5%; ">
-			<col style="width: 7.5%; ">
-			<col style="width: 7.5%; ">
-			<col style="width: 12.5%; ">
-			<col style="width: 10%; ">
-			<col style="width: 20%; ">
-		</colgroup>
-		<thead>
-			<tr>
-				<th><!-- SSL --></th>
-				<th>Name</th>
-				<th>Method</th>
-				<th>Status</th>
-				<th>Type</th>
-				<th>Size</th>
-				<th>Time</th>
-			</tr>
-		</thead>
-		<tbody id="traffic">
-		</tbody>
-	</table>
-</div>
-<div id=preview>
-previeeew
-</div>
+	<div>
+		<table id="traffictable">
+			<colgroup span="6">
+				<col style="width: 1%; ">
+				<col style="width: 41.5%; ">
+				<col style="width: 7.5%; ">
+				<col style="width: 7.5%; ">
+				<col style="width: 12.5%; ">
+				<col style="width: 10%; ">
+				<col style="width: 20%; ">
+			</colgroup>
+			<thead>
+				<tr>
+					<th><!-- SSL --></th>
+					<th>Name</th>
+					<th>Method</th>
+					<th>Status</th>
+					<th>Type</th>
+					<th>Size</th>
+					<th>Time</th>
+				</tr>
+			</thead>
+			<tbody id="traffic">
+			</tbody>
+		</table>
+	</div>
+	<div id=preview>
+		preview
+	</div>
 </div>
 
 <script id=template-flow type="text/html">
