@@ -46,7 +46,7 @@ HoneyProxy.websocket = {
 				}
 				break;
 			case "newflow":
-				traffic.add(e.data);
+				HoneyProxy.trigger("newflow",e.data);
 				break;
 		}
 		

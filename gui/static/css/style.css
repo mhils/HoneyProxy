@@ -8,6 +8,8 @@ html, body {
 	padding: 0;
 }
 
+.hidden { display: none !important; visibility: hidden; }
+
 header {
 	overflow: auto;
 	display: block;
@@ -20,12 +22,25 @@ header {
 	width: 100%;
 }
 
-.vsplitbar {
+.goog-splitpane-handle {
 	width: 3px;
 	background-color: hsl(0, 0%, 64%);
 	background-clip: content-box;
 	padding: 0 1px;
+	cursor: e-resize;
 }
+
+
+th {
+	cursor: pointer;
+}
+th.goog-tablesorter-sorted {
+     background-color: yellow;
+}
+
+th.goog-tablesorter-sorted-reverse {
+     background-color: orange;
+   }
 
 #traffic tr:nth-child(2n){
     background-color: hsla(0,0%,0%,0.07);
@@ -47,6 +62,10 @@ header {
 #traffic .size, #traffic .time {
     text-align: right;
 }
+#traffic .time .duration {
+	color: #666;
+}
+
 #traffictable thead {
     background-color: white;
     text-align: left;

@@ -16,11 +16,14 @@ HoneyProxy.Flow = Backbone.Model.extend({
 			this._processName();
 		return this.get("fullpath");
 	},
+	getRawContentSize: function(){
+		return this.get("response").content.length
+	},
 	getContentSize: function(){
 		if(!this.has("contentSize"))
 		{
 			var prefix = ["B","KB","MB","GB"];
-			var size = this.get("response").content.length;
+			var size = this.getRawContentSize();;
 			while(size > 1024 && prefix.length > 1){
 				prefix.shift();
 				size = size / 1024;
@@ -45,6 +48,15 @@ HoneyProxy.Flow = Backbone.Model.extend({
 	},
 	getRequestScheme: function(){
 		return this.get("request").scheme;
+	},
+	getDate: function(){
+		if(!this.has("timestampFormatted")) {
+			this.set("timestampFormatted",
+					new Date(this.get("request").timestamp * 1000));
+		}
+		return this.get("timestampFormatted");
+		
+		
 	},
 	matches: function(){
 		return false;
