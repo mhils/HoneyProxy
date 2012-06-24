@@ -16,6 +16,9 @@ HoneyProxy.Flow = Backbone.Model.extend({
 			this._processName();
 		return this.get("fullpath");
 	},
+	getContent: function(){
+		return this.get("response").content;
+	},
 	getRawContentSize: function(){
 		return this.get("response").content.length
 	},
@@ -60,5 +63,9 @@ HoneyProxy.Flow = Backbone.Model.extend({
 	},
 	matches: function(){
 		return false;
+	},
+	getPreview: function(){
+		return "<h2>"+this.getFilename()+"</h2>";
+		/* TODO */
 	}
 });

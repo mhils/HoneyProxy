@@ -12,7 +12,7 @@
 <header>
 <h3>HoneyProxy</h3>
 </header>
-<div id="splitpane1" class=goog-splitpane>
+<div id="main" class="goog-splitpane">
 	<div class=goog-splitpane-first-container>
 		<table id="traffictable">
 			<colgroup span="6">
@@ -39,8 +39,8 @@
 			</tbody>
 		</table>
 	</div>
-	<div class=goog-splitpane-second-container id=preview>
-		preview
+	<div class=goog-splitpane-second-container id=detail>
+		error occured.
 	</div>
 	<div class='goog-splitpane-handle'></div>
 </div>
@@ -72,11 +72,20 @@
 	</td>
 </script>
 
+<script id=template-preview type="text/html">
+<%= getPreview() %>
+</script>
+<script id=template-header type="text/html">
+TODO
+</script>
+
 <script src="./js/closure-library/closure/goog/base.js"></script>
 <script>
 goog.require('goog.ui.TableSorter');
 goog.require('goog.ui.SplitPane');
+goog.require('goog.dom');
 goog.require('goog.dom.ViewportSizeMonitor');
+goog.require('goog.style');
 </script>
 <script src="./js/jquery-1.7.2.js"></script>
 <script src="./js/underscore.js"></script>
@@ -94,7 +103,7 @@ goog.require('goog.dom.ViewportSizeMonitor');
 <script src="./js/honeyproxy/Traffic.js"></script>
 <script src="./js/honeyproxy/TrafficView.js"></script>
 <script src="./js/honeyproxy/TableSorter.js"></script>
-<script src="./js/honeyproxy/SplitPane.js"></script>
-
+<script src="./js/honeyproxy/MainLayout.js"></script>
+<script src="./js/honeyproxy/DetailView.js"></script>
 </body>
 </html>
