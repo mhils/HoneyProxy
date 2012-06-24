@@ -29,7 +29,8 @@ header {
 	background-position: -90px 0;
 }
 
-#main > .goog-splitpane-first-container {
+#main > .goog-splitpane-first-container, 
+#main > .goog-splitpane-second-container {
     overflow-y: scroll;
 }
 
@@ -42,7 +43,8 @@ header {
 }
 
 
-th {
+th, tr {
+	/* TODO: Figure out a better solution */
 	cursor: pointer;
 }
 th.goog-tablesorter-sorted {
@@ -62,6 +64,7 @@ th.goog-tablesorter-sorted-reverse {
     table-layout: fixed;
     border-spacing: 0;
 	border-collapse: collapse;
+	min-width: 600px;
 }
 #traffic td {
 	vertical-align: top;
