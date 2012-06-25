@@ -74,5 +74,7 @@
 	HoneyProxy.MainLayout = {
 		splitpaneResizer: new SplitPaneResizer(splitpane,getDesiredMainPanelSize)
 	};
-		
+	
+	$(".tabs").tabs();
+	
 })();

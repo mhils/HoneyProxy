@@ -16,6 +16,12 @@ HoneyProxy.Flow = Backbone.Model.extend({
 			this._processName();
 		return this.get("fullpath");
 	},
+	getRequestMethod: function(){
+		return this.get("request").method;
+	},
+	getStatusCode: function(){
+		return this.get("response").code;
+	},
 	getContent: function(){
 		return this.get("response").content;
 	},
@@ -61,11 +67,23 @@ HoneyProxy.Flow = Backbone.Model.extend({
 		
 		
 	},
+	hasFormData(): function(){
+		if(!get("request").content)
+			return false;
+		/* TODO add requestHeader("id") function (see getCT for resp) */
+		requestContentType.match(/^application\/x-www-form-urlencoded\s*(;.*)?$/i)
+	},
+	getRequestHeaders: function(){
+		return this.get("request").headers;
+	},
+	getResponseHeaders: function(){
+		return this.get("response").headers;
+	},
 	matches: function(){
 		return false;
 	},
 	getPreview: function(){
-		return "<h2>"+this.getFilename()+"</h2>";
+		return "no preview mode available.";
 		/* TODO */
 	}
 });

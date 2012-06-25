@@ -6,7 +6,7 @@
 	<title>HoneyProxy</title>
 	
 	<link rel="stylesheet" href="./css/style.css">
-	
+	<link rel="stylesheet" href="./js/jquery-ui/css/smoothness/jquery-ui.css">
 </head>
 <body>
 <header>
@@ -40,15 +40,13 @@
 		</table>
 	</div>
 	<div class=goog-splitpane-second-container id=detail>
-		<div class=tabbed-pane>
-			<div class=tabbed-pane-headers>
-				<a href="#header">Headers</a>
-				<a href="#preview">Preview</a>
-			</div> 
-			<div class=tabbed-pane-contents>
-				<div class=tabbed-pane-content id="header"></div>
-				<div class="tabbed-pane-content hidden" id="preview"></div>
-			</div>
+		<div class=tabs>
+			<ul>
+			    <li><a href="#preview">Preview</a></li>
+			    <li><a href="#header">Header</a></li>
+			</ul>
+			<div id=preview></div>
+			<div id=header></div>
 		</div>
 	</div>
 	<div class='goog-splitpane-handle'></div>
@@ -82,10 +80,56 @@
 </script>
 
 <script id=template-preview type="text/html">
-<%= getPreview() %>
+<div title="Pop out" class=popoutbutton></div>
+<div class=content>
+	<h2 class=title><%- getFilename() %></h2>
+	<%= getPreview() %>
+</div>
 </script>
 <script id=template-header type="text/html">
-TODO
+<div title="Pop out" class=popoutbutton></div>
+<div class=content>
+	<h2 class=title><%- getFilename() %></h2>
+	Request URL: <%- getFullPath() %><br>
+	Request Method: <%- getRequestMethod() %><br>
+	Status Code: <%- getStatusCode() %><br>
+	
+	<table>
+	<tr><td colspan=2><b>Request Headers:</b></td></tr>
+		<%
+			var headers = getRequestHeaders()
+			for(var i=0;i<headers.length;i++){
+				print("<tr>");
+				print("<td>"+headers[i][0]+"</td>");
+				print("<td>"+headers[i][1]+"</td>");
+				print("</tr>");
+			}
+ 		%>
+		<% if(hasFormData()) {
+			print("<tr><td colspan=2><b>Form Data:</b></td></tr>");
+			print("TODO");
+			
+		} else if(hasPayload()) {
+			print("<tr><td colspan=2><b>Request Payload:</b></td></tr>");
+			print ("TODO");
+		} %>	
+	<tr><td colspan=2><b>Response Headers:</b></td></tr>
+		<%
+			var headers = getResponseHeaders()
+			for(var i=0;i<headers.length;i++){
+				print("<tr>");
+				print("<td>"+headers[i][0]+"</td>");
+				print("<td>"+headers[i][1]+"</td>");
+				print("</tr>");
+			}
+ 		%>
+	</table>
+</div>
+</script>
+<script id=template-popout type="text/html">
+<html>
+<head><title><%= title %></title></head><body>
+<%= content %></body></html>
 </script>
 
 <script src="./js/closure-library/closure/goog/base.js"></script>
@@ -97,6 +141,7 @@ goog.require('goog.dom.ViewportSizeMonitor');
 goog.require('goog.style');
 </script>
 <script src="./js/jquery-1.7.2.js"></script>
+<script src="./js/jquery-ui/jquery-ui.min.js"></script>
 <script src="./js/underscore.js"></script>
 <script src="./js/backbone.js"></script>
 <script src="./js/backbone.marionette.js"></script>
@@ -114,5 +159,6 @@ goog.require('goog.style');
 <script src="./js/honeyproxy/TableSorter.js"></script>
 <script src="./js/honeyproxy/MainLayout.js"></script>
 <script src="./js/honeyproxy/DetailView.js"></script>
+<script src="./js/honeyproxy/PopOut.js"></script>
 </body>
 </html>
