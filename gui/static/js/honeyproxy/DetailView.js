@@ -2,11 +2,11 @@ HoneyProxy.DetailView = Backbone.View.extend({
 	templatePreview: undefined,
 	templateHeader: undefined,
 	render: function() {
-		var html = "<h1>Preview</h1>";
-		html += this.templatePreview(this.model);
-		html += "<h1>Header</h1>";
-		html += this.templateHeader(this.model);
-		this.$el.html(html);
+		this._$header = this._$header || this.$el.find("#header");
+		this._$header.html(this.templateHeader(this.model));
+		
+		this._$preview = this._$preview || this.$el.find("#preview");
+		this._$preview.html(this.templatePreview(this.model));
 		return this;
 	}
 });
