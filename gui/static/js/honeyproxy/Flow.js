@@ -64,14 +64,16 @@ HoneyProxy.Flow = Backbone.Model.extend({
 					new Date(this.get("request").timestamp * 1000));
 		}
 		return this.get("timestampFormatted");
-		
-		
 	},
-	hasFormData(): function(){
-		if(!get("request").content)
+	hasFormData: function(){
+		if(!this.get("request").content)
 			return false;
 		/* TODO add requestHeader("id") function (see getCT for resp) */
-		requestContentType.match(/^application\/x-www-form-urlencoded\s*(;.*)?$/i)
+		//requestContentType.match(/^application\/x-www-form-urlencoded\s*(;.*)?$/i)
+		return false;
+	},
+	hasRequestPayload: function(){
+		return false /*TODO*/;
 	},
 	getRequestHeaders: function(){
 		return this.get("request").headers;
