@@ -42,6 +42,9 @@ HoneyProxy.Flow = Backbone.Model.extend({
 		return this.get("contentSize");
 		
 	},
+	hasResponseContent: function(){
+		return this.getRawContentSize() > 0;
+	},
 	getContentType: function(){
 		if(!this.has("contentType"))
 			if(this.has("response"))

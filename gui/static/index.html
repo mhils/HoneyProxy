@@ -57,24 +57,25 @@
 	</td>
 <td class=name-column>
 	<img class=icon>
-	<%= getFilename() %>
-	<div class=subtitle><%= getFullPath() %></div>
+	<%- getFilename() %>
+	<div class=subtitle><%- getFullPath() %></div>
 	</td>
 <td class=method>
-	<%= get("request").method %></td>
+	<%- get("request").method %></td>
 <td class=responsecode>
-	<%= get("response").code %></td>
+	<%- get("response").code %></td>
 <td class=contenttype>
-	<%= getContentType() %></td>
+	<%- getContentType() %></td>
 <td class=size>
-	<div class=hidden><%= getRawContentSize() %></div>
-	<%= getContentSize() %></td>
+	<div title="<%- getRawContentSize() %> Bytes">
+		<%- getContentSize() %>
+	</div></td>
 <td class=time>
-	<div class=timestamp title="Timestamp: <%= get("request").timestamp %>">
-	<%= getDate().toLocaleTimeString() %>, <%= ("0"+getDate().getDay()).slice(-2)+"."+("0"+getDate().getMonth()).slice(-2) %>.<br>
+	<div class=timestamp title="Timestamp: <%- get("request").timestamp %>">
+	<%- getDate().toLocaleTimeString() %>, <%- ("0"+getDate().getDay()).slice(-2)+"."+("0"+getDate().getMonth()).slice(-2) %>.<br>
 	</div>	
 	<div class=duration>
-	<%= Math.floor((get("response").timestamp - get("request").timestamp) * 1000) %>ms
+	<%- Math.floor((get("response").timestamp - get("request").timestamp) * 1000) %>ms
 	</div>	
 	</td>
 </script>
@@ -83,7 +84,9 @@
 <div title="Pop out" class=popoutbutton></div>
 <div class=content>
 	<h2 class=title><%- getFilename() %></h2>
-	<%= getPreview() %>
+	<% if(hasResponseContent()) print(getPreview());
+	   else print("No response content.");
+	 %>
 </div>
 </script>
 <script id=template-header type="text/html">

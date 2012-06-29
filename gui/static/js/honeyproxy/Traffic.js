@@ -36,9 +36,10 @@
 	HoneyProxy.flowFactory = modelFactory(
 			HoneyProxy.flowModels,
 			HoneyProxy.Flow,
-			function aggregate(){
+			function aggregate(data){
 				return {
-					contentType : HoneyProxy.getContentTypeFromHeaders(arguments[0].response.headers)
+					contentType : HoneyProxy.getContentTypeFromHeaders(data.response.headers),
+					path : data.request.path
 				}
 			});
 		
