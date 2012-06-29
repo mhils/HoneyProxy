@@ -5,7 +5,7 @@
 	 */
 	SplitPaneResizer = function SplitPaneResizer(splitpane,sizeFunc){
 		this._splitpane = splitpane;
-		this._widthOnOpen = 600;
+		this._SizeOnOpen = new goog.math.Size(600,300);
 		this._sizeFunc = sizeFunc;
 		this.vsm = new goog.dom.ViewportSizeMonitor();
 		goog.events.listen(this.vsm, goog.events.EventType.RESIZE, this.onResize.bind(this));
@@ -18,23 +18,30 @@
 		var newSize = this._sizeFunc(this._splitpane);
 		
 		//calculate size of the first component
-		var secondWidth = this.getSize().width - this._splitpane.getFirstComponentSize();
+		var secondWidth = this.getSize()[this.getOrientation()] - this._splitpane.getFirstComponentSize();
 		if(secondWidth <= 0)
-			this._splitpane.setFirstComponentSize(newSize.width);
-		else if(this._splitpane.getFirstComponentSize() + 50 >  newSize.width)
+			this._splitpane.setFirstComponentSize(newSize[this.getOrientation()]);
+		else if(this._splitpane.getFirstComponentSize() + 50 >  newSize[this.getOrientation()])
 			this._splitpane.setFirstComponentSize(
 					Math.floor(this._splitpane.getFirstComponentSize() * 
-					(newSize.width / this.getSize().width)) 
+					(newSize[this.getOrientation()] / this.getSize()[this.getOrientation()])) 
 				);
 				
 		this._splitpane.setSize(newSize);
 		this._size = newSize;
 	}
+	SplitPaneResizer.prototype.isOpen = function(){
+		return 0 < this.getSize()[this.getOrientation()] - this._splitpane.getFirstComponentSize();
+	};
 	SplitPaneResizer.prototype.openSecond = function(){
-		this._splitpane.setFirstComponentSize(this._widthOnOpen);
+		this.isOpen() || this._splitpane.setFirstComponentSize(this._SizeOnOpen[this.getOrientation()]);
 	};
 	SplitPaneResizer.prototype.closeSecond = function(){
-		this._splitpane.setFirstComponentSize(this.getSize().width);
+		this._splitpane.setFirstComponentSize(this.getSize()[this.getOrientation()]);
+	};
+	SplitPaneResizer.prototype.getOrientation = function(){
+		return this._splitpane.getOrientation() == goog.ui.SplitPane.Orientation.HORIZONTAL ? 
+				"width" : "height";
 	};
 	
 	
@@ -48,7 +55,7 @@
 	var rhs = new goog.ui.Component();
 	
 	var splitpane = new goog.ui.SplitPane(lhs, rhs,
-	    goog.ui.SplitPane.Orientation.HORIZONTAL);
+	    goog.ui.SplitPane.Orientation.VERTICAL);
 	
 	
 	var getDesiredMainPanelSize = function() {
