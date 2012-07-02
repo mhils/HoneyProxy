@@ -17,7 +17,7 @@
 
 
 
-import gui.session
+import libhproxy.gui.session as session
 import sys, json, urllib
 sys.path.append("./mitmproxy") #git submodules "hack"
 
@@ -28,14 +28,13 @@ from libmproxy import proxy as mproxy, cmdline as mcmdline, dump
 from twisted.web.server import Site 
 from twisted.web.static import File
 from twisted.internet import reactor, task
+from twisted.web.resource import Resource
 
-from libhproxy.websockets import WebSocketsResource
-from libhproxy import proxy as hproxy, cmdline as hcmdline, version
+#from libhproxy.websockets import WebSocketsResource
+from libhproxy import proxy as hproxy, cmdline as hcmdline, version, content
 from libhproxy.honey import HoneyProxy
 
-from autobahn.websocket import WebSocketServerFactory, \
-                               WebSocketServerProtocol, \
-                               listenWS
+from autobahn.websocket import listenWS
 
 def main():
     
@@ -69,26 +68,34 @@ def main():
             print >> sys.stderr, "%(name)s:" % version.NAME, v.args[0]
             sys.exit(1)
 
+    HoneyProxy.setAuthKey(options.apiauth)
+
     #set up HoneyProxy GUI
-    guiSessionFactory = gui.session.GuiSessionFactory("ws://localhost:"+str(options.apiport),options.apiauth)
+    guiSessionFactory = session.GuiSessionFactory("ws://localhost:"+str(options.apiport))
     
+    #WebSocket
     listenWS(guiSessionFactory)
-    
     #websocketRes = WebSocketsResource(guiSessionFactory)
     #reactor.listenTCP(options.apiport, Site(websocketRes))
-    reactor.listenTCP(options.guiport, Site(File("./gui/static")))    
     
+    root = Resource()
+    root.putChild("app",File("./gui"))
+    root.putChild("files", content.ContentAPI())
+    reactor.listenTCP(options.guiport, Site(root))  
+        
     #HoneyProxy Master
     p = hproxy.HoneyProxyMaster(server, dumpoptions, filt, guiSessionFactory)
     HoneyProxy.setProxyMaster(p)
     p.start()
     
     wsURL = "ws://localhost:"+str(options.apiport)
+    contentURL = "http://localhost:"+str(options.guiport)+"/files"
     urlData = urllib.quote(json.dumps({
           "ws": wsURL,
-          "auth": guiSessionFactory.authKey
+          "auth": HoneyProxy.getAuthKey(),
+          "content": contentURL
           }))
-    guiURL = "http://localhost:"+str(options.guiport)+"/#"+urlData
+    guiURL = "http://localhost:"+str(options.guiport)+"/app#"+urlData
     
     if not options.nogui:
         #start gui
@@ -97,7 +104,8 @@ def main():
     else:
         print "GUI: "+guiURL
         print "WebSocket API URL: "+wsURL
-        print "Auth key: "+ guiSessionFactory.authKey
+        print "HTTP Content API Root: "+contentURL
+        print "Auth key: "+ HoneyProxy.getAuthKey()
         
     #run!
     l = task.LoopingCall(p.tick)

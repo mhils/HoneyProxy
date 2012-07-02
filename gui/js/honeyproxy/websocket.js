@@ -22,10 +22,9 @@ HoneyProxy.websocket = {
 		this.ws.send(JSON.stringify(jsonMsg));
 	},
 	initialize: function(){
-		var conn = this.getConnectionData();
-		this.ws = new WebSocket(conn.ws);
+		this.ws = new WebSocket(HoneyProxy.config.get("ws"));
 		this.ws.onopen = function(e){
-			HoneyProxy.websocket.send({action:"auth",key:conn.auth});
+			HoneyProxy.websocket.send({action:"auth",key:HoneyProxy.config.get("auth")});
 			HoneyProxy.log("Connection etablished");
 		};
 		this.ws.onmessage = this.onmessage;
@@ -51,8 +50,5 @@ HoneyProxy.websocket = {
 		}
 		
 		HoneyProxy.log(e);
-	},
-	getConnectionData: function(){
-		return JSON.parse(decodeURIComponent(location.hash).replace("#",""));
 	}
 };

@@ -3,11 +3,17 @@ HoneyProxy.DocumentFlow = HoneyProxy.Flow.extend({
 		return "document";
 	},
 	getPreview: function(){
-		return "<pre>Content: "+_.escape(this.getContent())+" </pre>";
+		var $pre = $("<pre>");
+		$pre.text("Loading...");
+		this.getResponseContent(function(data){
+			console.log(arguments)
+			$pre.text("Content: \n"+data);
+		});
+		return $pre[0];
 	}
 }, {matches: function(data){
 	if(data.contentType)
-		return !!data.contentType.match(/text/i);
+		return !!data.contentType.match(/application|text/i);
 	return false;
 }});
 HoneyProxy.flowModels.unshift(HoneyProxy.DocumentFlow);

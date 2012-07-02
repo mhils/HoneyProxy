@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import string, random, json
+import random, json
 from libhproxy.honey import HoneyProxy
 from autobahn.websocket import WebSocketServerFactory, WebSocketServerProtocol
 random = random.SystemRandom()
@@ -25,7 +25,7 @@ class GuiSession(WebSocketServerProtocol):
         if not "action" in data:
             return
         
-        if data.get("action") == "auth" and data.get("key") == self.factory.authKey and not self.authenticated:
+        if data.get("action") == "auth" and data.get("key") == HoneyProxy.getAuthKey() and not self.authenticated:
             self.authenticated = True
             self.factory.clients.add(self)
             self.factory.msg("Authenticated.")
@@ -42,9 +42,9 @@ class GuiSession(WebSocketServerProtocol):
         def read(data):
             f = HoneyProxy.getProxyMaster().getFlowCollection()
             if "id" in data and data["id"] != "all":
-                self.factory.msg("read",{"id":data.get("id"), "data": f.getFlowsAsJSON()[data.get("id")]},client=self)
+                self.factory.msg("read",{"id":data.get("id"), "data": f.getFlowsSerialized()[data.get("id")]},client=self)
             else:
-                flows = f.getFlowsAsSingleJSON()
+                flows = f.getFlowsSerialized()
                 self.factory.msg("read",{"id":"all","data": flows},client=self)
         
         try:
@@ -62,13 +62,12 @@ class GuiSession(WebSocketServerProtocol):
 
 #WebSocket GUI Session Management
 class GuiSessionFactory(WebSocketServerFactory):
-    def __init__(self,url,authKey):
+    def __init__(self,url):
         WebSocketServerFactory.__init__(self, url)
         self.clients = set()
-        if(authKey == None or authKey == ""):
-            self.authKey = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(32))
-        else:
-            self.authKey = authKey
+    
+    def onNewFlow(self,flowId):
+        self.msg("newflow",{"data":HoneyProxy.getProxyMaster().getFlowCollection().getFlowsSerialized()[flowId]})
             
     def write(self,msg,client):
         #print msg

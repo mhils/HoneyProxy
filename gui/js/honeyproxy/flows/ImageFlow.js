@@ -3,9 +3,9 @@ HoneyProxy.ImageFlow = HoneyProxy.Flow.extend({
 		return "image";
 	},
 	getPreview: function(){
-		var contentType = this.getContentType() || "image/"+this.getFilename().split(".").pop();
-		contentType = contentType.replace(/[^a-zA-Z0-9\/]/g,"");
-		return '<img alt="preview" src="data:'+contentType+';base64,'+_.escape(window.btoa(this.getContent()))+'">';
+		//var contentType = this.getContentType() || "image/"+this.getFilename().split(".").pop();
+		//contentType = contentType.replace(/[^a-zA-Z0-9\/]/g,"");
+		return '<img src="'+this.getResponseContentViewURL()+'" alt="preview" >';
 	}
 	
 }, {matches: function(data){

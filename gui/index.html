@@ -67,10 +67,12 @@
 <td class=contenttype>
 	<%- getContentType() %></td>
 <td class=size>
-	<div title="<%- getRawContentSize() %> Bytes">
-		<%- getContentSize() %>
+	<div class=hidden><%- /*table sorter */ getResponseContentLength() %></div>
+	<div title="<%- getResponseContentLength() %> Bytes">
+		<%- getResponseContentLengthFormatted() %>
 	</div></td>
 <td class=time>
+	<div class=hidden><%- /*table sorter */ get("request").timestamp %></div>
 	<div class=timestamp title="Timestamp: <%- get("request").timestamp %>">
 	<%- getDate().toLocaleTimeString() %>, <%- ("0"+getDate().getDay()).slice(-2)+"."+("0"+getDate().getMonth()).slice(-2) %>.<br>
 	</div>	
@@ -84,9 +86,8 @@
 <div title="Pop out" class=popoutbutton></div>
 <div class=content>
 	<h2 class=title><%- getFilename() %></h2>
-	<% if(hasResponseContent()) print(getPreview());
-	   else print("No response content.");
-	 %>
+	<% if(hasResponseContent()) return getPreview(); 
+		else print("No response content."); %>
 </div>
 </script>
 <script id=template-header type="text/html">
@@ -150,6 +151,7 @@ goog.require('goog.style');
 <script src="./js/backbone.marionette.js"></script>
 
 <script src="./js/honeyproxy/honeyproxy.js"></script>
+<script src="./js/honeyproxy/Config.js"></script>
 <script src="./js/honeyproxy/utilities.js"></script>
 <script src="./js/honeyproxy/websocket.js"></script>
 <script src="./js/honeyproxy/Flow.js"></script>
@@ -162,6 +164,6 @@ goog.require('goog.style');
 <script src="./js/honeyproxy/TableSorter.js"></script>
 <script src="./js/honeyproxy/MainLayout.js"></script>
 <script src="./js/honeyproxy/DetailView.js"></script>
-<script src="./js/honeyproxy/PopOut.js"></script>
+<script src="./js/honeyproxy/popOut.js"></script>
 </body>
 </html>

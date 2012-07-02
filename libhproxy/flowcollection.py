@@ -1,38 +1,35 @@
-from libmproxy import encoding
-from libmproxy.flow import ODictCaseless
 class FlowCollection:
     def __init__(self):
-        #self._flows = []
-        self._flows_json = []
-
-    
-#    def getFlow(self,i):
-#        if(i < len(self._flows)):
-#            return self._flows[i]
-#        return None
+        self._flows_serialized = []
+        self._flows = []
     
     def getLastFlow(self):
-        return self._flows_json[-1]
+        return self._flows_serialized[-1]
+
+    def getFlow(self,flowId):
+        return self._flows[flowId]
     
-    def getFlowsAsJSON(self):
-        return self._flows_json
-    
-    def getFlowsAsSingleJSON(self):
-        return self._flows_json
-        #return ''.join(["[",','.join(self._flows_json),"]"])
+    def getFlowsSerialized(self):
+        return self._flows_serialized
     
     def addFlow(self, flow):
         flowRepr = flow._get_state()
-        flowRepr["id"] = len(self._flows_json)
+        flowRepr["id"] = len(self._flows_serialized)
         
-    
-        enc = flow.response.headers.get("content-encoding")
-        if enc and enc[0] != "identity":
-            decoded = encoding.decode(enc[0], flow.response.content)
-            if decoded:
-                flowRepr["response"]["content"] = decoded
+        #remove content out of the flowRepr
+        for i in ["request","response"]:
+            flowRepr[i]["contentLength"] = len(flowRepr[i]["content"])
+            del flowRepr[i]["content"]
         
-        #self._flows_json.append(json.dumps(flowRepr,ensure_ascii=None))
-        self._flows_json.append(flowRepr)
-        return len(self._flows_json)-1
+        #store unencoded
+        #from libmproxy import encoding
+        #enc = flow.response.headers.get("content-encoding")
+        #if enc and enc[0] != "identity":
+        #    decoded = encoding.decode(enc[0], content)
+        #    if decoded:
+        #        content = decoded
+        
+        self._flows.append(flow)
+        self._flows_serialized.append(flowRepr)
+        return len(self._flows_serialized)-1
         
