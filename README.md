@@ -29,6 +29,7 @@ Install all dependencies listed below.
 * [pyasn1](http://pypi.python.org/pypi/pyasn1) 0.1.2 or newer.
 * [Twisted](http://twistedmatrix.com/) 12.0 or newer.
 * [Autobahn](http://pypi.python.org/pypi/autobahn) 0.5.2 or newer.
+* [netlib](http://pypi.python.org/pypi/netlib) 0.1 or newer.
 
 ## Contributing
 ==========

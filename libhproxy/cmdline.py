@@ -5,6 +5,8 @@ def remove_option(parser, options):
     for option in options:
         if parser.has_option(option):
             parser.remove_option(option)
+        else:
+            print "Warning: Command line switch "+str(option)+" doesn't exist. Your version of mitmproxy might be incompatible."
 
 def remove_group(parser, option):
     if parser.has_option(option):
