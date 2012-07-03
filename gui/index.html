@@ -116,7 +116,9 @@
 			
 		} else if(hasRequestPayload()) {
 			print("<tr><td colspan=2><b>Request Payload:</b></td></tr>");
-			print ("TODO");
+			print("<tr><td></td>");
+			print('<td><a class="button-download button-request-payload" href="'+getRequestContentDownloadURL()+'">Download ('+getRequestContentLengthFormatted()+')</a></td>');
+			print("</tr>");
 		} %>	
 	<tr><td colspan=2><b>Response Headers:</b></td></tr>
 		<%
@@ -159,6 +161,7 @@ goog.require('goog.style');
 <script src="./js/honeyproxy/FlowView.js"></script>
 <script src="./js/honeyproxy/flows/DocumentFlow.js"></script>
 <script src="./js/honeyproxy/flows/CssFlow.js"></script>
+<script src="./js/honeyproxy/flows/JSFlow.js"></script>
 <script src="./js/honeyproxy/flows/ImageFlow.js"></script>
 <script src="./js/honeyproxy/Traffic.js"></script>
 <script src="./js/honeyproxy/TrafficView.js"></script>

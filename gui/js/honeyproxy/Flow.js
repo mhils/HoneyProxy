@@ -22,13 +22,22 @@ HoneyProxy.Flow = Backbone.Model.extend({
 	getStatusCode: function(){
 		return this.get("response").code;
 	},
-	getResponseContentURL: function(action){
+	getContentURL: function(direction,action){
 		var url = HoneyProxy.config.get("content")
-			+"/"+this.get("id")
-			+"/response/"+action
-			+"?"+$.param(
-					{"auth":HoneyProxy.config.get("auth")});
-		return url;
+		+"/"+this.get("id")
+		+"/"+direction+"/"+action
+		+"?"+$.param(
+				{"auth":HoneyProxy.config.get("auth")});
+	return url;
+	},
+	getRequestContentURL: function(action){
+		return this.getContentURL("request",action);
+	},
+	getRequestContentDownloadURL: function(action){
+		return this.getRequestContentURL("attachment");
+	},
+	getResponseContentURL: function(action){
+		return this.getContentURL("response",action);
 	},
 	getResponseContentDownloadURL: function(){
 		return this.getResponseContentURL("attachment");
@@ -42,25 +51,37 @@ HoneyProxy.Flow = Backbone.Model.extend({
 		else
 			return callback("");
 	},
+	getRequestContentLength: function(){
+		return this.get("request").contentLength
+	},
 	getResponseContentLength: function(){
 		return this.get("response").contentLength
 	},
-	getResponseContentLengthFormatted: function(){
-		if(!this.has("responseContentLength"))
+	getContentLengthFormatted: function(direction){
+		var attr = direction+"ContentLength";
+		if(!this.has(attr))
 		{
 			var prefix = ["B","KB","MB","GB"];
-			var size = this.getResponseContentLength();
+			var size = this.get(direction).contentLength
 			while(size > 1024 && prefix.length > 1){
 				prefix.shift();
 				size = size / 1024;
 			}
-			this.set("responseContentLength",Math.floor(size)+prefix.shift());
+			this.set(attr,Math.floor(size)+prefix.shift());
 		}
-		return this.get("responseContentLength");
-		
+		return this.get(attr);
+	},
+	getResponseContentLengthFormatted: function(){
+		return this.getContentLengthFormatted("response");
+	},
+	getRequestContentLengthFormatted: function(){
+		return this.getContentLengthFormatted("request");
 	},
 	hasResponseContent: function(){
 		return this.getResponseContentLength() > 0;
+	},
+	hasRequestContent: function(){
+		return this.getRequestContentLength() > 0;
 	},
 	getContentType: function(){
 		if(!this.has("contentType"))
@@ -85,15 +106,24 @@ HoneyProxy.Flow = Backbone.Model.extend({
 		}
 		return this.get("timestampFormatted");
 	},
-	hasFormData: function(){
-		if(!this.get("request").content)
+	getHeader: function(direction, regex){
+		var header = _.find(this.get(direction).headers, function(header){
+			return !!header[0].match(regex);
+		});
+		return header ? header[1] : undefined;
+	},
+	getRequestHeader: function(regex){
+		return this.getHeader("request",regex);
+	},
+	hasFormData: function(invert){
+		invert = invert || false;
+		if(!this.hasRequestContent())
 			return false;
-		/* TODO add requestHeader("id") function (see getCT for resp) */
-		//requestContentType.match(/^application\/x-www-form-urlencoded\s*(;.*)?$/i)
-		return false;
+		var requestContentType = this.getRequestHeader(/Content-Type/i);
+		return invert ^ requestContentType.match(/^application\/x-www-form-urlencoded\s*(;.*)?$/i)
 	},
 	hasRequestPayload: function(){
-		return false /*TODO*/;
+		return this.hasFormData(true);
 	},
 	getRequestHeaders: function(){
 		return this.get("request").headers;
@@ -105,7 +135,8 @@ HoneyProxy.Flow = Backbone.Model.extend({
 		return false;
 	},
 	getPreview: function(){
-		return "no preview mode available.";
+		return HoneyProxy.DocumentFlow.prototype.getPreview.apply(this);
+		//return "no preview mode available.";
 		/* TODO */
 	}
 });

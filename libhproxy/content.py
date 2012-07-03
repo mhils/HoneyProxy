@@ -16,7 +16,7 @@ class ContentAPI(Resource):
                 isView = request.postpath[2] == "inline"
                 if (isResponse):
                     #add important headers from original request
-                    headers = ["Content-Type","Content-Encoding","Transfer-Encoding"]
+                    headers = ["Content-Type","Content-Encoding"]
                     for h in headers:
                         if(h in obj.headers):
                             request.setHeader(h,obj.headers.get(h)[0])
@@ -25,16 +25,16 @@ class ContentAPI(Resource):
                     #fix responsecode      
                     #request.setResponseCode(obj.code)
                     
-                    #fix content disposition for attachment download
-                    cdisp = obj.headers.get("Content-Disposition")
-                    if(cdisp == None):
-                        #do minimal file name guessing
-                        cdisp = 'inline; filename="'+flow.request.path.split("?")[0].split("/")[-1]+'"'
-                    if isView:
-                        request.setHeader("Content-Disposition",cdisp.replace("attachment", "inline"))
-                    else:
-                        request.setHeader("Content-Disposition",cdisp.replace("inline", "attachment"))
-                
+                #fix content disposition for attachment download
+                cdisp = obj.headers.get("Content-Disposition")
+                if(cdisp == None):
+                    #do minimal file name guessing
+                    cdisp = 'inline; filename="'+flow.request.path.split("?")[0].split("/")[-1]+'"'
+                if isView:
+                    request.setHeader("Content-Disposition",cdisp.replace("attachment", "inline"))
+                else:
+                    request.setHeader("Content-Disposition",cdisp.replace("inline", "attachment"))
+            
                 return obj.content
             except Exception as e:
                 print e
