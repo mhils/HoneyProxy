@@ -83,15 +83,16 @@
 </script>
 
 <script id=template-preview type="text/html">
-<div title="Pop out" class=popoutbutton></div>
+<div title="Pop out" class="button button-popout"></div>
+<a href="<%= getResponseContentDownloadURL() %>" title="Download" class="button button-download"></a>
 <div class=content>
 	<h2 class=title><%- getFilename() %></h2>
-	<% if(hasResponseContent()) return getPreview(); 
+	<% if(hasResponseContent()) print(getPreview()); 
 		else print("No response content."); %>
 </div>
 </script>
 <script id=template-header type="text/html">
-<div title="Pop out" class=popoutbutton></div>
+<div title="Pop out" class="button button-popout"></div>
 <div class=content>
 	<h2 class=title><%- getFilename() %></h2>
 	Request URL: <%- getFullPath() %><br>

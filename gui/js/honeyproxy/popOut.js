@@ -2,7 +2,7 @@ $(function(){
 	
 	var template = _.template($("#template-popout").html());
 	
-	$(document).on("click",".popoutbutton", function(){
+	$(document).on("click",".button-popout", function(){
 		var content = $(this).siblings(".content");
 		var html = template({
 			"title":content.find(".title").text()+" - Detail View",

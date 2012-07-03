@@ -3,13 +3,12 @@ HoneyProxy.DocumentFlow = HoneyProxy.Flow.extend({
 		return "document";
 	},
 	getPreview: function(){
-		var $pre = $("<pre>");
-		$pre.text("Loading...");
+		var pre_id = _.uniqueId("preview");
+		var $pre = $("<pre>").attr("id",pre_id).text("Loading...");
 		this.getResponseContent(function(data){
-			console.log(arguments)
-			$pre.text("Content: \n"+data);
+			$("#"+pre_id).text("Content: \n"+data);
 		});
-		return $pre[0];
+		return $('<div>').append($pre).html();
 	}
 }, {matches: function(data){
 	if(data.contentType)
