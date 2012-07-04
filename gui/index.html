@@ -44,16 +44,18 @@
 			<ul>
 			    <li><a href="#preview">Preview</a></li>
 			    <li><a href="#header">Header</a></li>
+			    <li><a href="#raw">Raw</a></li>
 			</ul>
 			<div id=preview></div>
 			<div id=header></div>
+			<div id=raw></div>
 		</div>
 	</div>
 	<div class='goog-splitpane-handle'></div>
 </div>
 <footer></footer>
 <script id=template-flow type="text/html">
-<td class=ssl>
+<td class=ssl title=<%- getId() %>>
 	</td>
 <td class=name-column>
 	<img class=icon>
@@ -82,6 +84,48 @@
 	</td>
 </script>
 
+<script id=template-raw type="text/html">
+<div title="Pop out" class="button button-popout"></div>
+<div class=content>
+	<h2 class=title><%- getFilename() %></h2>
+
+<pre class="raw raw-request"><%- getRequestMethod() %> <%- getRequestPath() %> HTTP/<%- getRequestHTTPVersion().join(".") %>
+<% 
+//Request Headers
+var headers = getRequestHeaders();
+for(var i=0;i<headers.length;i++){
+	print(_.escape(headers[i][0]+": "+headers[i][1])+"\n");
+}
+print("\n");
+//Request Content
+if(hasRequestContent()) {
+var request_id = _.uniqueId("raw");
+print('<div id="'+request_id+'">Loading...</div>');
+getRequestContent(function(data){
+	$("#"+request_id).after(_.escape(data)).remove();
+}); } else print("&lt;empty request content&gt;"); %>
+</pre>
+
+
+<pre class="raw raw-response">HTTP/<%- getResponseHTTPVersion().join(".") %> <%- getStatusCode() %> <%- getResponseMessage() %> 
+<%
+var headers = getResponseHeaders();
+for(var i=0;i<headers.length;i++){
+	print(_.escape(headers[i][0]+": "+headers[i][1])+"\n");
+}
+print("\n");
+//Response Content
+if(hasResponseContent()) {
+var response_id = _.uniqueId("raw");
+print('<div id="'+response_id+'">Loading...</div>');
+getResponseContent(function(data){
+	console.log($("#"+response_id));
+	$("#"+response_id).after(_.escape(data)).remove();
+}); } else print("&lt;empty response content&gt;"); %>
+
+</pre>
+</div>
+</script>
 <script id=template-preview type="text/html">
 <div title="Pop out" class="button button-popout"></div>
 <a href="<%= getResponseContentDownloadURL() %>" title="Download" class="button button-download"></a>
@@ -102,7 +146,7 @@
 	<table>
 	<tr><td colspan=2><b>Request Headers:</b></td></tr>
 		<%
-			var headers = getRequestHeaders()
+			var headers = getRequestHeaders();
 			for(var i=0;i<headers.length;i++){
 				print("<tr>");
 				print("<td>"+headers[i][0]+"</td>");
@@ -115,10 +159,11 @@
 			print('<tr id="'+tr_id+'"><td><b>Form Data:</b></td><td>Loading...</td></tr>');
 			getFormData(function(formData){
 				var $tr = $("#"+tr_id);
+				var html = "";
 				for(var i=0;i<formData.length;i++) {
-					console.log(formData[i]);
-					$tr.after("<tr><td>"+formData[i].name+"</td><td>"+formData[i].value+"</td></tr>");
+					html +="<tr><td>"+_.escape(decodeURIComponent(formData[i].name))+"</td><td>"+_.escape(decodeURIComponent(formData[i].value))+"</td></tr>";
 				}
+ 				$tr.after(html);
 				$tr.find("td").last().text("");
 			});
 
@@ -131,11 +176,11 @@
 %>	
 	<tr><td colspan=2><b>Response Headers:</b></td></tr>
 		<%
-			var headers = getResponseHeaders()
+			var headers = getResponseHeaders();
 			for(var i=0;i<headers.length;i++){
 				print("<tr>");
-				print("<td>"+headers[i][0]+"</td>");
-				print("<td>"+headers[i][1]+"</td>");
+				print("<td>"+_.escape(headers[i][0])+"</td>");
+				print("<td>"+_.escape(headers[i][1])+"</td>");
 				print("</tr>");
 			}
  		%>
@@ -144,7 +189,11 @@
 </script>
 <script id=template-popout type="text/html">
 <html>
-<head><title><%= title %></title></head><body>
+<head>
+	<title><%= title %></title>
+	<link rel="stylesheet" href="./css/style.css">
+<link rel="stylesheet" href="./css/popout.css">
+</head><body>
 <%= content %></body></html>
 </script>
 

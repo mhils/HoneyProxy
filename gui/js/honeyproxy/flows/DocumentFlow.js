@@ -4,7 +4,7 @@ HoneyProxy.DocumentFlow = HoneyProxy.Flow.extend({
 	},
 	getPreview: function(){
 		var pre_id = _.uniqueId("preview");
-		var $pre = $("<pre>").attr("id",pre_id).text("Loading...");
+		var $pre = $("<pre>").attr("id",pre_id).addClass("preview").text("Loading...");
 		this.getResponseContent(function(data){
 			$("#"+pre_id).text("Content: \n"+data);
 		});
