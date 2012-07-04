@@ -1,10 +1,22 @@
 HoneyProxy.Flow = Backbone.Model.extend({
+	getId: function(){
+		return this.get("id");
+	},
 	_processName: function(){
-		var params = this.get("request").path.split("?");
+		var params = this.getRequestPath().split("?");
 		var path = params.shift().split("/")
 		var filename = path.pop();
 		this.set("filename", filename==="" ? "/" : filename );
 		this.set("fullpath", this.get("request").scheme + "://" + this.get("request").host + ":" + this.get("request").port + path.join("/") + "/" );
+	},
+	getRequestPath: function(){
+		return this.get("request").path;
+	},
+	getRequestHTTPVersion: function(){
+		return this.get("request").httpversion;
+	},
+	getResponseHTTPVersion: function(){
+		return this.get("response").httpversion;
 	},
 	getFilename: function(){
 		if(!this.has("filename"))
@@ -21,6 +33,9 @@ HoneyProxy.Flow = Backbone.Model.extend({
 	},
 	getStatusCode: function(){
 		return this.get("response").code;
+	},
+	getResponseMessage: function(){
+		return this.get("response").msg;
 	},
 	getContentURL: function(direction,action){
 		var url = HoneyProxy.config.get("content")
@@ -50,14 +65,14 @@ HoneyProxy.Flow = Backbone.Model.extend({
 	},
 	getRequestContent: function(callback){
 		if(this.hasRequestContent())
-			$.get(this.getRequestContentViewURL(),callback);
+			$.get(this.getRequestContentViewURL(),callback,"text");
 		else
 			callback("");
 		return this;
 	},
 	getResponseContent: function(callback){
 		if(this.hasResponseContent())
-			$.get(this.getResponseContentViewURL(),callback);
+			$.get(this.getResponseContentViewURL(),callback,"text");
 		else
 			callback("");
 		return this;
