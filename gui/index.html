@@ -111,15 +111,24 @@
 			}
  		%>
 		<% if(hasFormData()) {
-			print("<tr><td colspan=2><b>Form Data:</b></td></tr>");
-			print("TODO");
-			
+			var tr_id = _.uniqueId("formdata");
+			print('<tr id="'+tr_id+'"><td><b>Form Data:</b></td><td>Loading...</td></tr>');
+			getFormData(function(formData){
+				var $tr = $("#"+tr_id);
+				for(var i=0;i<formData.length;i++) {
+					console.log(formData[i]);
+					$tr.after("<tr><td>"+formData[i].name+"</td><td>"+formData[i].value+"</td></tr>");
+				}
+				$tr.find("td").last().text("");
+			});
+
 		} else if(hasRequestPayload()) {
 			print("<tr><td colspan=2><b>Request Payload:</b></td></tr>");
-			print("<tr><td></td>");
-			print('<td><a class="button-download button-request-payload" href="'+getRequestContentDownloadURL()+'">Download ('+getRequestContentLengthFormatted()+')</a></td>');
-			print("</tr>");
-		} %>	
+		} 
+		if(hasRequestContent()) {
+			print('<tr><td></td><td><a class="button-download button-request-payload" href="'+getRequestContentDownloadURL()+'">Download ('+getRequestContentLengthFormatted()+')</a></td></tr>');
+		}
+%>	
 	<tr><td colspan=2><b>Response Headers:</b></td></tr>
 		<%
 			var headers = getResponseHeaders()

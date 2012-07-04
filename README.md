@@ -19,7 +19,7 @@ While HoneyProxy is usable at its current state, some highly desireable features
 
 ## Quick start
 
-Clone the git repo - `git clone git://github.com/mhils/HoneyProxy.git` - or [download it](https://github.com/mhils/HoneyProxy/zipball/master)
+Clone the git repo - `git clone --recursive git://github.com/mhils/HoneyProxy.git` - or [download it](https://github.com/mhils/HoneyProxy/zipball/master)
 
 Install all dependencies listed below.
 

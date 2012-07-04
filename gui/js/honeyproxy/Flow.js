@@ -28,13 +28,16 @@ HoneyProxy.Flow = Backbone.Model.extend({
 		+"/"+direction+"/"+action
 		+"?"+$.param(
 				{"auth":HoneyProxy.config.get("auth")});
-	return url;
+		return url;
 	},
 	getRequestContentURL: function(action){
 		return this.getContentURL("request",action);
 	},
 	getRequestContentDownloadURL: function(action){
 		return this.getRequestContentURL("attachment");
+	},
+	getRequestContentViewURL: function(action){
+		return this.getRequestContentURL("inline");
 	},
 	getResponseContentURL: function(action){
 		return this.getContentURL("response",action);
@@ -45,11 +48,19 @@ HoneyProxy.Flow = Backbone.Model.extend({
 	getResponseContentViewURL: function(){
 		return this.getResponseContentURL("inline");
 	},
+	getRequestContent: function(callback){
+		if(this.hasRequestContent())
+			$.get(this.getRequestContentViewURL(),callback);
+		else
+			callback("");
+		return this;
+	},
 	getResponseContent: function(callback){
 		if(this.hasResponseContent())
-			return $.get(this.getResponseContentViewURL(),callback);
+			$.get(this.getResponseContentViewURL(),callback);
 		else
-			return callback("");
+			callback("");
+		return this;
 	},
 	getRequestContentLength: function(){
 		return this.get("request").contentLength
@@ -120,7 +131,18 @@ HoneyProxy.Flow = Backbone.Model.extend({
 		if(!this.hasRequestContent())
 			return false;
 		var requestContentType = this.getRequestHeader(/Content-Type/i);
-		return invert ^ requestContentType.match(/^application\/x-www-form-urlencoded\s*(;.*)?$/i)
+		return invert ^ !!requestContentType.match(/^application\/x-www-form-urlencoded\s*(;.*)?$/i)
+	},
+	getFormData: function(callback){
+		if(this.has("formDataParsed"))
+			callback(this.get("formDataParsed"));
+		else
+			this.getRequestContent((function(data){
+				var formData = HoneyProxy.parseParameters(data)
+				this.set("formDataParsed",formData);
+				callback(formData);
+			}).bind(this));
+		return this;
 	},
 	hasRequestPayload: function(){
 		return this.hasFormData(true);
