@@ -1,0 +1,13 @@
+**/.*
+build/
+test/
+docs/
+.settings/
+**/*.less
+**/*.pyc
+gui/js/closure-library/bin/
+gui/js/closure-library/known-issues/
+mitmproxy/doc-src/
+mitmproxy/examples/
+mitmproxy/scripts/
+mitmproxy/test/

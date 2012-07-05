@@ -1,0 +1,18 @@
+<project name="HoneyProxy" default="dist" basedir="../">
+  <property name="dist"  location="dist"/>
+
+  <target name="dist" depends="clean">
+    <mkdir dir="${dist}"/>
+	<copy todir="${dist}">
+      <fileset dir=".">
+      	<excludesfile name=".gitignore"/>
+      	<excludesfile name="build/ignore.txt"/>
+      </fileset>
+	</copy>
+  </target>
+
+  <target name="clean" description="clean up" >
+    <!-- Delete the ${dist} directory trees -->
+    <delete dir="${dist}"/>
+  </target>
+</project>
