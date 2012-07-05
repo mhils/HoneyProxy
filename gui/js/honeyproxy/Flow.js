@@ -13,10 +13,10 @@ HoneyProxy.Flow = Backbone.Model.extend({
 		return this.get("request").path;
 	},
 	getRequestHTTPVersion: function(){
-		return this.get("request").httpversion;
+		return this.get("request").httpversion || [1,0] /* stay compatible with mitmproxy 0.8 */;
 	},
 	getResponseHTTPVersion: function(){
-		return this.get("response").httpversion;
+		return this.get("response").httpversion || [1,0];
 	},
 	getFilename: function(){
 		if(!this.has("filename"))

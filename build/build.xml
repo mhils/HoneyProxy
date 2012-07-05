@@ -1,7 +1,7 @@
-<project name="HoneyProxy" default="dist" basedir="../">
+<project name="HoneyProxy" default="build" basedir="../">
   <property name="dist"  location="dist"/>
 
-  <target name="dist" depends="clean">
+  <target name="build" depends="clean">
     <mkdir dir="${dist}"/>
 	<copy todir="${dist}">
       <fileset dir=".">
