@@ -13,9 +13,11 @@ More details can be found on the Honeynet [project page](https://honeynet.org/gs
 
 ## Current Status
 
-While HoneyProxy is usable at its current state, some highly desireable features are still missing. Below you can see a screenshot of the current status - a real-time log sorted by request time.
+HoneyProxy is currently in an early beta phase. While there are still many features missing, HoneyProxy is already a nice open source alternative to other proxies such as BURP. Below you can see a screenshot of the current status - a real-time log sorted by request time.
 
 ![screenshot](http://maximilianhils.com/upload/2012-07/05-0222-3E4hbjZtObwEGtx.png)
+
+We love to hear from your experience with HoneyProxy. If you have any feature suggestions, please get in touch :)
 
 ## Quick start
 
