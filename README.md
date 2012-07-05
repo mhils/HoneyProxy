@@ -15,7 +15,7 @@ More details can be found on the Honeynet [project page](https://honeynet.org/gs
 
 While HoneyProxy is usable at its current state, some highly desireable features are still missing. Below you can see a screenshot of the current status - a real-time log sorted by request time.
 
-![screenshot](http://maximilianhils.com/upload/2012-06/22-0101-RuD200uVXlgd4Tl.png)
+![screenshot](http://maximilianhils.com/upload/2012-07/05-0222-3E4hbjZtObwEGtx.png)
 
 ## Quick start
 
