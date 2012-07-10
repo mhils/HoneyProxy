@@ -18,8 +18,13 @@
 
 
 import libhproxy.gui.session as session
-import sys, json, urllib
-sys.path.append("./mitmproxy") #git submodules "hack"
+import sys, json, urllib, os, inspect
+
+#ensure to load our own version of mitmproxy
+#http://stackoverflow.com/questions/279237/python-import-a-module-from-a-folder
+mitmproxy_folder = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile( inspect.currentframe() ))[0] + "/mitmproxy" ))
+if mitmproxy_folder not in sys.path:
+    sys.path.insert(0, mitmproxy_folder)
 
 from optparse import OptionParser
 
