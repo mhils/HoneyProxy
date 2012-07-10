@@ -21,13 +21,17 @@ We love to hear from your experience with HoneyProxy. If you have any feature su
 
 ## Quick start
 
-Clone the git repo - `git clone --recursive git://github.com/mhils/HoneyProxy.git` - or [download it](https://github.com/mhils/HoneyProxy/zipball/master)
+Download the [**latest release**](https://github.com/mhils/HoneyProxy/downloads) or clone the git repo: `git clone --recursive git://github.com/mhils/HoneyProxy.git`.
 
-Install all dependencies listed below.
+Install all dependencies: `pip install pyOpenSSL pyasn1 Twisted Autobahn netlib`
+
+To start HoneyProxy, just run `python honeyproxy.py` or `python honeyproxy.py --help`
+
+Most command line parameters are documented in the [mitmproxy docs](http://mitmproxy.org/doc/index.html).
 
 ### Dependencies
 * [Python](http://www.python.org) 2.6.x or 2.7.x.
-* [PyOpenSSL](http://pypi.python.org/pypi/pyOpenSSL) 0.12 or newer.
+* [pyOpenSSL](http://pypi.python.org/pypi/pyOpenSSL) 0.12 or newer.
 * [pyasn1](http://pypi.python.org/pypi/pyasn1) 0.1.2 or newer.
 * [Twisted](http://twistedmatrix.com/) 12.0 or newer.
 * [Autobahn](http://pypi.python.org/pypi/autobahn) 0.5.2 or newer.
