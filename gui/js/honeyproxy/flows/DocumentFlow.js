@@ -2,11 +2,13 @@ HoneyProxy.DocumentFlow = HoneyProxy.Flow.extend({
 	getCategory: function(){
 		return "document";
 	},
-	getPreview: function(){
+	getPreview: function(callback){
 		var pre_id = _.uniqueId("preview");
 		var $pre = $("<pre>").attr("id",pre_id).addClass("preview").text("Loading...");
 		this.getResponseContent(function(data){
-			$("#"+pre_id).text("Content: \n"+data);
+			var $pre = $("#"+pre_id).text(data);
+			if(_.isFunction(callback))
+				callback($pre);
 		});
 		return $('<div>').append($pre).html();
 	}

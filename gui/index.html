@@ -6,6 +6,7 @@
 	<title>HoneyProxy</title>
 	
 	<link rel="stylesheet" href="./css/style.css">
+	<link rel="stylesheet" href="./js/prettify/prettify.css">
 	<link rel="stylesheet" href="./js/jquery-ui/css/smoothness/jquery-ui.css">
 </head>
 <body>
@@ -119,7 +120,6 @@ if(hasResponseContent()) {
 var response_id = _.uniqueId("raw");
 print('<div id="'+response_id+'">Loading...</div>');
 getResponseContent(function(data){
-	console.log($("#"+response_id));
 	$("#"+response_id).after(_.escape(data)).remove();
 }); } else print("&lt;empty response content&gt;"); %>
 
@@ -210,6 +210,9 @@ goog.require('goog.style');
 <script src="./js/underscore.js"></script>
 <script src="./js/backbone.js"></script>
 <script src="./js/backbone.marionette.js"></script>
+<script src="./js/prettify/prettify.js"></script>
+<script src="./js/prettify/lang-css.js"></script>
+
 
 <script src="./js/honeyproxy/honeyproxy.js"></script>
 <script src="./js/honeyproxy/Config.js"></script>
@@ -218,8 +221,10 @@ goog.require('goog.style');
 <script src="./js/honeyproxy/Flow.js"></script>
 <script src="./js/honeyproxy/FlowView.js"></script>
 <script src="./js/honeyproxy/flows/DocumentFlow.js"></script>
+<script src="./js/honeyproxy/flows/PrettyFlow.js"></script>
 <script src="./js/honeyproxy/flows/CssFlow.js"></script>
-<script src="./js/honeyproxy/flows/JSFlow.js"></script>
+<script src="./js/honeyproxy/flows/JsFlow.js"></script>
+<script src="./js/honeyproxy/flows/HtmlFlow.js"></script>
 <script src="./js/honeyproxy/flows/ImageFlow.js"></script>
 <script src="./js/honeyproxy/Traffic.js"></script>
 <script src="./js/honeyproxy/TrafficView.js"></script>

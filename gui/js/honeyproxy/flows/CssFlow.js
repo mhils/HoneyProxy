@@ -1,4 +1,4 @@
-HoneyProxy.CSSFlow = HoneyProxy.DocumentFlow.extend({
+HoneyProxy.CSSFlow = HoneyProxy.PrettyFlow.extend({
 	getCategory: function(){
 		return "css";
 	}
