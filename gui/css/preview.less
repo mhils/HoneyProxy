@@ -19,8 +19,12 @@
 }
 
 pre.preview {
-	padding: 1em;
+	white-space: pre-wrap;
+	padding: 1em !important;
 	background-color: hsl(0,0,94%);
+}
+.prettyprint ol.linenums li {
+	list-style-type: decimal;
 }
 
 .pre-menu-item {
@@ -30,6 +34,7 @@ pre.preview {
 	padding: 3px 5px;
 	margin: 1px;
 	cursor: pointer;
+	position: relative;
 	transition: all .1s linear;
 	&:hover {
 		background-color: hsl(55, 100%, 74%);

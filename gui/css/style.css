@@ -135,8 +135,12 @@ th.goog-tablesorter-sorted-reverse {
   padding-left: 20px;
 }
 pre.preview {
-  padding: 1em;
+  white-space: pre-wrap;
+  padding: 1em !important;
   background-color: #f0f0f0;
+}
+.prettyprint ol.linenums li {
+  list-style-type: decimal;
 }
 .pre-menu-item {
   float: right;
@@ -145,6 +149,7 @@ pre.preview {
   padding: 3px 5px;
   margin: 1px;
   cursor: pointer;
+  position: relative;
   transition: all .1s linear;
 }
 .pre-menu-item:hover {
