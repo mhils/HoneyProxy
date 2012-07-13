@@ -25,7 +25,7 @@ Download the [**latest release**](https://github.com/mhils/HoneyProxy/downloads)
 
 Install all dependencies: `pip install pyOpenSSL pyasn1 Twisted Autobahn netlib`
 
-To start HoneyProxy, just run `python honeyproxy.py` or `python honeyproxy.py --help`
+To start HoneyProxy, just run `python honeyproxy.py` or `python honeyproxy.py --help`. If you don't use a modern browser, a kitten will die. We currently support both Firefox and Chrome!
 
 Most command line parameters are documented in the [mitmproxy docs](http://mitmproxy.org/doc/index.html).
 
