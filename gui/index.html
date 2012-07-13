@@ -59,7 +59,7 @@
 <td class=ssl title=<%- getId() %>>
 	</td>
 <td class=name-column>
-	<img class=icon>
+	<div class=icon></div>
 	<%- getFilename() %>
 	<div class=subtitle><%- getFullPath() %></div>
 	</td>
@@ -192,7 +192,8 @@ getResponseContent(function(data){
 <head>
 	<title><%= title %></title>
 	<link rel="stylesheet" href="./css/style.css">
-<link rel="stylesheet" href="./css/popout.css">
+	<link rel="stylesheet" href="./js/prettify/prettify.css">
+	<link rel="stylesheet" href="./css/popout.css">
 </head><body>
 <%= content %></body></html>
 </script>
