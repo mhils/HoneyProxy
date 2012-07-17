@@ -23,6 +23,12 @@ def fix_options(parser):
     )
     
     parser.add_option(
+        "--dump-dir",
+        action="store", type = "str", dest="dumpdir", default=None,
+        help = "Folder to dump all response objects into"
+    )
+    
+    parser.add_option(
         "--apiport",
         action="store", type = "int", dest="apiport", default=8082,
         help = "WebSocket API service port."

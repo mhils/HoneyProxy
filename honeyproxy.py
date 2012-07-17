@@ -61,8 +61,8 @@ def main():
         filt = " ".join(args)
     else:
         filt = None
-        
-    dumpoptions = dump.Options(**mcmdline.get_common_options(options))
+    
+    dumpoptions = dump.Options(dumpdir=options.dumpdir,**mcmdline.get_common_options(options))
     
     #set up proxy server
     proxyconfig = mproxy.process_proxy_options(parser, options)

@@ -2,6 +2,7 @@ from libmproxy import flow, controller, filt
 from libmproxy.flow import FlowMaster
 import os
 from flowcollection import FlowCollection
+from dirdumper import DirDumper
 
 class ProxyError(Exception): pass
 
@@ -28,7 +29,6 @@ class HoneyProxyMaster(FlowMaster):
         if options.stickyauth:
             self.set_stickyauth(options.stickyauth)
 
-        #TODO: Add auto-dump
         if options.wfile:
             path = os.path.expanduser(options.wfile)
             try:
@@ -36,6 +36,10 @@ class HoneyProxyMaster(FlowMaster):
                 self.fwriter = flow.FlowWriter(f)
             except IOError, v:
                 raise Exception(v.strerror)
+            
+        if options.dumpdir:
+            path = os.path.expanduser(options.dumpdir)
+            self.dirdumper = DirDumper(path)
 
         if options.replacements:
             for i in options.replacements:
@@ -96,6 +100,8 @@ class HoneyProxyMaster(FlowMaster):
             flowId = self.flows.addFlow(flow)
             if self.o.wfile:
                 self.fwriter.add(flow)
+            if self.o.dumpdir:
+                self.dirdumper.add(flow)
             #print "response from "+flow.request.host
             self.sessionFactory.onNewFlow(flowId)
             
