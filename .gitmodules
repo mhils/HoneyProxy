@@ -4,3 +4,6 @@
 [submodule "gui/js/closure-library"]
 	path = gui/js/closure-library
 	url = https://github.com/jarib/google-closure-library.git
+[submodule "netlib"]
+	path = netlib
+	url = git@github.com:mhils/netlib.git
