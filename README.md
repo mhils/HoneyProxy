@@ -23,7 +23,7 @@ We love to hear from your experience with HoneyProxy. If you have any feature su
 
 Download the [**latest release**](https://github.com/mhils/HoneyProxy/downloads) or clone the git repo: `git clone --recursive git://github.com/mhils/HoneyProxy.git`.
 
-Install all dependencies: `pip install pyOpenSSL pyasn1 Twisted Autobahn netlib`
+Install all dependencies: `pip install pyOpenSSL pyasn1 Twisted Autobahn`
 
 To start HoneyProxy, just run `python honeyproxy.py` or `python honeyproxy.py --help`. If you don't use a modern browser, a kitten will die. We currently support both Firefox and Chrome!
 
@@ -35,7 +35,6 @@ Most command line parameters are documented in the [mitmproxy docs](http://mitmp
 * [pyasn1](http://pypi.python.org/pypi/pyasn1) 0.1.2 or newer.
 * [Twisted](http://twistedmatrix.com/) 12.0 or newer.
 * [Autobahn](http://pypi.python.org/pypi/autobahn) 0.5.2 or newer.
-* [netlib](http://pypi.python.org/pypi/netlib) 0.1 or newer.
 
 ## Contributing
 ==========
