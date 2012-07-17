@@ -1,6 +1,7 @@
 var HoneyProxy = {
 		flowModels:[],
 		currentSelection: undefined,
+		templateRoot: "/app/templates",
 		openPreview: function(){
 			HoneyProxy.detailView.model = this.model;
 			HoneyProxy.detailView.render();

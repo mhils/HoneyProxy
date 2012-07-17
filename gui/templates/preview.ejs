@@ -1,0 +1,7 @@
+<div title="Pop out" class="button button-popout"></div>
+<a href="<%= getResponseContentDownloadURL() %>" title="Download" class="button button-download"></a>
+<div class=content>
+	<h2 class=title><%- getFilename() %></h2>
+	<% if(hasResponseContent()) print(getPreview()); 
+		else print("No response content."); %>
+</div>

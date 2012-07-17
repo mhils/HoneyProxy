@@ -1,10 +1,7 @@
 $(function(){
-	
-	var template = _.template($("#template-popout").html());
-	
 	$(document).on("click",".button-popout", function(){
 		var content = $(this).siblings(".content");
-		var html = template({
+		var html = HoneyProxy.template("popout",{
 			"title":content.find(".title").text()+" - Detail View",
 			"content":content.html()
 			});
@@ -13,3 +10,7 @@ $(function(){
 		win.document.close();
 	});
 });
+
+HoneyProxy.loadTemplate("popout");
+	
+	

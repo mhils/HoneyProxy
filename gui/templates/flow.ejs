@@ -1,0 +1,27 @@
+<td class=ssl title=<%- getId() %>>
+	</td>
+<td class=name-column>
+	<div class=icon></div>
+	<%- getFilename() %>
+	<div class=subtitle><%- getFullPath() %></div>
+	</td>
+<td class=method>
+	<%- get("request").method %></td>
+<td class=responsecode>
+	<%- get("response").code %></td>
+<td class=contenttype>
+	<%- getContentType() %></td>
+<td class=size>
+	<div class=hidden><%- /*table sorter */ getResponseContentLength() %></div>
+	<div title="<%- getResponseContentLength() %> Bytes">
+		<%- getResponseContentLengthFormatted() %>
+	</div></td>
+<td class=time>
+	<div class=hidden><%- /*table sorter */ get("request").timestamp %></div>
+	<div class=timestamp title="Timestamp: <%- get("request").timestamp %>">
+	<%- getDate().toLocaleTimeString() %>, <%- ("0"+getDate().getDay()).slice(-2)+"."+("0"+getDate().getMonth()).slice(-2) %>.<br>
+	</div>	
+	<div class=duration>
+	<%- Math.floor((get("response").timestamp - get("request").timestamp) * 1000) %>ms
+	</div>	
+	</td>
