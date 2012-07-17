@@ -5,15 +5,17 @@
 	Request Method: <%- getRequestMethod() %><br>
 	Status Code: <%- getStatusCode() %><br>
 	
-	<table>
+	<table class=headers>
 	<tr><td colspan=2><b>Request Headers:</b></td></tr>
 		<%
 			var headers = getRequestHeaders();
 			for(var i=0;i<headers.length;i++){
-				print("<tr>");
-				print("<td>"+headers[i][0]+"</td>");
-				print("<td>"+headers[i][1]+"</td>");
-				print("</tr>");
+				%> 
+				<tr>
+					<td><%- headers[i][0] %></td>
+					<td><%- headers[i][1] %></td>
+				</tr>
+				<%
 			}
  		%>
 		<% if(hasFormData()) {
@@ -39,14 +41,20 @@
 	<tr><td colspan=2><b>Response Headers:</b></td></tr>
 		<%
 			var headers = getResponseHeaders();
-			for(var i=0;i<headers.length;i++){
-				print("<tr>");
-				print("<td>"+_.escape(headers[i][0])+"</td>");
-				print("<td>"+_.escape(headers[i][1])+"</td>");
-				print("</tr>");
+			for(var i=0;i<headers.length;i++){ 
+				%> 
+				<tr>
+					<td><%- headers[i][0] %></td>
+					<td><%- headers[i][1] %></td>
+				</tr>
+				<%
 			}
  		%>
 	</table>
-	<% /*Server certificate:
-	<pre></pre> */ %>
+	<% if(hasResponseCertificate()) { %>
+		<b>Server certificate:</b>
+		<pre class="raw raw-cert">
+		<%- getResponseCertificate() %>
+		</pre>
+	<% } %>
 </div>

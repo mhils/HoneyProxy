@@ -18,6 +18,12 @@ HoneyProxy.Flow = Backbone.Model.extend({
 	getResponseHTTPVersion: function(){
 		return this.get("response").httpversion || [1,0];
 	},
+	getResponseCertificate: function(){
+		return this.get("response").cert;
+	},
+	hasResponseCertificate: function(){
+		return !!this.get("response").cert;
+	},
 	getFilename: function(){
 		if(!this.has("filename"))
 			this._processName();
