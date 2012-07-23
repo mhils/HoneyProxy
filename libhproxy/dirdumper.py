@@ -1,5 +1,6 @@
 import os
 from libmproxy import encoding
+
 class DirDumper:
     def __init__(self, path):
         self.path = os.path.abspath(path)
@@ -27,7 +28,7 @@ class DirDumper:
         
         #forbid relative directory changes.
         subdir = "/".join(i.lstrip(".") for i in subdir.replace("\\","/").split("/"))
-        subdir = "/".join(i[:50]+"[HoneyProxy - cut off]" if (len(i) > 50) else i for i in subdir.split("/"))
+        subdir = "/".join(i[:25]+"[HoneyProxy - cut off]"+i[-25:] if (len(i) > 50) else i for i in subdir.split("/"))
         
         #remove invalid characters
         subdir = os.path.normpath("".join(i for i in subdir if i not in r':*?"<>|'))

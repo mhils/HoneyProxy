@@ -20,6 +20,18 @@ header {
 	background-color: #f0f0f0;
 }
 
+header a {
+	float: right;
+	color: black;
+	text-decoration: none;
+	&:before {
+		content: "[";
+	}
+	&:after {
+		content: "]";
+	}
+}
+
 #main {
 	overflow: hidden;
 }

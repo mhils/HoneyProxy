@@ -46,7 +46,7 @@ HoneyProxy.Flow = Backbone.Model.extend({
 	getContentURL: function(direction,action){
 		var url = HoneyProxy.config.get("content")
 		+"/"+this.get("id")
-		+"/"+direction+"/"+action);
+		+"/"+direction+"/"+action;
 		return url;
 	},
 	getRequestContentURL: function(action){
