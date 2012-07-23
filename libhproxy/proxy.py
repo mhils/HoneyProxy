@@ -53,7 +53,7 @@ class HoneyProxyMaster(FlowMaster):
         if options.rfile:
             path = os.path.expanduser(options.rfile)
             try:
-                f = file(path, "r")
+                f = file(path, "rb")
                 freader = flow.FlowReader(f)
             except IOError, v:
                 raise ProxyError(v.strerror)
