@@ -92,14 +92,16 @@ def main():
     guiURL = httpGui +"/app"
     conf = config.Config({
         "ws": wsURL,
-        "auth": HoneyProxy.getAuthKey()
+        "auth": HoneyProxy.getAuthKey(),
+        "dumpdir": True if options.dumpdir else False
     })
     
     root = Resource()
     root.putChild("app",File("./gui"))
     root.putChild("config",conf)
     root.putChild("files", content.ContentAPIResource())
-    root.putChild("dump", dirdumper.DirResource(options.dumpdir))
+    if(options.dumpdir):
+        root.putChild("dump", File(options.dumpdir))
      
     import libhproxy.auth as auth
     root = auth.addBasicAuth(root,"HoneyProxy",honey=HoneyProxy.getAuthKey())
