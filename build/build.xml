@@ -1,6 +1,8 @@
 <project name="HoneyProxy" default="build" basedir="../">
   <property name="dist"  location="dist"/>
-
+	
+  <tstamp/>
+	
   <target name="build" depends="clean">
     <mkdir dir="${dist}"/>
 	<copy todir="${dist}">
@@ -9,6 +11,13 @@
       	<excludesfile name="build/ignore.txt"/>
       </fileset>
 	</copy>
+  </target>
+	
+  <target name="pack" depends="build" description="put it into a zip file! :)">
+    <zip destfile="${dist}/snapshot-${DSTAMP}.zip"
+         basedir="${dist}"
+    />
+  	<!-- <move file="${dist}/snapshot.zip" todir="dir/to/move/to"/> -->
   </target>
 
   <target name="clean" description="clean up" >
