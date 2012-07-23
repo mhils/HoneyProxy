@@ -39,7 +39,7 @@ from twisted.internet import reactor, task
 from twisted.web.resource import Resource
 
 #from libhproxy.websockets import WebSocketsResource
-from libhproxy import proxy as hproxy, cmdline as hcmdline, version, content
+from libhproxy import proxy as hproxy, cmdline as hcmdline, version, content, dirdumper, config
 from libhproxy.honey import HoneyProxy
 
 from autobahn.websocket import listenWS
@@ -55,7 +55,7 @@ def main():
     mcmdline.common_options(parser)
     hcmdline.fix_options(parser) #remove some mitmproxy stuff
 
-    options, args = parser.parse_args() #@UnusedVariable
+    options, args = parser.parse_args()
     
     if args:
         filt = " ".join(args)
@@ -86,9 +86,24 @@ def main():
     #websocketRes = WebSocketsResource(guiSessionFactory)
     #reactor.listenTCP(options.apiport, Site(websocketRes))
     
+    #Config
+    wsURL = "ws://localhost:"+str(options.apiport)
+    httpGui = "http://honey:"+HoneyProxy.getAuthKey()+"@localhost:"+str(options.guiport)
+    guiURL = httpGui +"/app"
+    conf = config.Config({
+        "ws": wsURL,
+        "auth": HoneyProxy.getAuthKey()
+    })
+    
     root = Resource()
     root.putChild("app",File("./gui"))
-    root.putChild("files", content.ContentAPI())
+    root.putChild("config",conf)
+    root.putChild("files", content.ContentAPIResource())
+    root.putChild("dump", dirdumper.DirResource(options.dumpdir))
+     
+    import libhproxy.auth as auth
+    root = auth.addBasicAuth(root,"HoneyProxy",honey=HoneyProxy.getAuthKey())
+    
     reactor.listenTCP(options.guiport, Site(root))  
         
     #HoneyProxy Master
@@ -96,23 +111,13 @@ def main():
     HoneyProxy.setProxyMaster(p)
     p.start()
     
-    wsURL = "ws://localhost:"+str(options.apiport)
-    contentURL = "http://localhost:"+str(options.guiport)+"/files"
-    urlData = urllib.quote(json.dumps({
-          "ws": wsURL,
-          "auth": HoneyProxy.getAuthKey(),
-          "content": contentURL
-          }))
-    guiURL = "http://localhost:"+str(options.guiport)+"/app#"+urlData
-    
     if not options.nogui:
         #start gui
         import webbrowser
         webbrowser.open(guiURL)
     else:
-        print "GUI: "+guiURL
+        print "HTTP Root: "+httpGui
         print "WebSocket API URL: "+wsURL
-        print "HTTP Content API Root: "+contentURL
         print "Auth key: "+ HoneyProxy.getAuthKey()
         
     #run!

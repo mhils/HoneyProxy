@@ -14,11 +14,27 @@ class HoneyProxy():
         return HoneyProxy.honeyProxyMaster
     
     @staticmethod
-    def getAuthKey():
-        return HoneyProxy.authKey
-    
-    @staticmethod
     def setAuthKey(key):
         if(key == None or key == ""):
             return
         HoneyProxy.authKey = key
+    
+    @staticmethod
+    def getAuthKey():
+        return HoneyProxy.authKey
+        
+    @staticmethod
+    def setConfig(proxymaster):
+        HoneyProxy.honeyProxyMaster = proxymaster
+        return proxymaster
+        
+    @staticmethod
+    def getConfig():
+        return HoneyProxy.honeyProxyMaster
+        
+    @staticmethod
+    def isAuthenticated(request):
+        try:
+            return request.args["auth"][0] == HoneyProxy.getAuthKey()
+        except:
+            return False

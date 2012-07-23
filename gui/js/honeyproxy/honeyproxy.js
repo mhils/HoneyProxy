@@ -35,7 +35,11 @@ $(function(){
 		console.time("fetch");
 		HoneyProxy.traffic.fetch();
 	});
-	HoneyProxy.websocket.initialize();
+	
+	HoneyProxy.on("configLoaded",function(){
+		HoneyProxy.websocket.initialize();
+	})
+	
 	HoneyProxy.trafficView = new HoneyProxy.TrafficView({collection: HoneyProxy.traffic, el: $("#traffic")[0]});		
 	HoneyProxy.detailView = new HoneyProxy.DetailView({el: $("#detail")});
 });

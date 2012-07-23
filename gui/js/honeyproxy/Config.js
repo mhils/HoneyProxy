@@ -11,6 +11,10 @@
 	Config.prototype.set = function(id,val){
 		this.storage[id] = val;
 	}
-	HoneyProxy.config = new Config(
-			JSON.parse(decodeURIComponent(location.hash).replace("#","")));
+	
+	$.getJSON("/config", function(data){
+		HoneyProxy.config = new Config(data);
+		HoneyProxy.config.set("content","/files");
+		HoneyProxy.trigger("configLoaded");
+	});
 })();
