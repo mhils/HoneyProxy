@@ -1,5 +1,5 @@
 import os
-from libmproxy import encoding
+from libmproxy.flow import decoded
 
 class DirDumper:
     def __init__(self, path):
@@ -8,12 +8,8 @@ class DirDumper:
     def add(self, flow):
         if(len(flow.response.content) == 0):
             return
-        content = flow.response.content
-        enc = flow.response.headers.get("content-encoding")
-        if enc and enc[0] != "identity":
-            decoded = encoding.decode(enc[0], content)
-            if decoded:
-                content = decoded
+        with decoded(flow.response):
+            content_decoded = flow.response.content
         
         #get host and path
         host = flow.request.host
@@ -84,7 +80,7 @@ class DirDumper:
         while(os.path.isfile(filename+str(appendix)+ext)):
             with open(filename+str(appendix)+ext) as f:
                 s = f.read()
-                if(s == content):
+                if(s == content_decoded):
                     return
             if(appendix == ""):
                 appendix = 1
@@ -94,4 +90,4 @@ class DirDumper:
         filename = filename + str(appendix) + ext
                     
         with open(filename, 'wb') as f:
-            f.write(str(content))
+            f.write(str(content_decoded))
