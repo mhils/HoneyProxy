@@ -66,8 +66,8 @@ class GuiSessionFactory(WebSocketServerFactory):
         WebSocketServerFactory.__init__(self, url)
         self.clients = set()
     
-    def onNewFlow(self,flowId):
-        self.msg("newflow",{"data":HoneyProxy.getProxyMaster().getFlowCollection().getFlowsSerialized()[flowId]})
+    def onNewFlow(self,flowSerialized):
+        self.msg("newflow",{"data":flowSerialized})
             
     def write(self,msg,client):
         #print msg

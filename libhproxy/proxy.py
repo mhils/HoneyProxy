@@ -103,6 +103,6 @@ class HoneyProxyMaster(FlowMaster):
             if self.o.dumpdir:
                 self.dirdumper.add(flow)
             #print "response from "+flow.request.host
-            self.sessionFactory.onNewFlow(flowId)
+            self.sessionFactory.onNewFlow(self.flows.getFlowsSerialized()[flowId])
             
         return flow
