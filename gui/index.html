@@ -39,6 +39,18 @@
 			<tbody id="traffic">
 			</tbody>
 		</table>
+		<div id=tutorial>
+		<h1>Quick start</h1>
+		<ul>
+		<li><h2>Set up your HTTP proxy settings:</h2>
+			<b>Host: </b><span id=tutorial-proxy-addr>IP</span><br>
+			<b>Port: </b><span id=tutorial-proxy-port>PORT</span>
+		<li><h2>Set up SSL interception if required</h2>
+			Follow the steps from the <a href="http://mitmproxy.org/doc/ssl.html">mitmproxy docs</a>. All certificates are stored in the "ca-cert" subdirectory of your HoneyProxy installation.
+		<li><h2>Give Feedback!</h2>
+			HoneyProxy is still in an very early stage. Getting some feedback from you would be awesome. <a href="https://github.com/mhils/HoneyProxy">Thanks!</a>
+		</ul>
+		</div>
 	</div>
 	<div class=goog-splitpane-second-container id=detail>
 		<div class=tabs>
@@ -94,5 +106,6 @@ goog.require('goog.style');
 <script src="./js/honeyproxy/DetailView.js"></script>
 <script src="./js/honeyproxy/popOut.js"></script>
 <script src="./js/honeyproxy/dirdump.js"></script>
+<script src="./js/honeyproxy/tutorial.js"></script>
 </body>
 </html>

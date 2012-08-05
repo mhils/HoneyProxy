@@ -18,7 +18,7 @@
 
 
 import libhproxy.gui.session as session
-import sys, json, urllib, os, inspect
+import sys, os, inspect
 
 #ensure to load our own version of mitmproxy and netlib
 #http://stackoverflow.com/questions/279237/python-import-a-module-from-a-folder
@@ -39,7 +39,7 @@ from twisted.internet import reactor, task
 from twisted.web.resource import Resource
 
 #from libhproxy.websockets import WebSocketsResource
-from libhproxy import proxy as hproxy, cmdline as hcmdline, version, content, dirdumper, config
+from libhproxy import proxy as hproxy, cmdline as hcmdline, version, content, config
 from libhproxy.honey import HoneyProxy
 
 from autobahn.websocket import listenWS
@@ -91,6 +91,8 @@ def main():
     httpGui = "http://honey:"+HoneyProxy.getAuthKey()+"@localhost:"+str(options.guiport)
     guiURL = httpGui +"/app"
     conf = config.Config({
+        "proxy-addr":options.addr,
+        "proxy-port":options.port,
         "ws": wsURL,
         "auth": HoneyProxy.getAuthKey(),
         "dumpdir": True if options.dumpdir else False

@@ -21,14 +21,6 @@ class FlowCollection:
             flowRepr[i]["contentLength"] = len(flowRepr[i]["content"])
             del flowRepr[i]["content"]
         
-        #store unencoded
-        #from libmproxy import encoding
-        #enc = flow.response.headers.get("content-encoding")
-        #if enc and enc[0] != "identity":
-        #    decoded = encoding.decode(enc[0], content)
-        #    if decoded:
-        #        content = decoded
-        
         self._flows.append(flow)
         self._flows_serialized.append(flowRepr)
         return len(self._flows_serialized)-1
