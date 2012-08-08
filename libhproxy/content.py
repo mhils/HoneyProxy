@@ -29,6 +29,8 @@ class ContentAPIResource(Resource):
             if(cdisp == None):
                 #do minimal file name guessing
                 cdisp = 'inline; filename="'+flow.request.path.split("?")[0].split("/")[-1]+'"'
+            else:
+                cdisp = cdisp[0]
             if isView:
                 request.setHeader("Content-Disposition",cdisp.replace("attachment", "inline"))
             else:
