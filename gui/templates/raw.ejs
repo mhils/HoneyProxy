@@ -1,37 +1,37 @@
 <div title="Pop out" class="button button-popout"></div>
 <div class=content>
-	<h2 class=title><%- getFilename() %></h2>
+	<h2 class=title><%- request.filename %></h2>
 
-<pre class="raw raw-request"><%- getRequestMethod() %> <%- getRequestPath() %> HTTP/<%- getRequestHTTPVersion().join(".") %>
+<pre class="raw raw-request"><%- request.method %> <%- request.path %> HTTP/<%- request.httpversion.join(".") %>
 <% 
 //Request Headers
-var headers = getRequestHeaders();
+var headers = request.headers;
 for(var i=0;i<headers.length;i++){
 	print(_.escape(headers[i][0]+": "+headers[i][1])+"\n");
 }
 print("\n");
 //Request Content
-if(hasRequestContent()) {
+if(request.hasContent) {
 var request_id = _.uniqueId("raw");
 print('<div id="'+request_id+'">Loading...</div>');
-getRequestContent(function(data){
+request.getContent(function(data){
 	$("#"+request_id).after(_.escape(data)).remove();
 }); } else print("&lt;empty request content&gt;"); %>
 </pre>
 
 
-<pre class="raw raw-response">HTTP/<%- getResponseHTTPVersion().join(".") %> <%- getStatusCode() %> <%- getResponseMessage() %> 
+<pre class="raw raw-response">HTTP/<%- response.httpversion.join(".") %> <%- response.code %> <%- response.msg %> 
 <%
-var headers = getResponseHeaders();
+var headers = response.headers;
 for(var i=0;i<headers.length;i++){
 	print(_.escape(headers[i][0]+": "+headers[i][1])+"\n");
 }
 print("\n");
 //Response Content
-if(hasResponseContent()) {
+if(response.hasContent) {
 var response_id = _.uniqueId("raw");
 print('<div id="'+response_id+'">Loading...</div>');
-getResponseContent(function(data){
+response.getContent(function(data){
 	$("#"+response_id).after(_.escape(data)).remove();
 }); } else print("&lt;empty response content&gt;"); %>
 

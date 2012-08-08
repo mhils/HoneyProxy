@@ -1,14 +1,14 @@
 <div title="Pop out" class="button button-popout"></div>
 <div class=content>
-	<h2 class=title><%- getFilename() %></h2>
-	Request URL: <%- getFullPath() %><br>
-	Request Method: <%- getRequestMethod() %><br>
-	Status Code: <%- getStatusCode() %><br>
+	<h2 class=title><%- request.filename %></h2>
+	Request URL: <%- request.fullPath %><br>
+	Request Method: <%- request.method %><br>
+	Status Code: <%- response.code %><br>
 	
 	<table class=headers>
 	<tr><td colspan=2><b>Request Headers:</b></td></tr>
 		<%
-			var headers = getRequestHeaders();
+			var headers = request.headers;
 			for(var i=0;i<headers.length;i++){
 				%> 
 				<tr>
@@ -18,10 +18,10 @@
 				<%
 			}
  		%>
-		<% if(hasFormData()) {
+		<% if(request.hasFormData) {
 			var tr_id = _.uniqueId("formdata");
 			print('<tr id="'+tr_id+'"><td><b>Form Data:</b></td><td>Loading...</td></tr>');
-			getFormData(function(formData){
+			request.getFormData(function(formData){
 				var $tr = $("#"+tr_id);
 				var html = "";
 				for(var i=0;i<formData.length;i++) {
@@ -31,16 +31,16 @@
 				$tr.find("td").last().text("");
 			});
 
-		} else if(hasRequestPayload()) {
+		} else if(request.hasPayload) {
 			print("<tr><td colspan=2><b>Request Payload:</b></td></tr>");
 		} 
-		if(hasRequestContent()) {
-			print('<tr><td></td><td><a class="button-download button-request-payload" href="'+getRequestContentDownloadURL()+'">Download ('+getRequestContentLengthFormatted()+')</a></td></tr>');
+		if(request.hasContent) {
+			print('<tr><td></td><td><a class="button-download button-request-payload" href="'+request.downloadUrl+'">Download ('+request.contentLengthFormatted+')</a></td></tr>');
 		}
 %>	
 	<tr><td colspan=2><b>Response Headers:</b></td></tr>
 		<%
-			var headers = getResponseHeaders();
+			var headers = response.headers;
 			for(var i=0;i<headers.length;i++){ 
 				%> 
 				<tr>
@@ -51,10 +51,10 @@
 			}
  		%>
 	</table>
-	<% if(hasResponseCertificate()) { %>
+	<% if(response.cert) { %>
 		<b>Server certificate:</b>
 		<pre class="raw raw-cert">
-		<%- getResponseCertificate() %>
+		<%- response.cert %>
 		</pre>
 	<% } %>
 </div>

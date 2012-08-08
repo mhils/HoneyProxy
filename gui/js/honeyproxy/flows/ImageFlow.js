@@ -5,7 +5,7 @@ HoneyProxy.ImageFlow = HoneyProxy.Flow.extend({
 	getPreview: function(){
 		//var contentType = this.getContentType() || "image/"+this.getFilename().split(".").pop();
 		//contentType = contentType.replace(/[^a-zA-Z0-9\/]/g,"");
-		return '<img src="'+this.getResponseContentViewURL()+'" alt="preview" >';
+		return '<img src="'+this.response.viewUrl+'" alt="preview" >';
 	}
 	
 }, {matches: function(data){
