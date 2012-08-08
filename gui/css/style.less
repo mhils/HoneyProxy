@@ -106,7 +106,54 @@ th.goog-tablesorter-sorted-reverse {
     text-align: left;
 }
 
+@headerheight: 20px;
 
+#traffictable {
+	margin-top: @headerheight;
+}
+
+#traffictable thead {
+	position: fixed;
+	margin-top: -@headerheight;
+	height: @headerheight;
+	display: block;
+	width: 100%;
+	overflow-y: scroll;
+	tr {
+		width: 100%;
+		display: inline-table;
+	}
+	th {
+	&:before {
+		content: "";
+		display: inline-block;
+	    width: 7px;
+	}
+	padding: 0;
+	margin: 0;
+	height: @headerheight -1;
+	line-height: @headerheight;
+	}
+}
+
+col.ssl, th.ssl {
+	width: 1%;
+}
+col.name, th.name {
+	width: 41.5%;
+}
+col.method, col.status, th.method, th.status {
+	width: 7.5%;
+}
+col.type, th.type {
+	width: 12.5%;
+}
+col.size, th.size{
+	width: 10%;
+}
+col.time, th.time {
+	width: 20%;
+}
 
 #traffic .subtitle {
     font-size: 11px;

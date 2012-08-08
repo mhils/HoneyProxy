@@ -10,6 +10,7 @@ HoneyProxy.FlowView = Backbone.View.extend({
 		this.$el.html(html);
 		this.$el.addClass("category-"+this.model.getCategory());
 		this.$el.addClass("request-scheme-"+this.model.request.scheme);
+		this.model._flowView = this;
 		return this;
 	}
 });

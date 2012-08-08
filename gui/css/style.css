@@ -99,6 +99,58 @@ th.goog-tablesorter-sorted-reverse {
   background-color: white;
   text-align: left;
 }
+#traffictable {
+  margin-top: 20px;
+}
+#traffictable thead {
+  position: fixed;
+  margin-top: -20px;
+  height: 20px;
+  display: block;
+  width: 100%;
+  overflow-y: scroll;
+}
+#traffictable thead tr {
+  width: 100%;
+  display: inline-table;
+}
+#traffictable thead th {
+  padding: 0;
+  margin: 0;
+  height: 20px -1;
+  line-height: 20px;
+}
+#traffictable thead th:before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+}
+col.ssl,
+th.ssl {
+  width: 1%;
+}
+col.name,
+th.name {
+  width: 41.5%;
+}
+col.method,
+col.status,
+th.method,
+th.status {
+  width: 7.5%;
+}
+col.type,
+th.type {
+  width: 12.5%;
+}
+col.size,
+th.size {
+  width: 10%;
+}
+col.time,
+th.time {
+  width: 20%;
+}
 #traffic .subtitle {
   font-size: 11px;
   color: grey;

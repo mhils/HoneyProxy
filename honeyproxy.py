@@ -39,7 +39,7 @@ from twisted.internet import reactor, task
 from twisted.web.resource import Resource
 
 #from libhproxy.websockets import WebSocketsResource
-from libhproxy import proxy as hproxy, cmdline as hcmdline, version, content, config
+from libhproxy import proxy as hproxy, cmdline as hcmdline, version, content, config, api
 from libhproxy.honey import HoneyProxy
 
 from autobahn.websocket import listenWS
@@ -101,6 +101,7 @@ def main():
     root = Resource()
     root.putChild("app",File("./gui"))
     root.putChild("config",conf)
+    root.putChild("api",api.HoneyProxyApi())
     root.putChild("files", content.ContentAPIResource())
     if(options.dumpdir):
         root.putChild("dump", File(options.dumpdir))
