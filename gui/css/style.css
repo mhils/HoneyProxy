@@ -1,2 +1,186 @@
-*{-webkit-box-sizing:border-box;box-sizing:border-box}html,body{margin:0;padding:0;font-family:'Lucida Grande',sans-serif;font-size:12px}.hidden{display:none!important;visibility:hidden}header{overflow:auto;display:block;height:75px;padding:.5em 100px .5em;background-color:#f0f0f0}header a{float:right;color:#000;text-decoration:none}header a:before{content:"["}header a:after{content:"]"}#main{overflow:hidden}header{background-image:url(../images/header.jpg);background-repeat:no-repeat;background-position:-90px 0}#main>.goog-splitpane-first-container,#main>.goog-splitpane-second-container{overflow-y:scroll}.goog-splitpane-handle{width:3px;background-color:#a3a3a3;background-clip:content-box;padding:0 1px}.goog-splitpane-handle-vertical{cursor:n-resize}.goog-splitpane-handle-horizontal{cursor:e-resize}#traffictable th,#traffictable td{cursor:pointer}th.goog-tablesorter-sorted{background-color:rgba(70,185,72,.5)}th.goog-tablesorter-sorted-reverse{background-color:rgba(238,68,17,.5)}#traffic tr:nth-child(2n){background-color:rgba(0,0,0,.07)}#traffictable{background-color:rgba(0,0,0,.07);width:100%;table-layout:fixed;border-spacing:0;border-collapse:collapse;min-width:600px}#traffic tr.selected td{background-color:rgba(255,244,122,.1)}#traffic td{vertical-align:top;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;padding:.1em 0}#traffic .size,#traffic .time{text-align:right}#traffic .time .duration{color:#666}#traffictable thead{background-color:#fff;text-align:left}#traffic .subtitle{font-size:11px;color:grey}#traffic .request-scheme-https .ssl{background-color:rgba(66,212,43,.4)}#traffic .icon{float:left;width:32px;height:32px;margin-top:1px;margin-right:3px;background-image:url(../images/resourcePlainIcon.png)}#traffic .category-css .icon{background-image:url(../images/resourceCSSIcon.png)}#traffic .category-js .icon{background-image:url(../images/resourceJSIcon.png)}#traffic .category-document .icon{background-image:url(../images/resourceDocumentIcon.png)}#traffic .category-image .icon{background-image:url(../images/resourceImageIcon.png)}.hidden{display:none!important;visibility:hidden}.button{width:16px;height:16px;float:right;cursor:pointer;margin-left:10px;background-repeat:no-repeat}.button-popout{background-image:url(../images/window-new.png)}.button-download{background-image:url(../images/document-save.png)}.button-request-payload{background-repeat:no-repeat;padding-left:20px}pre.preview{white-space:pre-wrap;padding:1em!important;background-color:#f0f0f0}.prettyprint ol.linenums li{list-style-type:decimal}.pre-menu-item{float:right;background-color:#fff;border-bottom-left-radius:5px;padding:3px 5px;margin:1px;cursor:pointer;position:relative;transition:all .1s linear}.pre-menu-item:hover{background-color:#fff47a}pre.raw{padding:1em;background-color:#f0f0f0}.headers{table-layout:fixed}.headers td{white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.headers tr td:first-child{width:300px}
-/* This beautiful CSS-File has been crafted with LESS (lesscss.org) and compiled by simpLESS (wearekiss.com/simpless) */
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Lucida Grande', sans-serif;
+  font-size: 12px;
+}
+.hidden {
+  display: none !important;
+  visibility: hidden;
+}
+header {
+  overflow: auto;
+  display: block;
+  height: 75px;
+  padding: 0.5em 100px 0.5em;
+  background-color: #f0f0f0;
+}
+header a {
+  float: right;
+  color: black;
+  text-decoration: none;
+}
+header a:before {
+  content: "[";
+}
+header a:after {
+  content: "]";
+}
+#main {
+  overflow: hidden;
+}
+header {
+  background-image: url(../images/header.jpg);
+  background-repeat: no-repeat;
+  background-position: -90px 0;
+}
+#main > .goog-splitpane-first-container,
+#main > .goog-splitpane-second-container {
+  overflow-y: scroll;
+}
+.goog-splitpane-handle {
+  width: 3px;
+  background-color: #a3a3a3;
+  background-clip: content-box;
+  padding: 0 1px;
+}
+.goog-splitpane-handle-vertical {
+  cursor: n-resize;
+}
+.goog-splitpane-handle-horizontal {
+  cursor: e-resize;
+}
+#traffictable th,
+#traffictable td {
+  /* TODO: Figure out a better solution */
+
+  cursor: pointer;
+}
+th.goog-tablesorter-sorted {
+  background-color: rgba(70, 185, 72, 0.5);
+}
+th.goog-tablesorter-sorted-reverse {
+  background-color: rgba(238, 68, 17, 0.5);
+}
+#traffic tr:nth-child(2n) {
+  background-color: rgba(0, 0, 0, 0.07);
+}
+#traffictable {
+  background-color: rgba(0, 0, 0, 0.07);
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 0;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+#traffic tr.selected td {
+  background-color: rgba(255, 244, 122, 0.1);
+}
+#traffic td {
+  vertical-align: top;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 0.1em 0;
+}
+#traffic .size,
+#traffic .time {
+  text-align: right;
+}
+#traffic .time .duration {
+  color: #666;
+}
+#traffictable thead {
+  background-color: white;
+  text-align: left;
+}
+#traffic .subtitle {
+  font-size: 11px;
+  color: grey;
+}
+#traffic .request-scheme-https .ssl {
+  background-color: rgba(66, 212, 43, 0.4);
+}
+#traffic .icon {
+  float: left;
+  width: 32px;
+  height: 32px;
+  margin-top: 1px;
+  margin-right: 3px;
+  background-image: url(../images/resourcePlainIcon.png);
+}
+#traffic .category-css .icon {
+  background-image: url(../images/resourceCSSIcon.png);
+}
+#traffic .category-js .icon {
+  background-image: url(../images/resourceJSIcon.png);
+}
+#traffic .category-document .icon {
+  background-image: url(../images/resourceDocumentIcon.png);
+}
+#traffic .category-image .icon {
+  background-image: url(../images/resourceImageIcon.png);
+}
+.hidden {
+  display: none !important;
+  visibility: hidden;
+}
+.button {
+  width: 16px;
+  height: 16px;
+  float: right;
+  cursor: pointer;
+  margin-left: 10px;
+  background-repeat: no-repeat;
+}
+.button-popout {
+  background-image: url(../images/window-new.png);
+}
+.button-download {
+  background-image: url(../images/document-save.png);
+}
+.button-request-payload {
+  background-repeat: no-repeat;
+  padding-left: 20px;
+}
+pre.preview {
+  white-space: pre-wrap;
+  padding: 1em !important;
+  background-color: #f0f0f0;
+}
+.prettyprint ol.linenums li {
+  list-style-type: decimal;
+}
+.pre-menu-item {
+  float: right;
+  background-color: white;
+  border-bottom-left-radius: 5px;
+  padding: 3px 5px;
+  margin: 1px;
+  cursor: pointer;
+  position: relative;
+  transition: all .1s linear;
+}
+.pre-menu-item:hover {
+  background-color: #fff47a;
+}
+pre.raw {
+  padding: 1em;
+  background-color: #f0f0f0;
+}
+.headers {
+  table-layout: fixed;
+}
+.headers td {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.headers tr td:first-child {
+  width: 300px;
+}
