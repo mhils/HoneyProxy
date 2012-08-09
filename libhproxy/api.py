@@ -2,6 +2,7 @@ from twisted.web.resource import Resource
 import json
 from libhproxy.honey import HoneyProxy
 import re
+from libhproxy.flowcollection import includeDecodedContent
 
 class HoneyProxyApi(Resource):
     def __init__(self):
@@ -34,6 +35,7 @@ class SearchApiResource(Resource):
                 cond["field"] = cond["field"].split(".")
                 cond["not"] = cond["not"] if "not" in cond else False
                 if(cond["type"] == "regexp"):
+                    #FIXME: why does it only match from beginning?
                     prog = re.compile(cond["value"])
                     cond["match"] = lambda s: prog.match(str(s))
                 else: #if(cond["type"] == "contains"):
@@ -42,6 +44,7 @@ class SearchApiResource(Resource):
                 #    match = cond["match"]
                 #    cond["match"] = lambda s: not match(s)
             
+            #get an attribute recursively
             def rec_getattr(obj,attr):
                 if(len(attr) == 0):
                     return obj
@@ -53,8 +56,9 @@ class SearchApiResource(Resource):
                     return rec_getattr(obj,attr[1:])
             
             def matchesAny(obj,cond):
-                if type(obj) is dict:
-                    #TODO: keys too?
+                if type(obj) is list or type(obj) is tuple:
+                    return any(matchesAny(v,cond) for v in obj)
+                elif type(obj) is dict:
                     return any(matchesAny(v,cond) for v in obj.keys()+obj.values())
                 else:
                     return cond["match"](obj)
@@ -67,14 +71,14 @@ class SearchApiResource(Resource):
                                 return False
                         else:
                             attr = rec_getattr(flow,cond["field"])
-                            if not cond["match"](attr)  ^ cond["not"]:
+                            if not cond["match"](attr) ^ cond["not"]:
                                 return False
-                    except Exception as e:
-                        print e.message
+                    except:
                         return False
                 return True
             
-            filteredFlows = filter(filterFunc,flows)
+            with includeDecodedContent(flows):
+                filteredFlows = filter(filterFunc,flows)
             
             if("idsOnly" in request.args):
                 filteredFlows = map(lambda flow: flow.get("id"), filteredFlows)
