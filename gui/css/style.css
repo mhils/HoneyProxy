@@ -158,6 +158,10 @@ th.time {
 #traffic .request-scheme-https .ssl {
   background-color: rgba(66, 212, 43, 0.4);
 }
+#search {
+  float: right;
+  margin-top: 25px;
+}
 #traffic .icon {
   float: left;
   width: 32px;
