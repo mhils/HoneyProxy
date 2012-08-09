@@ -61,7 +61,7 @@ class SearchApiResource(Resource):
             def filterFunc(flow):
                 for cond in conditions:
                     try:
-                        if(cond["field"] == "any"):
+                        if(cond["field"] == ["any"]):
                             if not (cond["not"] ^ matchesAny(flow,cond)):
                                 return False
                         else:

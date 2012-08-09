@@ -4,7 +4,7 @@
 	
 	function parseSearchString(string) {
 		
-		parts = [string.trim()];
+		var parts = [string.trim()];
 		//.replace(/\s*(==|<|>|~=)\s*/g,"$1")]
 		//.split(" "); //alternatively use a textfield and \n as sep.
 		
@@ -47,10 +47,25 @@
 		});
 		return conditions;
 	}
+		
+	function handleSearchResults(filterClass,matched){
+		console.debug("Search performed:",filterClass,JSON.stringify(matched));
+		HoneyProxy.traffic.each(function(child){
+			if(child.get("id") == matched[0]) {
+				child.removeFilterClass(filterClass)
+				matched.shift();
+			} else {
+				child.addFilterClass(filterClass);
+			}
+		});
+	}
 	
 	HoneyProxy.search = function(string) {
-		conditions = parseSearchString(string);
-		console.log(conditions);
+		var conditions = parseSearchString(string);
+		$.getJSON("/api/search",{
+			idsOnly: true,
+			filter: JSON.stringify(conditions)
+		}, handleSearchResults.bind(0,"filter-hide"));
 	}
 })();
 
@@ -59,7 +74,7 @@
 $(function(){
 	$("#search").keypress(function(e) {
         if(e.which == 13) {
-            $(this).blur();
+            //$(this).blur();
             HoneyProxy.search($(this).val());
         }
     });
