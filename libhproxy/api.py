@@ -38,8 +38,9 @@ class SearchApiResource(Resource):
                     cond["match"] = lambda s: prog.match(str(s))
                 else: #if(cond["type"] == "contains"):
                     cond["match"] = lambda s: cond["value"] in str(s)
-                if(cond["not"] == True and cond["field"] != "any"):
-                    cond["match"] = lambda s: not cond["match"](s)
+                #if(cond["not"] == True and cond["field"] != "any"):
+                #    match = cond["match"]
+                #    cond["match"] = lambda s: not match(s)
             
             def rec_getattr(obj,attr):
                 if(len(attr) == 0):
@@ -62,11 +63,11 @@ class SearchApiResource(Resource):
                 for cond in conditions:
                     try:
                         if(cond["field"] == ["any"]):
-                            if not (cond["not"] ^ matchesAny(flow,cond)):
+                            if not matchesAny(flow,cond) ^ cond["not"]:
                                 return False
                         else:
                             attr = rec_getattr(flow,cond["field"])
-                            if not cond["match"](attr):
+                            if not cond["match"](attr)  ^ cond["not"]:
                                 return False
                     except Exception as e:
                         print e.message
