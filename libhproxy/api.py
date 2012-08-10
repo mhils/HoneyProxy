@@ -37,7 +37,7 @@ class SearchApiResource(Resource):
                 if(cond["type"] == "regexp"):
                     #FIXME: why does it only match from beginning?
                     prog = re.compile(cond["value"],re.DOTALL)
-                    cond["match"] = lambda s: prog.match(s)
+                    cond["match"] = lambda s: prog.search(s)
                 else: #if(cond["type"] == "contains"):
                     cond["match"] = lambda s: cond["value"] in s
                 #if(cond["not"] == True and cond["field"] != "any"):
@@ -64,8 +64,6 @@ class SearchApiResource(Resource):
                     try:
                         if not type(obj) is str:
                             obj = str(obj)
-                        else:
-                            obj = obj.decode("latin1")
                         return cond["match"](obj)
                     except:
                         import traceback

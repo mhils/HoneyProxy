@@ -1,7 +1,11 @@
 from libmproxy import encoding
 from libhproxy.honey import HoneyProxy
+import re
 
 class FlowCollection:
+    
+    regex_charset = re.compile("charset=([\S]+|['\"][^'\"]+['\"])")
+    
     def __init__(self):
         self._flows_serialized = []
         self._flows = []
@@ -32,11 +36,33 @@ class FlowCollection:
             
             r = getattr(flow,i)
             decoded = r.content
+            
+            #"remove" http content-encoding
             ce = r.headers["content-encoding"]
             if ce and ce[0] in encoding.ENCODINGS:
                 decoded = encoding.decode(ce[0],r.content)
+            
+            #"remove" content-type encoding
+            ct = r.headers["content-type"]
+            
+            default_charset = "latin-1" #HTTP 1.1 says that the default charset is ISO-8859-1
+            charset = default_charset
+            if ct:
+                m = FlowCollection.regex_charset.search(ct[0])
+                if m:
+                    charset = m.group(1)
+            #TODO: guess from html metadata
+            try:
+                decoded = decoded.decode(charset)
+            except:
+                try:
+                    decoded = decoded.decode(default_charset)
+                except:
+                    print "Warning: Could not decode request."
+                    import traceback
+                    print traceback.format_exc()
+                    
             decoded_content[i] = decoded
-                
         
         self._flows.append(flow)
         self._flows_serialized.append(flowRepr)
