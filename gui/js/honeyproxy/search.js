@@ -48,34 +48,54 @@
 		return conditions;
 	}
 		
-	function handleSearchResults(filterClass,matched){
+	function handleSearchResults(filterClass,ids,matched){
 		console.debug("Search performed:",filterClass,JSON.stringify(matched));
-		HoneyProxy.traffic.each(function(child){
-			if(child.get("id") == matched[0]) {
-				child.removeFilterClass(filterClass)
+		
+		function handleFlow(flow){
+			if(flow.get("id") == matched[0]) {
+				flow.removeFilterClass(filterClass)
 				matched.shift();
 			} else {
-				child.addFilterClass(filterClass);
+				flow.addFilterClass(filterClass);
 			}
-		});
+		}
+		if(ids === undefined)
+			HoneyProxy.traffic.each(handleFlow);
+		else
+			_.each(ids,function(id){
+				handleFlow(HoneyProxy.traffic.get(id));
+			})
 	}
 	
-	HoneyProxy.search = function(string) {
+	HoneyProxy.search = function(string,ids) {
+	    HoneyProxy._searchActive = (string.trim()!=="");
 		var conditions = parseSearchString(string);
 		$.getJSON("/api/search",{
 			idsOnly: true,
+			in: JSON.stringify(ids),
+			includeContent: $("#includeContent").prop("checked"),
 			filter: JSON.stringify(conditions)
-		}, handleSearchResults.bind(0,"filter-hide"));
+		}, handleSearchResults.bind(0,"filter-hide",ids));
 	}
 })();
 
 
 
 $(function(){
+	function doSearch(ids){
+		HoneyProxy.search($("#search").val(),ids);
+	}
 	$("#search").keypress(function(e) {
         if(e.which == 13) {
-            //$(this).blur();
-            HoneyProxy.search($(this).val());
+            doSearch();
         }
     });
+	$("#includeContent").on("change",doSearch.bind(null,undefined));
+	
+	HoneyProxy.traffic.on("add",function(flow){
+		if(HoneyProxy._searchActive){
+			flow.addFilterClass("filter-hide");
+			doSearch([flow.get("id")]);
+		}
+	});
 });

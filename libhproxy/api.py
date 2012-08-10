@@ -27,7 +27,14 @@ class SearchApiResource(Resource):
 
     def render_GET(self, request):
         try:
-            flows = list(HoneyProxy.getProxyMaster().getFlowCollection().getFlowsSerialized())
+            allFlows = HoneyProxy.getProxyMaster().getFlowCollection().getFlowsSerialized()
+            flows = []
+            if("in" in request.args):
+                for flowId in json.loads(request.args["in"][0]):
+                    flows.append(allFlows[flowId])
+            else:
+                flows = list(allFlows)
+            
             conditions = json.loads(request.args["filter"][0])
             
             #prepare conditions
@@ -84,13 +91,17 @@ class SearchApiResource(Resource):
                         return False
                 return True
             
-            with includeDecodedContent(flows):
+            if("includeContent" in request.args and request.args["includeContent"][0].lower() == "false"):
                 filteredFlows = filter(filterFunc,flows)
+            else:
+                with includeDecodedContent(flows):
+                    filteredFlows = filter(filterFunc,flows)
             
-            if("idsOnly" in request.args):
+            if("idsOnly" in request.args and request.args["idsOnly"][0].lower() == "true"):
                 filteredFlows = map(lambda flow: flow.get("id"), filteredFlows)
 
             return json.dumps(filteredFlows,separators=(',',':'),encoding='latin1')
-        except Exception as e:
-            print e
+        except Exception:
+            import traceback
+            print traceback.format_exc()
             return "<html><body>Invalid request.</body></html>"         

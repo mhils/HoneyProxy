@@ -12,7 +12,11 @@
 </head>
 <body>
 <header>
+<div id="searchbox">
 <input id=search placeholder="search: !not, ~regex">
+<input type=checkbox id=includeContent checked><label for="includeContent">search in content</label>
+</div>
+
 <h3>HoneyProxy</h3>
 </header>
 <div id="main" class="goog-splitpane">
@@ -114,6 +118,5 @@ goog.require('goog.style');
 <script src="./js/HoneyProxy/dirdump.js"></script>
 <script src="./js/HoneyProxy/tutorial.js"></script>
 <script src="./js/HoneyProxy/search.js"></script>
-
 </body>
 </html>
