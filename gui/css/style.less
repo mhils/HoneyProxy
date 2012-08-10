@@ -73,8 +73,15 @@ th.goog-tablesorter-sorted-reverse {
      background-color: hsla(14, 87%, 50%,.5);
    }
 
-#traffic tr:nth-child(2n){
+/*#traffic tr:nth-child(2n){
     background-color: hsla(0,0%,0%,0.07);
+}*/
+
+@lineheight: 36px;
+
+#traffictable {
+	background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.5, transparent), color-stop(0.5, hsla(0, 0%, 0%, 0.05)), to(hsla(0, 0%, 0%, 0.05)));
+	-webkit-background-size: 1px @lineheight*2;
 }
 #traffictable {
     background-color: hsla(0,0%,0%,0.07);
@@ -88,6 +95,7 @@ th.goog-tablesorter-sorted-reverse {
 	background-color: hsla(55, 100%, 74%, 0.1);
 }
 #traffic td {
+	height: 36px;
 	vertical-align: top;
 	white-space: nowrap;
 	text-overflow: ellipsis;
@@ -106,7 +114,7 @@ th.goog-tablesorter-sorted-reverse {
     text-align: left;
 }
 
-@headerheight: 20px;
+@headerheight: @lineheight/2;//neccessary because of the background hack
 
 #traffictable {
 	margin-top: @headerheight;
@@ -131,7 +139,7 @@ th.goog-tablesorter-sorted-reverse {
 	}
 	padding: 0;
 	margin: 0;
-	height: @headerheight -1;
+	height: @headerheight - 1;
 	line-height: @headerheight;
 	}
 }
