@@ -36,10 +36,10 @@ class SearchApiResource(Resource):
                 cond["not"] = cond["not"] if "not" in cond else False
                 if(cond["type"] == "regexp"):
                     #FIXME: why does it only match from beginning?
-                    prog = re.compile(cond["value"])
-                    cond["match"] = lambda s: prog.match(str(s))
+                    prog = re.compile(cond["value"],re.DOTALL)
+                    cond["match"] = lambda s: prog.match(s)
                 else: #if(cond["type"] == "contains"):
-                    cond["match"] = lambda s: cond["value"] in str(s)
+                    cond["match"] = lambda s: cond["value"] in s
                 #if(cond["not"] == True and cond["field"] != "any"):
                 #    match = cond["match"]
                 #    cond["match"] = lambda s: not match(s)
@@ -61,7 +61,16 @@ class SearchApiResource(Resource):
                 elif type(obj) is dict:
                     return any(matchesAny(v,cond) for v in obj.keys()+obj.values())
                 else:
-                    return cond["match"](obj)
+                    try:
+                        if not type(obj) is str:
+                            obj = str(obj)
+                        else:
+                            obj = obj.decode("latin1")
+                        return cond["match"](obj)
+                    except:
+                        import traceback
+                        print traceback.format_exc()
+                        return False
                     
             def filterFunc(flow):
                 for cond in conditions:
