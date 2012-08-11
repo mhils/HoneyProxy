@@ -13,7 +13,10 @@
 <body>
 <header>
 <div id="searchbox">
-<input id=search placeholder="search: !not, ~regex">
+<input id=filter class=search data-negate=true data-filterclass="hide" placeholder="search: !not, ~regex">
+<input data-filterclass="highlight highlight-1" class=search placeholder="highlight-red: !not, ~regex">
+<input data-filterclass="highlight highlight-2" class=search placeholder="highlight-yellow: !not, ~regex">
+<input data-filterclass="highlight highlight-3" class=search placeholder="highlight-green: !not, ~regex">
 <input type=checkbox id=includeContent checked><label for="includeContent">search in content</label>
 </div>
 
@@ -101,7 +104,7 @@ goog.require('goog.style');
 <script src="./js/HoneyProxy/models/Request.js"></script>
 <script src="./js/HoneyProxy/models/Response.js"></script>
 <script src="./js/HoneyProxy/models/Flow.js"></script>
-<script src="./js/HoneyProxy/FlowView.js"></script>
+<script src="./js/HoneyProxy/views/FlowView.js"></script>
 <script src="./js/HoneyProxy/flows/DocumentFlow.js"></script>
 <script src="./js/HoneyProxy/flows/PrettyFlow.js"></script>
 <script src="./js/HoneyProxy/flows/CssFlow.js"></script>
@@ -110,10 +113,10 @@ goog.require('goog.style');
 <script src="./js/HoneyProxy/flows/HtmlFlow.js"></script>
 <script src="./js/HoneyProxy/flows/ImageFlow.js"></script>
 <script src="./js/HoneyProxy/models/Traffic.js"></script>
-<script src="./js/HoneyProxy/TrafficView.js"></script>
+<script src="./js/HoneyProxy/views/TrafficView.js"></script>
 <script src="./js/HoneyProxy/TableSorter.js"></script>
 <script src="./js/HoneyProxy/MainLayout.js"></script>
-<script src="./js/HoneyProxy/DetailView.js"></script>
+<script src="./js/HoneyProxy/views/DetailView.js"></script>
 <script src="./js/HoneyProxy/popOut.js"></script>
 <script src="./js/HoneyProxy/dirdump.js"></script>
 <script src="./js/HoneyProxy/tutorial.js"></script>

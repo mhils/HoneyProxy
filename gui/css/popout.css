@@ -1,5 +1,8 @@
+/*#traffic tr:nth-child(2n){
+    background-color: hsla(0,0%,0%,0.07);
+}*/
 body {
-  padding: 1em;
+	padding: 1em;
 }
 
 /* This beautiful CSS-File has been crafted with LESS (lesscss.org) and compiled by simpLESS (wearekiss.com/simpless) */

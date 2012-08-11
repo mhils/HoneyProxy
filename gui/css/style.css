@@ -2,254 +2,354 @@
     background-color: hsla(0,0%,0%,0.07);
 }*/
 * {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
 }
-html,
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Lucida Grande', sans-serif;
-  font-size: 12px;
-}
-.hidden {
-  display: none !important;
-  visibility: hidden;
-}
-header {
-  overflow: auto;
-  display: block;
-  height: 75px;
-  padding: 0.5em 100px 0.5em;
-  background-color: #f0f0f0;
-}
-header a {
-  float: right;
-  color: black;
-  text-decoration: none;
-}
-header a:before {
-  content: "[";
-}
-header a:after {
-  content: "]";
-}
-#main {
-  overflow: hidden;
-}
-header {
-  background-image: url(../images/header.jpg);
-  background-repeat: no-repeat;
-  background-position: -90px 0;
-}
-#main > .goog-splitpane-first-container,
-#main > .goog-splitpane-second-container {
-  overflow-y: scroll;
-}
-.goog-splitpane-handle {
-  width: 3px;
-  background-color: #a3a3a3;
-  background-clip: content-box;
-  padding: 0 1px;
-}
-.goog-splitpane-handle-vertical {
-  cursor: n-resize;
-}
-.goog-splitpane-handle-horizontal {
-  cursor: e-resize;
-}
-#traffictable th,
-#traffictable td {
-  /* TODO: Figure out a better solution */
 
-  cursor: pointer;
+html,body {
+	margin: 0;
+	padding: 0;
+	font-family: 'Lucida Grande', sans-serif;
+	font-size: 12px;
 }
-th.goog-tablesorter-sorted {
-  background-color: rgba(70, 185, 72, 0.5);
-}
-th.goog-tablesorter-sorted-reverse {
-  background-color: rgba(238, 68, 17, 0.5);
-}
-/*#traffic tr:nth-child(2n){
-    background-color: hsla(0,0%,0%,0.07);
-}*/
-#traffictable {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(0, 0, 0, 0.05)), to(rgba(0, 0, 0, 0.05)));
-  -webkit-background-size: 1px 72px;
-}
-#traffictable {
-  background-color: rgba(0, 0, 0, 0.07);
-  width: 100%;
-  table-layout: fixed;
-  border-spacing: 0;
-  border-collapse: collapse;
-  min-width: 600px;
-}
-#traffic tr.selected td {
-  background-color: rgba(255, 244, 122, 0.1);
-}
-#traffic td {
-  height: 36px;
-  vertical-align: top;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  padding: 0.1em 0;
-}
-#traffic .size,
-#traffic .time {
-  text-align: right;
-}
-#traffic .time .duration {
-  color: #666;
-}
-#traffictable thead {
-  background-color: white;
-  text-align: left;
-}
-#traffictable {
-  margin-top: 18px;
-}
-#traffictable thead {
-  position: fixed;
-  margin-top: -18px;
-  height: 18px;
-  display: block;
-  width: 100%;
-  overflow-y: scroll;
-}
-#traffictable thead tr {
-  width: 100%;
-  display: inline-table;
-}
-#traffictable thead th {
-  padding: 0;
-  margin: 0;
-  height: 17px;
-  line-height: 18px;
-}
-#traffictable thead th:before {
-  content: "";
-  display: inline-block;
-  width: 7px;
-}
-col.ssl,
-th.ssl {
-  width: 1%;
-}
-col.name,
-th.name {
-  width: 41.5%;
-}
-col.method,
-col.status,
-th.method,
-th.status {
-  width: 7.5%;
-}
-col.type,
-th.type {
-  width: 12.5%;
-}
-col.size,
-th.size {
-  width: 10%;
-}
-col.time,
-th.time {
-  width: 20%;
-}
-#traffic .subtitle {
-  font-size: 11px;
-  color: grey;
-}
-#traffic .request-scheme-https .ssl {
-  background-color: rgba(66, 212, 43, 0.4);
-}
-#searchbox {
-  float: right;
-  margin-top: 25px;
-}
-.filter-hide {
-  display: none;
-}
-#traffic .icon {
-  float: left;
-  width: 32px;
-  height: 32px;
-  margin-top: 1px;
-  margin-right: 3px;
-  background-image: url(../images/resourcePlainIcon.png);
-}
-#traffic .category-css .icon {
-  background-image: url(../images/resourceCSSIcon.png);
-}
-#traffic .category-js .icon {
-  background-image: url(../images/resourceJSIcon.png);
-}
-#traffic .category-document .icon {
-  background-image: url(../images/resourceDocumentIcon.png);
-}
-#traffic .category-image .icon {
-  background-image: url(../images/resourceImageIcon.png);
-}
+
 .hidden {
-  display: none !important;
-  visibility: hidden;
+	display: none !important;
+	visibility: hidden;
 }
+
+header {
+	overflow: auto;
+	display: block;
+	height: 75px;
+	padding: 0.5em 100px 0.5em;
+	background-color: #f0f0f0;
+}
+
+header a {
+	float: right;
+	color: black;
+	text-decoration: none;
+}
+
+header a:before {
+	content: "[";
+}
+
+header a:after {
+	content: "]";
+}
+
+#main {
+	overflow: hidden;
+}
+
+header {
+	background-image: url(../images/header.jpg);
+	background-repeat: no-repeat;
+	background-position: -90px 0;
+}
+
+#main > .goog-splitpane-first-container,#main > .goog-splitpane-second-container {
+	-ms-overflow-y: scroll;
+	overflow-y: scroll;
+}
+
+.goog-splitpane-handle {
+	width: 3px;
+	background-color: #a3a3a3;
+
+	-webkit-background-clip: content-box;
+	-moz-background-clip: content-box;
+	background-clip: content-box;
+	padding: 0 1px;
+}
+
+.goog-splitpane-handle-vertical {
+	cursor: n-resize;
+}
+
+.goog-splitpane-handle-horizontal {
+	cursor: e-resize;
+}
+
+#traffictable th,#traffictable td {
+	/* TODO:  Figure out a better solution */
+cursor: pointer;
+}
+
+th.goog-tablesorter-sorted {
+	background-color: rgba(70, 185, 72, 0.5);
+}
+
+th.goog-tablesorter-sorted-reverse {
+	background-color: rgba(238, 68, 17, 0.5);
+}
+
+/*#traffic tr:nth-child(2n) {
+	
+background-color:  hsla(0,0%,0%,0.07);
+	
+}
+
+*/
+#traffictable {
+	background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(0, 0, 0, 0.05)), to(rgba(0, 0, 0, 0.05)));
+
+	-webkit-background-size: 1px 72px;
+	-moz-background-size: 1px 72px;
+	background-size: 1px 72px;
+}
+
+#traffictable {
+	background-color: rgba(0, 0, 0, 0.07);
+	width: 100%;
+	table-layout: fixed;
+	border-spacing: 0;
+	border-collapse: collapse;
+	min-width: 600px;
+}
+
+#traffic tr.selected td {
+	background-color: rgba(255, 244, 122, 0.1);
+}
+
+#traffic td {
+	height: 36px;
+	vertical-align: top;
+	white-space: nowrap;
+
+	-o-text-overflow: ellipsis;
+	-ms-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	padding: 1px 0;
+}
+
+#traffic .size,#traffic .time {
+	text-align: right;
+}
+
+#traffic .time .duration {
+	color: #666;
+}
+
+#traffictable thead {
+	background-color: white;
+	text-align: left;
+}
+
+#traffictable {
+	margin-top: 18px;
+}
+
+#traffictable thead {
+	position: fixed;
+	margin-top: -18px;
+	height: 18px;
+	display: block;
+	width: 100%;
+
+	-ms-overflow-y: scroll;
+	overflow-y: scroll;
+}
+
+#traffictable thead tr {
+	width: 100%;
+	display: inline-table;
+}
+
+#traffictable thead th {
+	padding: 0;
+	margin: 0;
+	height: 17px;
+	line-height: 18px;
+}
+
+#traffictable thead th:before {
+	content: "";
+	display: inline-block;
+	width: 7px;
+}
+
+col.ssl,th.ssl {
+	width: 1%;
+}
+
+col.name,th.name {
+	width: 41.5%;
+}
+
+col.method,col.status,th.method,th.status {
+	width: 7.5%;
+}
+
+col.type,th.type {
+	width: 12.5%;
+}
+
+col.size,th.size {
+	width: 10%;
+}
+
+col.time,th.time {
+	width: 20%;
+}
+
+#traffic .subtitle {
+	font-size: 11px;
+	color: grey;
+}
+
+#traffic .request-scheme-https .ssl {
+	background-color: rgba(66, 212, 43, 0.4);
+}
+
+#searchbox {
+	float: right;
+	margin-top: 25px;
+}
+
+.filter-hide {
+	display: none;
+}
+
+.ssl {
+	overflow: visible !important;
+}
+
+.filters {
+	float: right;
+	padding-left: 5px;
+}
+
+.filters .filter-highlight {
+	display: inline-block;
+	font-size: 34px;
+	line-height: 100%;
+	height: 100%;
+}
+
+.filters .filter-highlight:before {
+	content: "2022";
+}
+
+.filters .filter-highlight-1:before {
+	color: red;
+}
+
+.filters .filter-highlight-2:before {
+	color: orange;
+}
+
+.filters .filter-highlight-3:before {
+	color: green;
+}
+
+#traffic .icon {
+	float: left;
+	width: 32px;
+	height: 32px;
+	margin-top: 1px;
+	margin-right: 3px;
+	background-image: url(../images/resourcePlainIcon.png);
+}
+
+#traffic .category-css .icon {
+	background-image: url(../images/resourceCSSIcon.png);
+}
+
+#traffic .category-js .icon {
+	background-image: url(../images/resourceJSIcon.png);
+}
+
+#traffic .category-document .icon {
+	background-image: url(../images/resourceDocumentIcon.png);
+}
+
+#traffic .category-image .icon {
+	background-image: url(../images/resourceImageIcon.png);
+}
+
+.hidden {
+	display: none !important;
+	visibility: hidden;
+}
+
 .button {
-  width: 16px;
-  height: 16px;
-  float: right;
-  cursor: pointer;
-  margin-left: 10px;
-  background-repeat: no-repeat;
+	width: 16px;
+	height: 16px;
+	float: right;
+	cursor: pointer;
+	margin-left: 10px;
+	background-repeat: no-repeat;
 }
+
 .button-popout {
-  background-image: url(../images/window-new.png);
+	background-image: url(../images/window-new.png);
 }
+
 .button-download {
-  background-image: url(../images/document-save.png);
+	background-image: url(../images/document-save.png);
 }
+
 .button-request-payload {
-  background-repeat: no-repeat;
-  padding-left: 20px;
+	background-repeat: no-repeat;
+	padding-left: 20px;
 }
+
 pre.preview {
-  white-space: pre-wrap;
-  padding: 1em !important;
-  background-color: #f0f0f0;
+	white-space: pre-wrap;
+	padding: 1em !important;
+	background-color: #f0f0f0;
 }
+
 .prettyprint ol.linenums li {
-  list-style-type: decimal;
+	list-style-type: decimal;
 }
+
 .pre-menu-item {
-  float: right;
-  background-color: white;
-  border-bottom-left-radius: 5px;
-  padding: 3px 5px;
-  margin: 1px;
-  cursor: pointer;
-  position: relative;
-  transition: all .1s linear;
+	float: right;
+	background-color: white;
+	border-bottom-left-radius: 5px;
+	padding: 3px 5px;
+	margin: 1px;
+	cursor: pointer;
+	position: relative;
+
+	-webkit-transition: all .1s linear;
+	-moz-transition: all .1s linear;
+	-o-transition: all .1s linear;
+	-ms-transition: all .1s linear;
+	transition: all .1s linear;
 }
+
 .pre-menu-item:hover {
-  background-color: #fff47a;
+	background-color: #fff47a;
 }
+
 pre.raw {
-  padding: 1em;
-  background-color: #f0f0f0;
+	padding: 1em;
+	background-color: #f0f0f0;
 }
+
 .headers {
-  table-layout: fixed;
+	table-layout: fixed;
 }
+
 .headers td {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
+	white-space: nowrap;
+
+	-o-text-overflow: ellipsis;
+	-ms-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
+
 .headers tr td:first-child {
-  width: 300px;
+	width: 300px;
 }
 
 /* This beautiful CSS-File has been crafted with LESS (lesscss.org) and compiled by simpLESS (wearekiss.com/simpless) */

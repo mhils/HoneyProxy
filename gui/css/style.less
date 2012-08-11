@@ -78,7 +78,7 @@ th.goog-tablesorter-sorted-reverse {
 }*/
 
 @lineheight: 36px;
-
+@innerlineheight: 34px;
 #traffictable {
 	background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.5, transparent), color-stop(0.5, hsla(0, 0%, 0%, 0.05)), to(hsla(0, 0%, 0%, 0.05)));
 	-webkit-background-size: 1px @lineheight*2;
@@ -100,7 +100,7 @@ th.goog-tablesorter-sorted-reverse {
 	white-space: nowrap;
 	text-overflow: ellipsis;
     overflow: hidden;
-    padding: 0.1em 0;
+    padding: (@lineheight - @innerlineheight)/2 0;
 }
 #traffic .size, #traffic .time {
     text-align: right;
@@ -183,6 +183,32 @@ col.time, th.time {
 
 .filter-hide {
 	display: none;
+}
+
+.ssl {
+	overflow: visible !important;
+}
+.filters {
+	float: right;
+	padding-left: 5px;
+}
+.filters .filter-highlight {
+	display: inline-block;
+	font-size: @innerlineheight;
+	line-height: 100%;
+	height: 100%;
+}
+.filters .filter-highlight:before {
+	content: "\2022";
+}
+.filters .filter-highlight-1:before {
+	color: red;
+}
+.filters .filter-highlight-2:before {
+	color: orange;
+}
+.filters .filter-highlight-3:before {
+	color: green;
 }
 
 #traffic .icon {

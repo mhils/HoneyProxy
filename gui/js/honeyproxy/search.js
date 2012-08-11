@@ -39,25 +39,24 @@
 			var condition = {
 					"field": "any",
 					"value": part,
-					"type": type
-			}
-			if(negate)
-				condition["not"] = true;
+					"type": type,
+					"not": negate
+			};
 			conditions.push(condition);
 		});
 		return conditions;
 	}
 		
-	function handleSearchResults(filterClass,ids,matched){
-		console.debug("Search performed:",filterClass,JSON.stringify(matched));
-		
+	function handleSearchResults(filterClass,negate,ids,matched){
+		console.debug("Search performed:",arguments);
 		function handleFlow(flow){
-			if(flow.get("id") == matched[0]) {
-				flow.removeFilterClass(filterClass)
-				matched.shift();
+			if ((flow.get("id") == matched[0]) ^ negate) {
+				flow.addFilterClass(filterClass)
 			} else {
-				flow.addFilterClass(filterClass);
+				flow.removeFilterClass(filterClass);
 			}
+			if(flow.get("id") == matched[0])
+				matched.shift();
 		}
 		if(ids === undefined)
 			HoneyProxy.traffic.each(handleFlow);
@@ -66,36 +65,59 @@
 				handleFlow(HoneyProxy.traffic.get(id));
 			})
 	}
-	
-	HoneyProxy.search = function(string,ids) {
-	    HoneyProxy._searchActive = (string.trim()!=="");
+	/**
+	 * @param negate 
+	 * true, if filterClass should be applied to flows that match,
+	 * false, if filterClass should be applied to flows that don't.
+	 */
+	HoneyProxy.search = function(filterClass,string,negate,ids) {
+		console.log("HNP.search",arguments);
+		if(string.trim() == "") {
+			return handleSearchResults(filterClass,false,undefined,[]);
+		}
 		var conditions = parseSearchString(string);
 		$.getJSON("/api/search",{
 			idsOnly: true,
-			in: JSON.stringify(ids),
+			"in": JSON.stringify(ids),
 			includeContent: $("#includeContent").prop("checked"),
 			filter: JSON.stringify(conditions)
-		}, handleSearchResults.bind(0,"filter-hide",ids));
+		}, handleSearchResults.bind(0,filterClass,negate,ids));
 	}
 })();
 
 
 
 $(function(){
-	function doSearch(ids){
-		HoneyProxy.search($("#search").val(),ids);
+	
+	function search($el,ids){
+		return HoneyProxy.search("filter-"+($el.data("filterclass").split(" ").join(" filter-")),$el.val(),$el.data("negate"),ids);
+		$el.data("active",$el.val().trim() !== "");
 	}
-	$("#search").keypress(function(e) {
-        if(e.which == 13) {
-            doSearch();
+	
+	var searchFields = $(".search");
+	
+	searchFields.on("keypress",function(e){
+		if(e.which == 13) {
+			search($(this));
         }
-    });
-	$("#includeContent").on("change",doSearch.bind(null,undefined));
+	}).on("blur",function(){
+		search($(this));
+	});
+
+	$("#includeContent").on("change",
+			searchFields.trigger.bind(
+					searchFields,"blur"));
 	
 	HoneyProxy.traffic.on("add",function(flow){
-		if(HoneyProxy._searchActive){
+		//premium handling of the filter to avoid flickering
+		if($("#filter").data("active")===true)
 			flow.addFilterClass("filter-hide");
-			doSearch([flow.get("id")]);
-		}
+		
+		searchFields.each(function(index,el){
+			var $el = $(el);
+			if($el.data("active") === true) {
+				search($el,[flow.get("id")]);
+			}
+		});
 	});
 });
