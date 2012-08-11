@@ -90,8 +90,8 @@
 $(function(){
 	
 	function search($el,ids){
-		return HoneyProxy.search("filter-"+($el.data("filterclass").split(" ").join(" filter-")),$el.val(),$el.data("negate"),ids);
 		$el.data("active",$el.val().trim() !== "");
+		return HoneyProxy.search("filter-"+($el.data("filterclass").split(" ").join(" filter-")),$el.val(),$el.data("negate"),ids);
 	}
 	
 	var searchFields = $(".search");
