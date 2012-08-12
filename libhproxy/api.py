@@ -7,9 +7,22 @@ from libhproxy.flowcollection import includeDecodedContent
 class HoneyProxyApi(Resource):
     def __init__(self):
         Resource.__init__(self)
+        self.putChild("config", ConfigApiResource())
         self.putChild("flows", FlowsApiResource())
         self.putChild("search", SearchApiResource())
         
+        
+class ConfigApiResource(Resource):
+    isLeaf = True
+    
+    #to be extended one day...
+    
+    def render_GET(self, request):
+        try:
+            return json.dumps(self.HoneyProxy.getConfig())
+        except Exception as e:
+            print e
+            return "<html><body>Invalid request.</body></html>"
         
 class FlowsApiResource(Resource):
     isLeaf = True

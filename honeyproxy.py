@@ -90,7 +90,7 @@ def main():
     wsURL = "ws://localhost:"+str(options.apiport)
     httpGui = "http://honey:"+HoneyProxy.getAuthKey()+"@localhost:"+str(options.guiport)
     guiURL = httpGui +"/app"
-    conf = config.Config({
+    HoneyProxy.setConfig({
         "proxy-addr":options.addr,
         "proxy-port":options.port,
         "ws": wsURL,
@@ -100,7 +100,6 @@ def main():
     
     root = Resource()
     root.putChild("app",File("./gui"))
-    root.putChild("config",conf)
     root.putChild("api",api.HoneyProxyApi())
     root.putChild("files", content.ContentAPIResource())
     if(options.dumpdir):

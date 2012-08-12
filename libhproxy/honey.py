@@ -2,12 +2,11 @@ import string, random
 class HoneyProxy():
     honeyProxyMaster = None
     authKey = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(32))
-    
+    config = {}
      
     @staticmethod
     def setProxyMaster(proxymaster):
         HoneyProxy.honeyProxyMaster = proxymaster
-        return proxymaster
         
     @staticmethod
     def getProxyMaster():
@@ -24,17 +23,9 @@ class HoneyProxy():
         return HoneyProxy.authKey
         
     @staticmethod
-    def setConfig(proxymaster):
-        HoneyProxy.honeyProxyMaster = proxymaster
-        return proxymaster
+    def setConfig(config):
+        HoneyProxy.config = config
         
     @staticmethod
     def getConfig():
-        return HoneyProxy.honeyProxyMaster
-        
-    @staticmethod
-    def isAuthenticated(request):
-        try:
-            return request.args["auth"][0] == HoneyProxy.getAuthKey()
-        except:
-            return False
+        return HoneyProxy.config

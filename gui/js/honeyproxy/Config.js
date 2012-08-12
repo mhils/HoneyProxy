@@ -13,7 +13,7 @@
 		this.storage[id] = val;
 	}
 	
-	$.getJSON("/config", function(data){
+	$.getJSON("/api/config", function(data){
 		HoneyProxy.config = new Config(data);
 		HoneyProxy.config.set("content","/files");
 		HoneyProxy.trigger("configLoaded");
