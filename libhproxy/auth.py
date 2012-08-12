@@ -4,6 +4,10 @@ from twisted.web.resource import IResource
 from twisted.cred.portal import Portal
 from twisted.cred.checkers import InMemoryUsernamePasswordDatabaseDontUse
 from twisted.web.guard import HTTPAuthSessionWrapper, BasicCredentialFactory
+
+"""
+Provide basic auth mechanism for Web root
+"""
     
 class SimpleResourceRealm(object):
     implements(IRealm)

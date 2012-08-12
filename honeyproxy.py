@@ -39,7 +39,7 @@ from twisted.internet import reactor, task
 from twisted.web.resource import Resource
 
 #from libhproxy.websockets import WebSocketsResource
-from libhproxy import proxy as hproxy, cmdline as hcmdline, version, content, config, api
+from libhproxy import proxy as hproxy, cmdline as hcmdline, version, content, api
 from libhproxy.honey import HoneyProxy
 
 from autobahn.websocket import listenWS

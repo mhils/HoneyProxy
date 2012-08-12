@@ -2,6 +2,10 @@ from twisted.web.resource import Resource
 from libhproxy.honey import HoneyProxy
 #serve request content via HTTP
 class ContentAPIResource(Resource):
+    """
+    Serve request and response content via HTTP.
+    Todo: Move this into the api namespace and use parameters rather than path stuff.
+    """
     isLeaf = True
     def render_GET(self, request):
         try:

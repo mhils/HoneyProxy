@@ -1,5 +1,9 @@
 import string, random
 class HoneyProxy():
+    """
+        Static main class, containing references to all important instances.
+        This is not very beautiful, but effective.
+    """
     honeyProxyMaster = None
     authKey = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(32))
     config = {}

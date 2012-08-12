@@ -3,16 +3,15 @@ from libhproxy.honey import HoneyProxy
 import re
 
 class FlowCollection:
-    
-    regex_charset = re.compile("charset=([\S]+|['\"][^'\"]+['\"])")
+    """
+    Collects all flows, gives them an id, decodes content.
+    """
+    regex_charset = re.compile("charset=\s*([\S]+|['\"][^'\"]+['\"])")
     
     def __init__(self):
         self._flows_serialized = []
         self._flows = []
         self._decoded_contents = []
-    
-    def getLastFlow(self):
-        return self._flows_serialized[-1]
 
     def getFlow(self,flowId):
         return self._flows[flowId]
@@ -24,33 +23,35 @@ class FlowCollection:
         return self._flows_serialized
     
     def addFlow(self, flow):
+        """
+        Adds a flow to all lists in the corresponding format
+        """
         flowRepr = flow._get_state()
         flowRepr["id"] = len(self._flows_serialized)
         
         decoded_content = {}
         
-        #remove content out of the flowRepr
         for i in ["request","response"]:
+            #strip content out of the flowRepr
             flowRepr[i]["contentLength"] = len(flowRepr[i]["content"])
             del flowRepr[i]["content"]
             
             r = getattr(flow,i)
             decoded = r.content
             
-            #"remove" http content-encoding
+            #decode with http content-encoding
             ce = r.headers["content-encoding"]
             if ce and ce[0] in encoding.ENCODINGS:
                 decoded = encoding.decode(ce[0],r.content)
             
-            #"remove" content-type encoding
+            #decode with http content-type encoding
             ct = r.headers["content-type"]
-            
             default_charset = "latin-1" #HTTP 1.1 says that the default charset is ISO-8859-1
             charset = default_charset
             if ct:
                 m = FlowCollection.regex_charset.search(ct[0])
                 if m:
-                    charset = m.group(1)
+                    charset = m.group(1).strip('"').strip('"\'')
             #TODO: guess from html metadata
             try:
                 decoded = decoded.decode(charset)

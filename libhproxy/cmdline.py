@@ -1,4 +1,7 @@
-
+"""
+see mitmproxy/libmproxy/cmdline
+we remove all unwanted parameters and add everything we need for HoneyProxy
+"""
 def remove_option(parser, options):
     if(type(options) == str):
         options = [options]

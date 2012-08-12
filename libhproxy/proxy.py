@@ -6,9 +6,10 @@ from dirdumper import DirDumper
 
 class ProxyError(Exception): pass
 
-#HoneyProxyMaster has some similarities to DumpMaster, 
-#but we don't want the server/client replay stuff to be in HoneyProxy
 class HoneyProxyMaster(FlowMaster):
+    """
+        The HoneyProxy proxy core, in some parts pretty similar to mitmproxys DumpMaster.
+    """
     def __init__(self, server, options, filtstr, sessionFactory):
         FlowMaster.__init__(self, server, flow.State())        
         

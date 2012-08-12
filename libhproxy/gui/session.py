@@ -4,18 +4,22 @@ from libhproxy.honey import HoneyProxy
 from autobahn.websocket import WebSocketServerFactory, WebSocketServerProtocol
 random = random.SystemRandom()
 
+"""
+    Handle all WebSocket sessions.
+    For each new WebSocket connection, a new GuiSession is instantiated. As soon as a user is authenticated,
+    the session gets added to a list of trusted sessions in the factory and receives global updates.
+"""
+
 #WebSocket GUI Session        
 class GuiSession(WebSocketServerProtocol):
     def __init__(self):
         self.authenticated = False
     def onOpen(self):
         pass
-        #self.factory.write("HoneyProxySession: connectionMade")
         
     def connectionLost(self,reason):
         if self.authenticated:
             self.factory.clients.remove(self)
-        #self.factory.write("HoneyProxySession: connectionLost: "+str(reason))
     def onMessage(self, data, binary):
         try:
             data = json.loads(data)
@@ -25,12 +29,13 @@ class GuiSession(WebSocketServerProtocol):
         if not "action" in data:
             return
         
+        #Handle Authentication
         if data.get("action") == "auth" and data.get("key") == HoneyProxy.getAuthKey() and not self.authenticated:
             self.authenticated = True
             self.factory.clients.add(self)
             self.factory.msg("Authenticated.")
             return
-            
+        #Forbid unauthenticated requests
         if not self.authenticated:
             self.factory.msg("Unauthorized request to WebSocket API.")
             return
@@ -58,7 +63,6 @@ class GuiSession(WebSocketServerProtocol):
             notImplemented()
         
         
-        #self.factory.write("HoneyProxySession: dataReceived: "+data+" ("+str(len(self.factory.sessions))+")")
 
 #WebSocket GUI Session Management
 class GuiSessionFactory(WebSocketServerFactory):
@@ -67,14 +71,11 @@ class GuiSessionFactory(WebSocketServerFactory):
         self.clients = set()
     
     def onNewFlow(self,flowSerialized):
+        #we might add an event broker someday to fix such hardcoded references.
         self.msg("newflow",{"data":flowSerialized})
             
     def write(self,msg,client):
-        #print msg
-        #import time
-        #print "prepare@"+str(time.time())
-        #msg = msg.decode('latin1').encode('utf-8')
-        #print "send@"+str(time.time())
+
         msg = self.prepareMessage(msg)
         if(client == None):
             for client in self.clients:

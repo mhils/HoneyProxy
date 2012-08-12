@@ -2,12 +2,24 @@ import os
 from libmproxy import encoding
 
 class DirDumper:
+    """
+    The dirdumper dumps all response objects to disk.
+    
+    Todo: Dump request content, too.
+    """
     def __init__(self, path):
         self.path = os.path.abspath(path)
 
     def add(self, flow):
+        """
+        Gets called whenever a new flow has been added.
+        """
+        
+        #dumping empty flows is stupid
         if(len(flow.response.content) == 0):
             return
+        
+        #FIXME: What about content type charset?
         content = flow.response.content
         enc = flow.response.headers.get("content-encoding")
         if enc and enc[0] != "identity":
@@ -79,6 +91,8 @@ class DirDumper:
             ext = "[..]" + ext[-MAX_EXT_LENGTH:]
         appendix = ""
         
+        
+        #rename if file already exists and content is different
         if(os.path.isdir(filename+ext)):
             os.rename(filename+ext, filename+ext+"[dir]")
         while(os.path.isfile(filename+str(appendix)+ext)):
