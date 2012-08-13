@@ -12,9 +12,12 @@ HoneyProxy.FlowView = Backbone.View.extend({
 		var superCls = this.model;
 		var categories = []
 		while(superCls !== undefined){
-			var proto = Object.getPrototypeOf(superCls);
-			if(proto.hasOwnProperty("getCategory"))
-				categories.push("category-"+superCls.getCategory());
+			if(superCls.constructor.hasOwnProperty("getCategory"))
+			{
+				var cat = "category-"+superCls.constructor.getCategory();
+				if(categories.length == 0 || (cat != categories[categories.length -1] && cat != "category-none"))
+					categories.push(cat);
+			}
 			superCls = superCls.constructor.__super__;
 		}
 		
