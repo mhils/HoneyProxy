@@ -1,3 +1,6 @@
+/**
+ * View class for a Flow or one of its subclasses.
+ */
 HoneyProxy.FlowView = Backbone.View.extend({
 	tagName: "tr",
 	events: {
@@ -9,6 +12,7 @@ HoneyProxy.FlowView = Backbone.View.extend({
 		var html = HoneyProxy.template("flow",this.model);
 		this.$el.html(html);
 		
+		//iterate through all parent classes to get their categories and add them as classes
 		var superCls = this.model;
 		var categories = []
 		while(superCls !== undefined){
@@ -20,7 +24,6 @@ HoneyProxy.FlowView = Backbone.View.extend({
 			}
 			superCls = superCls.constructor.__super__;
 		}
-		
 		this.$el.addClass(categories.join(" "));
 		
 		this.$el.addClass("request-scheme-"+this.model.request.scheme);

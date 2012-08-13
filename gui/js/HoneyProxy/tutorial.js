@@ -1,3 +1,6 @@
+/**
+ * Handles the quick start tutorial that is shown if no requests are recorded yet.
+ */
 $(function(){
 	
 	HoneyProxy.on("firstflow",function(){

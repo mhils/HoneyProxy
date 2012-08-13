@@ -1,7 +1,15 @@
 var HoneyProxy = {
+		/**
+		 * Array containing all Subclasses of the Flow Model.
+		 */
 		flowModels:[],
+		/**
+		 * Stores the currently selected row.
+		 */
 		currentSelection: undefined,
-		templateRoot: "/app/templates",
+		/**
+		 * Updates the DetailView when a row is selected
+		 */
 		openPreview: function(){
 			HoneyProxy.detailView.model = this.model;
 			HoneyProxy.detailView.render();
@@ -13,7 +21,8 @@ var HoneyProxy = {
 			HoneyProxy.currentSelection = this;
 		}
 };
-	
+
+//HoneyProxy acts as a general event handler (onConfigLoaded, authenticated, newflow, ...)
 _.extend(HoneyProxy, Backbone.Events);
 
 //debug
@@ -37,7 +46,7 @@ $(function(){
 	});
 	
 	
-	//capture first flow
+	//provide firstflow event
 	function firstFlowTrigger(reset,traffic){
 		if(HoneyProxy.traffic.length > 0) {
 			HoneyProxy.trigger("firstflow");
@@ -50,7 +59,7 @@ $(function(){
 	HoneyProxy.traffic.on("reset",firstFlowTrigger);
 
 	
-
+	//initialize views
 	HoneyProxy.trafficView = new HoneyProxy.TrafficView({collection: HoneyProxy.traffic, el: $("#traffic")[0]});		
 	HoneyProxy.detailView = new HoneyProxy.DetailView({el: $("#detail")});
 });

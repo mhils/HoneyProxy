@@ -45,18 +45,16 @@
 	};
 	
 	
-	
+	//Initialize Splitpane
 	var main = $('#main')[0];
 	var header = $("header")[0];
 	var footer = $("footer")[0];
 	
-	// Set up splitpane with already existing DOM.
-	var lhs = new goog.ui.Component();
+	var lhs = new goog.ui.Component(); // Set up splitpane with already existing DOM.
 	var rhs = new goog.ui.Component();
 	
 	var splitpane = new goog.ui.SplitPane(lhs, rhs,
 	    goog.ui.SplitPane.Orientation.VERTICAL);
-	
 	
 	var getDesiredMainPanelSize = function() {
 			var viewport = goog.dom.getViewportSize();
@@ -85,7 +83,5 @@
 	$(function(){
 		HoneyProxy.MainLayout.splitpaneResizer.onResize();
 	});
-	
-	$(".tabs").tabs();
 	
 })();

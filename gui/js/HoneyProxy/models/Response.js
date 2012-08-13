@@ -1,4 +1,7 @@
-//Proxy object for better access to Flows. Be aware that both Request and Response objects are stateless!
+/**
+ * Proxy object for better access to Flows. 
+ * Be aware that both Request and Response objects are stateless!
+ */
 Response = function(flow){
 	this._flow = flow;
 };

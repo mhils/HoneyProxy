@@ -1,3 +1,6 @@
+/**
+ * Provide popout functionality - this class is responsible for the popout feature of the detail view.
+ */
 $(function(){
 	$(document).on("click",".button-popout", function(){
 		var content = $(this).siblings(".content");

@@ -1,5 +1,11 @@
+/**
+ * Backbone.sync implementation using WebSockets.
+ * Supplies an id for each request and waits for a response with this id.
+ * TODO: Use the JSON API instead.
+ * WebSocket should be used for communicating newly arrived flows,
+ * but it's clearly not made for a 1:1 request/response model.
+ */
 Backbone._syncrequests = {};
-
 Backbone.sync = function(method, model, options) {
 	if(method != "read")
 	{
@@ -17,6 +23,10 @@ Backbone.sync = function(method, model, options) {
 	
 };
 
+/**
+ * HoneyProxy Websocket Client.
+ * Connect to the WS URL, perform authentication and listen for new flows or responses to sync requests.
+ */
 HoneyProxy.websocket = {
 	send: function(jsonMsg){
 		this.ws.send(JSON.stringify(jsonMsg));
@@ -25,7 +35,7 @@ HoneyProxy.websocket = {
 		this.ws = new WebSocket(HoneyProxy.config.get("ws"));
 		this.ws.onopen = function(e){
 			HoneyProxy.websocket.send({action:"auth",key:HoneyProxy.config.get("auth")});
-			HoneyProxy.log("Connection etablished");
+			console.log("Connection etablished");
 		};
 		this.ws.onmessage = this.onmessage;
 	},
@@ -49,6 +59,6 @@ HoneyProxy.websocket = {
 				break;
 		}
 		
-		HoneyProxy.log(e);
+		console.log(e);
 	}
 };

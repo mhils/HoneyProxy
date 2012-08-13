@@ -1,4 +1,7 @@
-//Proxy object for better access to Flows. Be aware that both Request and Response objects are stateless!
+/**
+ * Proxy object for better access to Flows. 
+ * Be aware that both Request and Response objects are stateless!
+ */
 Request = function(flow){
 	this._flow = flow;
 };
@@ -59,6 +62,5 @@ Request.prototype = {
 		return this._flow.get("fullpath");
 	}
 };
-//FIXME: This works only with our patched version of underscore
-//https://github.com/documentcloud/underscore/pull/694
+//depends on https://github.com/documentcloud/underscore/pull/694
 _.extend(Request.prototype,HoneyProxy.sharedFlowProperties);

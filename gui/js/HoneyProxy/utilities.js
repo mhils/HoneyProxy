@@ -1,13 +1,19 @@
+/**
+ * Get the ContentType out of an array of headers (without charset).
+ * @param headers
+ * A [[headnerName,value],[headerName,value]] array of headers.
+ * @returns
+ */
 HoneyProxy.getContentTypeFromHeaders = function getContentTypeFromHeaders(headers){
 	var contentType = _.find(headers, function(header){
 		return !!header[0].match(/^Content-Type$/i);
 	});
 	return contentType ? contentType[1].split(";")[0] : undefined;
 };
-HoneyProxy.log = function(){
-	console.log.apply(console,arguments);
-}
 
+/**
+ * Parse a query string and return its components
+ */
 HoneyProxy.parseParameters = function(queryString)
 {
 	function _parse(pairStr)

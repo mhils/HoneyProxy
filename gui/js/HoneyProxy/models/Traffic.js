@@ -1,8 +1,7 @@
 (function(){	
 	/**
-	 * A model factory factory
+	 * A modelFactory factory
 	 * the returned factory returns a new instance of the model that .matches() the given arguments
-	 * FIXME: docs
 	 */
 	function modelFactory(models,fallback,aggregator) {
 		
@@ -12,12 +11,12 @@
 		function newCall(Cls,args){
 			//based on http://stackoverflow.com/a/8843181/934719
 			return new (Function.bind.apply(Cls, 
-					[0].concat(Array.prototype.slice.call(args))) //[0].concat(arguments.asArray())
+					[0].concat(Array.prototype.slice.call(args)))
 					);
 		}
 		
 		return function factory() {
-			var data = aggregator.apply(this,arguments);
+			var data = aggregator.apply(this,arguments); //aggregated data from flows.
 			
 			var model = _.find(models,function(m){
 				if("matches" in m) {
@@ -33,6 +32,11 @@
 		
 	}
 	
+	/**
+	 * Factory for flows.
+	 * Returns an instance of Flow or an instance of a subclass of Flow
+	 * that .matches() the given flow data.
+	 */
 	HoneyProxy.flowFactory = modelFactory(
 			HoneyProxy.flowModels,
 			HoneyProxy.Flow,
@@ -42,7 +46,10 @@
 					path : data.request.path
 				}
 			});
-		
+	/**
+	 * HoneyProxy Traffic Model - Stores a list of flows.
+	 * A new flow gets created from data with the flowFactory.
+	 */
 	HoneyProxy.Traffic = Backbone.Collection.extend({
 		  model: HoneyProxy.flowFactory
 	});

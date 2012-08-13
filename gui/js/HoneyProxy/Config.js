@@ -1,7 +1,9 @@
+/**
+ * basic config for our gui.
+ * TODO: A backbone model would be appropriate here.
+ */
 (function(){
-	
-	//TODO: A backbone model would be appropriate here.
-	
+		
 	Config = function(data){
 		this.storage = {}; //localStorage might leak sensitive information
 		$.extend(this.storage, data);

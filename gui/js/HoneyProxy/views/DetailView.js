@@ -1,3 +1,7 @@
+/**
+ * Second pane - shows details when clicking on a flow.
+ * TODO: Lazy-load the tabs.
+ */
 HoneyProxy.DetailView = Backbone.View.extend({
 	render: function() {
 		this._$details = this._$details || this.$el.find("#details");
@@ -14,3 +18,6 @@ HoneyProxy.DetailView = Backbone.View.extend({
 });
 
 HoneyProxy.loadTemplate(["preview","details","raw"]);
+$(function(){
+	$(".tabs").tabs();
+})

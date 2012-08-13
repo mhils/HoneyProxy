@@ -1,3 +1,7 @@
+/**
+ * Contains shared methods of Request and Response objects.
+ * Stateless.
+ */
 HoneyProxy.sharedFlowProperties = {
 	get httpversion() {
 		return this.data.httpversion || [1,0] /* stay compatible with mitmproxy 0.8 */;
@@ -50,6 +54,7 @@ HoneyProxy.sharedFlowProperties = {
 		return this._flow.get(attr);
 	},
 	getHeader: function(regex){
+		//TODO: Caching
 		var header = _.find(this.headers, function(header){
 			return !!header[0].match(regex);
 		});
