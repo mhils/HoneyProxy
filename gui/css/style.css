@@ -206,17 +206,17 @@ th.time {
   margin-right: 3px;
   background-image: url(../images/resourcePlainIcon.png);
 }
-#traffic .category-css .icon {
-  background-image: url(../images/resourceCSSIcon.png);
-}
-#traffic .category-js .icon {
-  background-image: url(../images/resourceJSIcon.png);
-}
 #traffic .category-document .icon {
   background-image: url(../images/resourceDocumentIcon.png);
 }
 #traffic .category-image .icon {
   background-image: url(../images/resourceImageIcon.png);
+}
+#traffic .category-css .icon {
+  background-image: url(../images/resourceCSSIcon.png);
+}
+#traffic .category-js .icon {
+  background-image: url(../images/resourceJSIcon.png);
 }
 .hidden {
   display: none !important;
@@ -261,6 +261,31 @@ pre.preview {
 .pre-menu-item:hover {
   background-color: #fff47a;
 }
+dl {
+  cursor: default;
+  font-size: 11px;
+  margin: 0;
+  width: 100%;
+}
+dd,
+dt {
+  width: 50%;
+  margin: 0;
+  display: inline-block;
+}
+dd {
+  padding-left: 8px;
+  text-align: left;
+}
+dt {
+  font-weight: bold;
+  text-align: right;
+  color: #4d4d4d;
+}
+.preview-image img {
+  display: block;
+  margin: 0 auto 10px;
+}
 pre.raw {
   padding: 1em;
   background-color: #f0f0f0;
@@ -276,5 +301,3 @@ pre.raw {
 .headers tr td:first-child {
   width: 300px;
 }
-
-/* This beautiful CSS-File has been crafted with LESS (lesscss.org) and compiled by simpLESS (wearekiss.com/simpless) */
