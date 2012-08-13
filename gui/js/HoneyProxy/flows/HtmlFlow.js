@@ -1,3 +1,6 @@
+/**
+ * Flow subclass responsible for proper display of CSS files.
+ */
 HoneyProxy.HtmlFlow = HoneyProxy.PrettyFlow.extend({
 	/*getCategory: function(){
 		return "html";

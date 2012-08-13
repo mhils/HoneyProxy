@@ -1,3 +1,6 @@
+/**
+ * Flow subclass responsible for proper display of JavaScript
+ */
 HoneyProxy.JSFlow = HoneyProxy.PrettyFlow.extend({
 	getCategory: function(){
 		return "js";

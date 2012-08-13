@@ -1,3 +1,7 @@
+/**
+ * Flow subclass responsible for proper display of flows that 
+ * can be prettyprinted. Subclassed by HTML, JS, ... flows
+ */
 HoneyProxy.PrettyFlow = HoneyProxy.DocumentFlow.extend({
 	getPreview: function(callback){
 		return HoneyProxy.DocumentFlow.prototype.getPreview.call(this, function($pre){

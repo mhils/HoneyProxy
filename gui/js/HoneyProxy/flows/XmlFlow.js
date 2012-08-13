@@ -1,7 +1,10 @@
+/**
+ * Flow subclass responsible for proper display of XML
+ */
 HoneyProxy.XmlFlow = HoneyProxy.PrettyFlow.extend({
-	/*getCategory: function(){
+	getCategory: function(){
 		return "xml";
-	}*/
+	}
 }, {matches: function(data){
 	if(data.contentType)
 		return !!data.contentType.match(/xml/i);

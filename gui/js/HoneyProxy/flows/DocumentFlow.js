@@ -1,3 +1,8 @@
+/**
+ * Flow subclass responsible for proper display of general files.
+ * Basically loading file content into a pre tag.
+ * Most other flow classes inherit from this. 
+ */
 HoneyProxy.DocumentFlow = HoneyProxy.Flow.extend({
 	getCategory: function(){
 		return "document";
