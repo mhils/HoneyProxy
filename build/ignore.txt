@@ -11,3 +11,4 @@ mitmproxy/doc-src/
 mitmproxy/examples/
 mitmproxy/scripts/
 mitmproxy/test/
+web/
