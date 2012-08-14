@@ -119,10 +119,11 @@ def main():
         #start gui
         import webbrowser
         webbrowser.open(guiURL)
-    else:
-        print "HTTP Root: "+httpGui
-        print "WebSocket API URL: "+wsURL
-        print "Auth key: "+ HoneyProxy.getAuthKey()
+    print "HoneyProxy has been started! Usually you don't need the configuration details below:"
+    print "HTTP Root: "+httpGui
+    print "WebSocket API: "+wsURL
+    print "Auth user: " + "HoneyProxy"
+    print "Auth key: "+ HoneyProxy.getAuthKey()
         
     #run!
     l = task.LoopingCall(p.tick)

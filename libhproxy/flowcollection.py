@@ -1,12 +1,13 @@
 from libmproxy import encoding
 from libhproxy.honey import HoneyProxy
-import re
+import re, json, socket
 
 class FlowCollection:
     """
     Collects all flows, gives them an id, decodes content.
     """
     regex_charset = re.compile("charset=\s*([\S]+|['\"][^'\"]+['\"])")
+    regex_isip = re.compile("^([0-9]{1,3}\.){3}[0-9]{1,3}$")
     
     def __init__(self):
         self._flows_serialized = []
@@ -29,8 +30,27 @@ class FlowCollection:
         flowRepr = flow._get_state()
         flowRepr["id"] = len(self._flows_serialized)
         
+        #In transparent mode, we are unsure about the actual host, but we want to show it in the GUI.
+        #Firstly, we get the Host from the request headers.
+        #As this might be faked, we go on and check whether the request IP matches one of the DNS entries belonging to the headerHost
+        if(True or FlowCollection.regex_isip.match(flowRepr["request"]["host"])):
+            try:
+                headerHost = flow.request.headers["Host"]
+                if(headerHost):
+                    headerHost = headerHost[0]
+                    info = socket.getaddrinfo(flowRepr["request"]["host"], flowRepr["request"]["port"],0,0,socket.SOL_TCP)
+                    for i in info:
+                        if(i[4][0] == flowRepr["request"]["host"] and i[4][1] == flowRepr["request"]["port"]):
+                            flowRepr["request"]["hostFormatted"] = headerHost
+                            break
+            except socket.gaierror:
+                pass
+            except:
+                import traceback
+                print traceback.format_exc()
+            
+            
         decoded_content = {}
-        
         for i in ["request","response"]:
             #strip content out of the flowRepr
             flowRepr[i]["contentLength"] = len(flowRepr[i]["content"])

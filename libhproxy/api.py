@@ -1,7 +1,6 @@
 from twisted.web.resource import Resource  
-import json
 from libhproxy.honey import HoneyProxy
-import re
+import re, socket, json
 from libhproxy.flowcollection import includeDecodedContent
 
 class HoneyProxyApi(Resource):
@@ -12,8 +11,7 @@ class HoneyProxyApi(Resource):
         Resource.__init__(self)
         self.putChild("config", ConfigApiResource())
         self.putChild("flows", FlowsApiResource())
-        self.putChild("search", SearchApiResource())
-        
+        self.putChild("search", SearchApiResource())        
         
 class ConfigApiResource(Resource):
     """

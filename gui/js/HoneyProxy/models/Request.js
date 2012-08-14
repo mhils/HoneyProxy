@@ -6,8 +6,6 @@ Request = function(flow){
 	this._flow = flow;
 };
 (function(){
-	
-	const isIP = /^([0-9]{1,3}\.){3}[0-9]{1,3}$/;
 	Request.prototype = {
 		get _attr() {
 			return "request";
@@ -16,11 +14,10 @@ Request = function(flow){
 			return this.data.path;
 		},
 		get host() {
-			if(isIP.test(this.data.host))
-			{
-				return this.getHeader(/^Host$/i);
-			}
 			return this.data.host;
+		},
+		get hostFormatted() {
+			return "hostFormatted" in this.data ? this.data.hostFormatted : this.host;
 		},
 		get port() {
 			return this.data.port;
@@ -56,7 +53,7 @@ Request = function(flow){
 			var path = params.shift().split("/");
 			var filename = path.pop();
 			this._flow.set("filename", filename==="" ? "/" : filename );
-			this._flow.set("fullpath", this.scheme + "://" + this.host + ":" + this.port + path.join("/") + "/" );		
+			this._flow.set("fullpath", this.scheme + "://" + this.hostFormatted + ":" + this.port + path.join("/") + "/" );		
 		},
 		get filename() {
 			if(!this._flow.has("filename"))
