@@ -1,0 +1,94 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>HoneyProxy - HTTP(S) Traffic Investigation</title>
+	<meta name="description" content="">
+	<meta name="author" content="Maximilian Hils">
+
+	<meta name="viewport" content="width=device-width">
+
+	<link rel="stylesheet" href="less/style.css">
+
+	<script src="js/libs/modernizr-2.5.3.min.js"></script>
+</head>
+<body>
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+<a href="https://github.com/mhils/HoneyProxy"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+<header>
+<h1>HoneyProxy</h1>
+<h2>a man-in-the-middle SSL proxy & traffic analyzer</h2>
+</header>
+<div id="main">
+<div class=box>
+	<center style="padding: 5em;">&lt;Screenshot&gt;</center>
+	HoneyProxy is a lightweight tool that allows live HTTP and HTTPS traffic inspection and analysis.<br>
+	It focuses on features that are useful for malware analysis and network forensics.
+
+<h2>Features</h2>
+<ul>
+	<li>Analyze HTTP(S) traffic on the fly
+	<li><b>Filter</b> and <b>highlight</b> traffic, regex support included.
+	<li><b>Save</b> HTTP conversations for later analysis
+	<li>Make <b>scripted changes</b> with Python, e.g. remove Cache Header.
+	<li>based on and  <b>compatible to <a href="http://mitmproxy.org/">mitmproxy</a></b>.
+	<li><b>cross-plattform</b>
+	<li>SSL interception certs generated on the fly
+</ul>
+
+<h2>Quick Start</h2>
+<p>
+	Download the <a href="https://github.com/mhils/HoneyProxy/downloads"><strong>latest release</strong></a> 
+	<span style="font-size: 0.85em; color: hsl(0, 0%, 50%);">or clone the git repo: <code>git clone --recursive git://github.com/mhils/HoneyProxy.git</code>.</span>
+</p>
+<p>
+	Install all dependencies: <code>pip install pyOpenSSL pyasn1 Twisted Autobahn</code>
+</p>
+<p>
+	To start HoneyProxy, just run <code>python honeyproxy.py</code> or <code>python honeyproxy.py --help</code>. 
+	If you don't use a modern browser, a kitten will die. We currently support both Firefox and Chrome!
+</p>
+<p>
+	Most command line parameters are documented in the <a href="http://mitmproxy.org/doc/index.html">mitmproxy docs</a>.
+</p>
+
+<!-- </div>
+
+<div class=box>
+<h2>I know mitmproxy. Tell me what's different.</h2>
+<ul>
+<li>cross-plattform
+<li>Save HTTP conversations for later analysis
+<li>Make scripted changes to HTTP traffic using Python (e.g. removing Cache headers to receive specific contents)
+<li>Compatible with and based on the rock-solid <a href="http://mitmproxy.org/">mitmproxy</a>.
+</ul>
+</div>
+
+Being compatible with mitmproxy, it focuses on features that are useful in a forensic context and allows extended visualization capabilites.
+Being based on with <a href="http://mitmproxy.org/">mitmproxy</a>, HoneyProxy is also able to save HTTP conversations for later analysis as well as making scripted changes to HTTP traffic using Python (e.g. removing Cache headers to receive specific contents). It is developed as a HTML5 browser-based application working on top of a logging core written in Python.
+-->
+</div>
+
+</div> 
+<footer>
+imprint honeynet
+</footer>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.2.min.js"><\/script>')</script>
+
+<!-- scripts concatenated and minified via ant build script-->
+<script src="js/script.js"></script>
+<!-- end scripts-->
+
+<script>
+	var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+	(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+	g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+	s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+
+</body>
+</html>

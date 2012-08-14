@@ -1,6 +1,6 @@
 from twisted.web.resource import Resource  
 from libhproxy.honey import HoneyProxy
-import re, socket, json
+import re, json
 from libhproxy.flowcollection import includeDecodedContent
 
 class HoneyProxyApi(Resource):

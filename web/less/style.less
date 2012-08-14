@@ -1,0 +1,74 @@
+@import "normalize.less";
+
+
+/* ===== Primary Styles ========================================================
+   Author: Maximilian Hils
+   ========================================================================== */
+
+body, html {
+	height: 100%;
+}
+
+body {
+	@blue: #aaddff;
+	font-size: 16px;
+	background-color: @blue;
+	background-image: -webkit-radial-gradient(center top, circle closest-corner, white 0%, @blue 100%);
+	background-image:    -moz-radial-gradient(center top, circle closest-corner, white 0%, @blue 100%);
+	background-image:         radial-gradient(center top, circle closest-corner, white 0%, @blue 100%);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	//background-attachment: fixed; // too slow in chrome
+}
+
+header, #main, footer {
+	width: 800px;
+	margin: 0 auto;
+}
+
+a {
+	text-decoration: none;
+	color: hsl(240, 88%, 27%);
+}
+
+.box {
+	background-color: #ffffff;
+	padding: 1em 2em;
+	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px
+		rgba(0, 0, 0, 0.1) inset;
+	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px
+		rgba(0, 0, 0, 0.1) inset;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1)
+		inset;
+}
+
+/*.box {
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+.box:hover {
+
+	-webkit-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5), 0 0 40px
+		rgba(0, 0, 0, 0.1) inset;
+	-moz-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5), 0 0 40px
+		rgba(0, 0, 0, 0.1) inset;
+	box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.1)
+		inset;
+}*/
+
+code {
+	margin: 0 2px;
+	padding: 0px 5px;
+	white-space: nowrap;
+	border: 1px solid hsl(0, 0%, 92%);
+	background-color: hsl(0, 0%, 97%);
+	border-radius: 3px;
+	font-family: Consolas, "Liberation Mono", Courier, monospace;
+	font-size: .8em;
+}
+
+
+@import "media-queries.less";
+@import "helpers.less";
+@import "print.less";
