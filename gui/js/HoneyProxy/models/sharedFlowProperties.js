@@ -54,11 +54,17 @@ HoneyProxy.sharedFlowProperties = {
 		return this._flow.get(attr);
 	},
 	getHeader: function(regex){
-		//TODO: Caching
-		var header = _.find(this.headers, function(header){
-			return !!header[0].match(regex);
-		});
-		return header ? header[1] : undefined;
+		var attr = this._attr + "CachedHeaderLookups";
+		if(!this._flow.has(attr))
+			this._flow.set(attr,{});
+		if(!(regex in this._flow.get(attr))) {
+			var header = _.find(this.headers, function(header){
+				return !!header[0].match(regex);
+			});
+			this._flow.get(attr)[regex] = header ? header[1] : undefined;
+		}
+		return this._flow.get(attr)[regex];
+		
 	},
 	get headers() {
 		return this.data.headers;
