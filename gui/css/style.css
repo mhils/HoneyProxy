@@ -16,12 +16,36 @@ body {
   display: none !important;
   visibility: hidden;
 }
+@font-face {
+  font-family: 'Cantora One';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Cantora One'), local('CantoraOne-Regular'), url(CantoraOne-Regular.woff) format('woff'), url(CantoraOne-Regular.ttf) format('truetype');
+}
+h3 {
+  font-family: 'Cantora One', sans-serif;
+  font-size: 20px;
+  font-weight: normal;
+  margin-top: 0.7em;
+}
 header {
   overflow: auto;
   display: block;
   height: 75px;
   padding: 0.5em 100px 0.5em;
-  background-color: #f0f0f0;
+  background-color: #e6e6e6;
+  background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+  /* Chrome 10+, Safari 5.1+, iOS 5+ */
+
+  background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+  /* Firefox 3.6-15 */
+
+  background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+  /* Opera 11.10+ */
+
+  background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+  /* Firefox 16+ */
+
 }
 header a {
   float: right;
@@ -37,10 +61,10 @@ header a:after {
 #main {
   overflow: hidden;
 }
-header {
-  background-image: url(../images/header.jpg);
-  background-repeat: no-repeat;
-  background-position: -90px 0;
+header img {
+  margin-left: 10px;
+  margin-right: 15px;
+  float: left;
 }
 #main > .goog-splitpane-first-container,
 #main > .goog-splitpane-second-container {
@@ -301,5 +325,3 @@ pre.raw {
 .headers tr td:first-child {
   width: 300px;
 }
-
-/* This beautiful CSS-File has been crafted with LESS (lesscss.org) and compiled by simpLESS (wearekiss.com/simpless) */

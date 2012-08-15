@@ -5,7 +5,10 @@
    Author: Maximilian Hils
    ========================================================================== */
 
+@darkgrey: hsl(0,0%,5%);
+
 body, html {
+	color: @darkgrey;
 	height: 100%;
 }
 
@@ -26,14 +29,57 @@ header, #main, footer {
 	margin: 0 auto;
 }
 
-a {
+#logo {
+	float: left;
+	margin: 5px 10px;
+}
+
+#topnav {
+	list-decoration: none;
+	margin-top: 20px;
+	float: right;
+	li {
+		&:hover {
+			background-color: hsla(0,0%,100%,.8);
+			box-shadow: 0 0 8px -4px black;
+		}
+		&:active {
+			box-shadow: 0 0 8px -4px black,inset 0 0 8px -4px black;
+		}
+		display: inline-block;
+		background-color: hsla(0,0%,100%,.5);
+		margin-left: 15px;
+		padding: 3px 7px;
+		border-radius: 4px;
+		-webkit-transition: all 0.2s;
+		-moz-transition: all 0.2s;
+		transition: all 0.2s;
+	}
+	a {
+	color: @darkgrey;
+	}
+}
+
+header {
+	a, a:visited { color: @darkgrey; }
+	h1 {
+		margin-bottom: 0;
+	}
+	h2 {
+		font-size: 16px;
+		margin-top: 0;
+	}
+}
+
+a, a:visited {
 	text-decoration: none;
 	color: hsl(240, 88%, 27%);
 }
 
+@box-padding-horizontal: 32px;
 .box {
 	background-color: #ffffff;
-	padding: 1em 2em;
+	padding: 1em @box-padding-horizontal;
 	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px
 		rgba(0, 0, 0, 0.1) inset;
 	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px
@@ -68,6 +114,18 @@ code {
 	font-size: .8em;
 }
 
+h2:target {
+	margin: -.2em -@box-padding-horizontal;
+	padding: .2em @box-padding-horizontal;
+	//background-color: hsla(60, 100%, 50%,0.2);
+	background-image: -webkit-linear-gradient(left,hsla(60, 100%, 50%,0.4),hsla(60, 100%, 50%,0.2));
+}
+
+footer p {
+	text-align: right;
+	padding: 8px 3px;
+	font-size: 10px;
+}
 
 @import "media-queries.less";
 @import "helpers.less";

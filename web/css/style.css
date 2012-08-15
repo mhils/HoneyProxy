@@ -259,6 +259,7 @@ td {
    ========================================================================== */
 body,
 html {
+  color: #0d0d0d;
   height: 100%;
 }
 body {
@@ -276,13 +277,54 @@ footer {
   width: 800px;
   margin: 0 auto;
 }
-a {
+#logo {
+  float: left;
+  margin: 5px 10px;
+}
+#topnav {
+  list-decoration: none;
+  margin-top: 20px;
+  float: right;
+}
+#topnav li {
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.5);
+  margin-left: 15px;
+  padding: 3px 7px;
+  border-radius: 4px;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  transition: all 0.2s;
+}
+#topnav li:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 8px -4px #000000;
+}
+#topnav li:active {
+  box-shadow: 0 0 8px -4px #000000, inset 0 0 8px -4px #000000;
+}
+#topnav a {
+  color: #0d0d0d;
+}
+header a,
+header a:visited {
+  color: #0d0d0d;
+}
+header h1 {
+  margin-bottom: 0;
+}
+header h2 {
+  font-size: 16px;
+  margin-top: 0;
+}
+a,
+a:visited {
   text-decoration: none;
   color: #080881;
 }
 .box {
   background-color: #ffffff;
-  padding: 1em 2em;
+  padding: 1em 32px;
   -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
   -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
@@ -310,6 +352,16 @@ code {
   border-radius: 3px;
   font-family: Consolas, "Liberation Mono", Courier, monospace;
   font-size: .8em;
+}
+h2:target {
+  margin: -0.2em -32px;
+  padding: 0.2em 32px;
+  background-image: -webkit-linear-gradient(left, rgba(255, 255, 0, 0.4), rgba(255, 255, 0, 0.2));
+}
+footer p {
+  text-align: right;
+  padding: 8px 3px;
+  font-size: 10px;
 }
 /* =============================================================================
    Media Queries
@@ -430,5 +482,3 @@ code {
     page-break-after: avoid;
   }
 }
-
-/* This beautiful CSS-File has been crafted with LESS (lesscss.org) and compiled by simpLESS (wearekiss.com/simpless) */
