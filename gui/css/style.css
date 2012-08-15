@@ -1,16 +1,26 @@
 /*#traffic tr:nth-child(2n){
     background-color: hsla(0,0%,0%,0.07);
 }*/
-* {
+*:not(.dijitContentPane ) {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+}
+.claro .dijitContentPane {
+  padding: 0;
 }
 html,
 body {
   margin: 0;
   padding: 0;
+  overflow: hidden;
   font-family: 'Lucida Grande', sans-serif;
   font-size: 12px;
+  height: 100%;
+  width: 100%;
+}
+#appLayout {
+  height: 100%;
+  width: 100%;
 }
 .hidden {
   display: none !important;
@@ -31,7 +41,7 @@ h3 {
 header {
   overflow: auto;
   display: block;
-  height: 75px;
+  height: 64px;
   padding: 0.5em 100px 0.5em;
   background-color: #e6e6e6;
   background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
@@ -58,34 +68,13 @@ header a:before {
 header a:after {
   content: "]";
 }
-#main {
-  overflow: hidden;
-}
 header img {
   margin-left: 10px;
   margin-right: 15px;
   float: left;
 }
-#main > .goog-splitpane-first-container,
-#main > .goog-splitpane-second-container {
-  overflow-y: scroll;
-}
-.goog-splitpane-handle {
-  width: 3px;
-  background-color: #a3a3a3;
-  background-clip: content-box;
-  padding: 0 1px;
-}
-.goog-splitpane-handle-vertical {
-  cursor: n-resize;
-}
-.goog-splitpane-handle-horizontal {
-  cursor: e-resize;
-}
 #traffictable th,
 #traffictable td {
-  /* TODO: Figure out a better solution */
-
   cursor: pointer;
 }
 th.goog-tablesorter-sorted {
@@ -98,11 +87,11 @@ th.goog-tablesorter-sorted-reverse {
     background-color: hsla(0,0%,0%,0.07);
 }*/
 #traffictable {
+  background-color: rgba(0, 0, 0, 0.07);
   background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(0, 0, 0, 0.05)), to(rgba(0, 0, 0, 0.05)));
   -webkit-background-size: 1px 72px;
 }
 #traffictable {
-  background-color: rgba(0, 0, 0, 0.07);
   width: 100%;
   table-layout: fixed;
   border-spacing: 0;
@@ -135,27 +124,28 @@ th.goog-tablesorter-sorted-reverse {
   margin-top: 18px;
 }
 #traffictable thead {
-  position: fixed;
   margin-top: -18px;
-  height: 18px;
-  display: block;
-  width: 100%;
-  overflow-y: scroll;
-}
-#traffictable thead tr {
-  width: 100%;
-  display: inline-table;
-}
-#traffictable thead th {
-  padding: 0;
-  margin: 0;
-  height: 17px;
-  line-height: 18px;
-}
-#traffictable thead th:before {
-  content: "";
-  display: inline-block;
-  width: 7px;
+  position: absolute;
+  /*
+	height: @headerheight;
+	display: block;
+	width: 100%;
+	tr {
+		width: 100%;
+		display: inline-table;
+	}
+	th {
+	&:before {
+		content: "";
+		display: inline-block;
+	    width: 7px;
+	}
+	padding: 0;
+	margin: 0;
+	height: @headerheight - 1;
+	line-height: @headerheight;
+	}*/
+
 }
 col.ssl,
 th.ssl {

@@ -5,25 +5,20 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title>HoneyProxy</title>
 	
-	<link rel="stylesheet" href="./css/style.css">
 	<link rel="stylesheet" href="./js/lib/prettify/prettify.css">
 	<link rel="stylesheet" href="./js/lib/jquery-ui/css/smoothness/jquery-ui.css">
-		
+	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.8.0/dijit/themes/claro/claro.css" media="screen">	
+	<link rel="stylesheet" href="./css/style.css">
+
 </head>
-<body>
-<header>
-<div id="searchbox">
-<input id=filter class=search data-negate=true data-filterclass="hide" placeholder="search: !not, ~regex">
-<input data-filterclass="highlight highlight-1" class=search placeholder="highlight-red: !not, ~regex">
-<input data-filterclass="highlight highlight-2" class=search placeholder="highlight-yellow: !not, ~regex">
-<input data-filterclass="highlight highlight-3" class=search placeholder="highlight-green: !not, ~regex">
-<input type=checkbox id=includeContent checked><label for="includeContent">search in content</label>
+<body class="claro">
+<div id="appLayout">
 </div>
+<header id=header>
 <img src="./images/logo.png" width=64 height=64>
 <h3>HoneyProxy</h3>
 </header>
-<div id="main" class="goog-splitpane">
-	<div class=goog-splitpane-first-container>
+<div id="main">
 		<table id="traffictable">
 			<colgroup span="6">
 				<col class="ssl" >
@@ -60,27 +55,33 @@
 			HoneyProxy is still in an very early stage. Getting some feedback from you would be awesome. <a href="https://github.com/mhils/HoneyProxy">Thanks!</a>
 		</ul>
 		</div>
-	</div>
-	<div class=goog-splitpane-second-container id=detail>
-		<div class=tabs>
-			<ul>
-			    <li><a href="#preview">Preview</a></li>
-			    <li><a href="#details">Details</a></li>
-			    <li><a href="#raw">Raw</a></li>
-			</ul>
-			<div id=preview></div>
-			<div id=details></div>
-			<div id=raw></div>
-		</div>
-	</div>
-	<div class='goog-splitpane-handle'></div>
+
 </div>
-<footer></footer>
+<div id="rightCol">
+<div id="searchbox">
+<input id=filter class=search data-negate=true data-filterclass="hide" placeholder="search: !not, ~regex"><br>
+<input data-filterclass="highlight highlight-1" class=search placeholder="highlight-red: !not, ~regex"><br>
+<input data-filterclass="highlight highlight-2" class=search placeholder="highlight-yellow: !not, ~regex"><br>
+<input data-filterclass="highlight highlight-3" class=search placeholder="highlight-green: !not, ~regex"><br>
+<input type=checkbox id=includeContent checked><label for="includeContent">search in content</label>
+</div>
+</div>
+<div id=detail>
+	<div class=tabs>
+		<ul>
+		    <li><a href="#preview">Preview</a></li>
+		    <li><a href="#details">Details</a></li>
+		    <li><a href="#raw">Raw</a></li>
+		</ul>
+		<div id=preview></div>
+		<div id=details></div>
+		<div id=raw></div>
+	</div>
+</div>
 
 <script src="./js/lib/closure-library/closure/goog/base.js"></script>
 <script>
 goog.require('goog.ui.TableSorter');
-goog.require('goog.ui.SplitPane');
 goog.require('goog.dom');
 goog.require('goog.dom.ViewportSizeMonitor');
 goog.require('goog.style');
@@ -115,11 +116,15 @@ goog.require('goog.style');
 <script src="./js/HoneyProxy/models/Traffic.js"></script>
 <script src="./js/HoneyProxy/views/TrafficView.js"></script>
 <script src="./js/HoneyProxy/TableSorter.js"></script>
-<script src="./js/HoneyProxy/MainLayout.js"></script>
+<script src="./js/HoneyProxy/MainLayoutnotfound.js"></script>
 <script src="./js/HoneyProxy/views/DetailView.js"></script>
 <script src="./js/HoneyProxy/popOut.js"></script>
 <script src="./js/HoneyProxy/dirdump.js"></script>
 <script src="./js/HoneyProxy/tutorial.js"></script>
 <script src="./js/HoneyProxy/search.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.0/dojo/dojo.js" data-dojo-config="async: true"></script>
+<script src="./js/HoneyProxy/MainLayout2.js"></script>
+
+
 </body>
 </html>

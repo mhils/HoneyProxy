@@ -13,7 +13,7 @@ var HoneyProxy = {
 		openPreview: function(){
 			HoneyProxy.detailView.model = this.model;
 			HoneyProxy.detailView.render();
-			HoneyProxy.MainLayout.splitpaneResizer.openSecond();
+			//HoneyProxy.MainLayout.splitpaneResizer.openSecond();
 			this.$el.addClass("selected");
 			if(HoneyProxy.currentSelection){
 				HoneyProxy.currentSelection.$el.removeClass("selected");
