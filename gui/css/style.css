@@ -167,48 +167,77 @@ header img {
   top: 30px;
   left: 30px;
 }
-.filters {
-  float: right;
-  padding-left: 5px;
-}
 .filter-hide {
   display: none;
 }
-.filters .filter-highlight {
-  display: inline-block;
-  font-size: 34px;
-  line-height: 100%;
-  height: 100%;
-}
+/*
 .filters .filter-highlight:before {
-  content: "\2022";
-}
-.filters  .filter-highlight-1:before {
-  color: #ff0000;
+	//content: "\2022";
+}*/
+.filters  .filter-highlight-1 {
+  /*
+		.linear-gradient-left(transparent,
+			transparent, (@percentage - @highlightWidth),
+			@color,(@percentage - @highlightFull),
+			@color,(@percentage + @highlightFull),
+			transparent,(@percentage + @highlightWidth)
+			);
+		*/
+
+  background-color: rgba(255, 0, 0, 0.2);
 }
 .search.highlight-1 {
-  padding: 2px;
   box-shadow: -6px 0 0 0 #ff0000;
-  border: solid #cfcfcf 1px;
-  border-left: none;
 }
-.filters  .filter-highlight-2:before {
-  color: #ffd700;
+.filters  .filter-highlight-2 {
+  /*
+		.linear-gradient-left(transparent,
+			transparent, (@percentage - @highlightWidth),
+			@color,(@percentage - @highlightFull),
+			@color,(@percentage + @highlightFull),
+			transparent,(@percentage + @highlightWidth)
+			);
+		*/
+
+  background-color: rgba(255, 217, 0, 0.2);
 }
 .search.highlight-2 {
-  padding: 2px;
-  box-shadow: -6px 0 0 0 #ffd700;
-  border: solid #cfcfcf 1px;
-  border-left: none;
+  box-shadow: -6px 0 0 0 #ffd900;
 }
-.filters  .filter-highlight-3:before {
-  color: #008000;
+.filters  .filter-highlight-3 {
+  /*
+		.linear-gradient-left(transparent,
+			transparent, (@percentage - @highlightWidth),
+			@color,(@percentage - @highlightFull),
+			@color,(@percentage + @highlightFull),
+			transparent,(@percentage + @highlightWidth)
+			);
+		*/
+
+  background-color: rgba(0, 128, 0, 0.2);
 }
 .search.highlight-3 {
-  padding: 2px;
   box-shadow: -6px 0 0 0 #008000;
+}
+.filters {
+  margin-top: -1px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 36px;
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+}
+.search.highlight {
+  padding: 2px;
   border: solid #cfcfcf 1px;
   border-left: none;
+}
+.filters .filter-highlight {
+  height: 100%;
+  -webkit-box-flex: 1;
+  box-flex: 1;
 }
 .table-fixed-header {
   /* Basic Layout */
