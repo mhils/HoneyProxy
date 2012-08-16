@@ -1,7 +1,8 @@
 define([ "dojo/query",
   "dijit/layout/BorderContainer", 
+  "dijit/layout/TabContainer",
   "dijit/layout/ContentPane",
-  "dojo/domReady!"], function(query, BorderContainer, ContentPane) {
+  "dojo/domReady!"], function(query, BorderContainer, TabContainer, ContentPane) {
 	var appLayout = new BorderContainer({
 		design : "headline",
 		liveSplitters: false,
@@ -25,8 +26,9 @@ define([ "dojo/query",
         splitter: true,
         layoutPriority:2
     },"detail");
-	
 	//appLayout.addChild(detail);
+	
+	
 	appLayout.addChild(
 		    new ContentPane({
 		        region: "right",

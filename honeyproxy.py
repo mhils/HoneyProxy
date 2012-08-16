@@ -122,7 +122,7 @@ def main():
     print "HoneyProxy has been started! Usually you don't need the configuration details below:"
     print "HTTP Root: "+httpGui
     print "WebSocket API: "+wsURL
-    print "Auth user: " + "HoneyProxy"
+    print "Auth user: " + "honey"
     print "Auth key: "+ HoneyProxy.getAuthKey()
         
     #run!

@@ -36,7 +36,6 @@ window.HoneyProxy = HoneyProxy;
 	
 	//establish websocket communication after config has been loaded.
 	HoneyProxy.on("configLoaded",function(){
-		console.log("Config loaded.");
 		HoneyProxy.websocket.initialize();
 	})
 	

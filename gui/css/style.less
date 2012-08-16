@@ -1,3 +1,8 @@
+@import "prefixer.less";
+
+@lightSeperator: solid hsl(0, 0%, 80%) 1px;
+@darkSeperator: solid hsl(0, 0%, 27%) 1px;
+
 *:not(.dijitContentPane ) {
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
@@ -37,16 +42,20 @@ h3 {
 	margin-top: 0.7em;
 }
 
+.lightBg() {
+	.linear-gradient-top(hsl(0,0%,95%),
+		white,0%,
+		hsl(0,0%,95%),100%
+	);
+}
+
 header {
 	overflow: auto;
 	display: block;
 	height: 64px;
 	padding: 0.5em 100px 0.5em;
-	background-color: hsl(0,0%,90%);
-	background-image: -webkit-linear-gradient(top, #ffffff, hsl(0,0%,90%)); /* Chrome 10+, Safari 5.1+, iOS 5+ */
-	background-image:    -moz-linear-gradient(top, #ffffff, hsl(0,0%,90%)); /* Firefox 3.6-15 */
-	background-image:      -o-linear-gradient(top, #ffffff, hsl(0,0%,90%)); /* Opera 11.10+ */
-	background-image:         linear-gradient(to bottom, #ffffff, hsl(0,0%,90%)); /* Firefox 16+ */
+	.lightBg;
+	border-bottom: @darkSeperator;
 }
 
 header a {
@@ -73,11 +82,31 @@ header img {
 }
 
 #searchbox {
-	float: right;
-	margin-top: 25px;
+	width: 100%;
+	input[type=text] {
+		width: 100%;
+	}
 }
 
+#main {
+	border-right: @darkSeperator;
+	border-bottom: @lightSeperator;
+}
 
+#rightCol {
+	padding: 20px;
+	border-left: @lightSeperator;
+	background-color: hsl(0,0%,97%);
+	width: 200px;
+}
+
+#tutorial {
+	position: absolute;
+	top: 30px;
+	left: 30px;
+}
+
+@import "search.less";
 @import "traffictable.less";
 @import "preview.less";
 @import "raw.less";

@@ -1,6 +1,6 @@
 @lineHeight: 36px;
 @innerLineHeight: 34px;
-@headerHeight: @lineHeight / 2;
+@headerHeight: @lineHeight / 1.5;
 .table-fixed-header {
 	/* Basic Layout */
 	width: 100%;
@@ -32,11 +32,19 @@
 	}
 	/* Background & Row Highlight */
 	.data {
-		background-color: hsla(0,0%,0%,0.07);
-		background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.5, transparent), color-stop(0.5, hsla(0, 0%, 0%, 0.05)), to(hsla(0, 0%, 0%, 0.05)));
-		-webkit-background-size: 1px @lineHeight*2;
+		.linear-gradient-top(
+			hsla(0,0%,0%,0.07),
+			transparent,0%,transparent,50%,
+			hsla(0, 0%, 0%, 0.05),50%,hsla(0, 0%, 0%, 0.05),100%);
+		background-size: 1px @lineHeight*2;
 		tr.selected {
 			background-color: hsla(55, 100%, 74%, 0.1);
+		}
+	}
+	.header {
+		.linear-gradient-top(hsl(0, 0%, 93%),hsl(0, 0%, 93%),0%,hsl(0, 0%, 85%),100%);
+		th {
+			border-bottom: 1px solid hsl(0, 0%, 64%);
 		}
 	}
 	/* Cell Layout */
@@ -60,9 +68,10 @@
 	min-width: 600px;
 	
 	//FIXME: Remove when we are away from Closures TableSorter
+	
 	.data thead { .hidden; }
 	th.goog-tablesorter-sorted {
-     background-color: hsla(121, 45%, 50%,.5);
+		background-color: hsla(121, 45%, 50%,.5);
 	}
 	th.goog-tablesorter-sorted-reverse {
 	     background-color: hsla(14, 87%, 50%,.5);
@@ -194,32 +203,6 @@ col.time, th.time {
    
    
 /* Row Styling */
-
-.filters {
-	float: right;
-	padding-left: 5px;
-}
-.filter-hide {
-	display: none;
-}
-.filters .filter-highlight {
-	display: inline-block;
-	font-size: @innerLineHeight;
-	line-height: 100%;
-	height: 100%;
-}
-.filters .filter-highlight:before {
-	content: "\2022";
-}
-.filters .filter-highlight-1:before {
-	color: red;
-}
-.filters .filter-highlight-2:before {
-	color: orange;
-}
-.filters .filter-highlight-3:before {
-	color: green;
-}
 
 #trafficTable {
 	.icon {

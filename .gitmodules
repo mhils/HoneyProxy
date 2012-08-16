@@ -7,3 +7,15 @@
 [submodule "netlib"]
 	path = netlib
 	url = git@github.com:mhils/netlib.git
+[submodule "gui/js/lib/dijit"]
+	path = gui/js/lib/dijit
+	url = https://github.com/dojo/dijit.git
+[submodule "gui/js/lib/dojo"]
+	path = gui/js/lib/dojo
+	url = https://github.com/dojo/dojo.git
+[submodule "gui/js/lib/dojox"]
+	path = gui/js/lib/dojox
+	url = https://github.com/dojo/dojox.git
+[submodule "gui/js/lib/util"]
+	path = gui/js/lib/util
+	url = https://github.com/dojo/util.git
