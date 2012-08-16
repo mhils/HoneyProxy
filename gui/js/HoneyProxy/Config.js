@@ -15,9 +15,12 @@
 		this.storage[id] = val;
 	}
 	
+	console.log("start request");
 	$.getJSON("/api/config", function(data){
+		console.log("request done");
 		HoneyProxy.config = new Config(data);
 		HoneyProxy.config.set("content","/files");
 		HoneyProxy.trigger("configLoaded");
+		console.log("triggered");
 	});
 })();

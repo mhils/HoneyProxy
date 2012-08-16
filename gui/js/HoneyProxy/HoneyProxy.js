@@ -1,8 +1,8 @@
-var HoneyProxy = {
+_.extend(HoneyProxy,{
 		/**
 		 * Array containing all Subclasses of the Flow Model.
 		 */
-		flowModels:[],
+		//flowModels:[],
 		/**
 		 * Stores the currently selected row.
 		 */
@@ -13,14 +13,14 @@ var HoneyProxy = {
 		openPreview: function(){
 			HoneyProxy.detailView.model = this.model;
 			HoneyProxy.detailView.render();
-			//HoneyProxy.MainLayout.splitpaneResizer.openSecond();
+			HoneyProxy.MainLayout.openDetail();
 			this.$el.addClass("selected");
 			if(HoneyProxy.currentSelection){
 				HoneyProxy.currentSelection.$el.removeClass("selected");
 			}
 			HoneyProxy.currentSelection = this;
 		}
-};
+});
 
 //HoneyProxy acts as a general event handler (onConfigLoaded, authenticated, newflow, ...)
 _.extend(HoneyProxy, Backbone.Events);
@@ -28,7 +28,7 @@ _.extend(HoneyProxy, Backbone.Events);
 //debug
 window.HoneyProxy = HoneyProxy;
 
-$(function(){
+(function(){
 
 	//initialize traffic object
 	HoneyProxy.traffic = new HoneyProxy.Traffic;
@@ -36,6 +36,7 @@ $(function(){
 	
 	//establish websocket communication after config has been loaded.
 	HoneyProxy.on("configLoaded",function(){
+		console.log("Config loaded.");
 		HoneyProxy.websocket.initialize();
 	})
 	
@@ -58,8 +59,9 @@ $(function(){
 	HoneyProxy.on("newflow",firstFlowTrigger);
 	HoneyProxy.traffic.on("reset",firstFlowTrigger);
 
-	
-	//initialize views
-	HoneyProxy.trafficView = new HoneyProxy.TrafficView({collection: HoneyProxy.traffic, el: $("#traffic")[0]});		
-	HoneyProxy.detailView = new HoneyProxy.DetailView({el: $("#detail")});
-});
+	$(function(){
+		//initialize views
+		HoneyProxy.trafficView = new HoneyProxy.TrafficView({collection: HoneyProxy.traffic, el: $("#trafficTable .data tbody")[0]});		
+		HoneyProxy.detailView = new HoneyProxy.DetailView({el: $("#detail")});
+	});
+})();

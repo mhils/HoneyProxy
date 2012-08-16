@@ -1,5 +1,7 @@
-require([ "dojo/query","dijit/layout/BorderContainer", "dijit/layout/ContentPane",
-		"dojo/domReady!" ], function(query, BorderContainer, ContentPane) {
+define([ "dojo/query",
+  "dijit/layout/BorderContainer", 
+  "dijit/layout/ContentPane",
+  "dojo/domReady!"], function(query, BorderContainer, ContentPane) {
 	var appLayout = new BorderContainer({
 		design : "headline",
 		liveSplitters: false,
@@ -17,13 +19,14 @@ require([ "dojo/query","dijit/layout/BorderContainer", "dijit/layout/ContentPane
 		        splitter: true
 		    },"main")
 		);
-	appLayout.addChild(
-		    new ContentPane({
-		        region: "bottom",
-		        splitter: true,
-		        layoutPriority:2
-		    },"detail")
-		);
+	
+	var detail = new ContentPane({
+        region: "bottom",
+        splitter: true,
+        layoutPriority:2
+    },"detail");
+	
+	//appLayout.addChild(detail);
 	appLayout.addChild(
 		    new ContentPane({
 		        region: "right",
@@ -33,4 +36,22 @@ require([ "dojo/query","dijit/layout/BorderContainer", "dijit/layout/ContentPane
 		);
 	
 	appLayout.startup();
+	
+	var isDetailAdded = false;
+	var MainLayout = {
+			appLayout: appLayout,
+			openDetail: function(){
+				if(isDetailAdded)
+					return;
+				appLayout.addChild(detail);
+				isDetailAdded = true;
+			},
+			closeDetail: function(){
+				if(!isDetailAdded)
+					return;
+				appLayout.removeChild(detail);
+				isDetailAdded = false;
+			}
+	}
+	return MainLayout;
 });
