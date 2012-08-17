@@ -118,17 +118,19 @@ def main():
         #start gui
         import webbrowser
         webbrowser.open(guiURL)
-    print "HoneyProxy has been started! Usually you don't need the configuration details below:"
-    print "HTTP Root: "+httpGui
-    print "WebSocket API: "+wsURL
-    print "Auth user: " + "honey"
-    print "Auth key: "+ HoneyProxy.getAuthKey()
+    else:
+        print "Configuration Details:"
+        print "HTTP Root: "+httpGui
+        print "WebSocket API: "+wsURL
+        print "Auth user: " + "honey"
+        print "Auth key: "+ HoneyProxy.getAuthKey()
         
     #run!
     l = task.LoopingCall(p.tick)
     l.start(0.01) # call every 10ms
     reactor.addSystemEventTrigger("before", "shutdown", p.shutdown)
     
+
     reactor.run()
     
 

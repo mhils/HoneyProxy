@@ -27,6 +27,9 @@ class HoneyProxyMaster(FlowMaster):
 
         if options.wfile:
             path = os.path.expanduser(options.wfile)
+            directory = os.path.split(path)[0]
+            if not os.path.exists(directory):
+                os.makedirs(directory)
             try:
                 f = file(path, "wb")
                 self.fwriter = flow.FlowWriter(f)
@@ -35,6 +38,11 @@ class HoneyProxyMaster(FlowMaster):
             
         if options.dumpdir:
             path = os.path.expanduser(options.dumpdir)
+            if not os.path.exists(path):
+                os.makedirs(path)
+            if os.listdir(path):
+                print "Notice: Your dump directory (%s) is not empty." % path
+                print "HoneyProxy won't overwrite your files."
             self.dirdumper = DirDumper(path)
 
         if options.replacements:
