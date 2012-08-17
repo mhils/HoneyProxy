@@ -42,7 +42,18 @@ def main():
     
     
     #config stuff
-    parser = ArgumentParser(usage = "%(prog)s [options]")
+    defaultConfig = True
+    for arg in sys.argv:
+        if arg.lstrip().startswith("@"):
+            defaultConfig = False
+            break
+    if defaultConfig and os.path.exists('default.conf'):
+        sys.argv.insert(1,'@default.conf')
+    parser = ArgumentParser(
+                            usage = "%(prog)s [options]",
+                            fromfile_prefix_chars="@"
+                            )
+    ArgumentParser.convert_arg_line_to_args = hcmdline.convert_arg_line_to_args
     parser.add_argument('--version', action='version', version=version.NAMEVERSION)
     mcmdline.common_options(parser)
     hcmdline.fix_options(parser) #remove some mitmproxy stuff

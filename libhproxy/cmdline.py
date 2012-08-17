@@ -13,6 +13,14 @@ def suppress_option(parser, options):
                 return
         print "Warning: Command line switch "+str(option)+" doesn't exist. Your version of mitmproxy might be incompatible."
 
+def convert_arg_line_to_args(self, arg_line):
+    if arg_line.lstrip().startswith("#"):
+        return
+    for arg in arg_line.split():
+        if not arg.strip():
+            continue
+        yield arg
+
 def suppress_group(parser, option):
     for action_group in parser._action_groups:
             if(option == action_group.title):
