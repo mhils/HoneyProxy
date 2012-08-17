@@ -3,4 +3,5 @@ ca-cert/
 dist/
 outfile
 dump/
+build/dojo/
 web/build/

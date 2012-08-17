@@ -5,10 +5,14 @@ docs/
 .settings/
 **/*.less
 **/*.pyc
-gui/js/closure-library/bin/
-gui/js/closure-library/known-issues/
+gui/js/lib/closure-library/bin/
+gui/js/lib/closure-library/known-issues/
 mitmproxy/doc-src/
 mitmproxy/examples/
 mitmproxy/scripts/
 mitmproxy/test/
 web/
+gui/js/lib/dojo/
+gui/js/lib/dojox/
+gui/js/lib/dijit/
+gui/js/lib/util/

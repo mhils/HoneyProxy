@@ -11,6 +11,11 @@
       	<excludesfile name="build/ignore.txt"/>
       </fileset>
 	</copy>
+  	<!-- Workaround for the dojo build system -->
+  	<copy todir="${dist}/gui/js/lib/">
+  	      <fileset dir="build/dojo/">
+  	      </fileset>
+    </copy>
   </target>
 	
   <target name="pack" depends="build" description="put it into a zip file! :)">
