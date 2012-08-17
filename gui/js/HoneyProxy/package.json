@@ -1,6 +1,0 @@
-{
-    "name": "HoneyProxy",
-    "description": "HTTPS traffic analyzer",
-    "version": 1.0,
-    "dojoBuild": "honeyproxy.profile.js"
-}
