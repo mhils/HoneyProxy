@@ -1,72 +1,82 @@
+import argparse
 """
 see mitmproxy/libmproxy/cmdline
 we remove all unwanted parameters and add everything we need for HoneyProxy
 """
-def remove_option(parser, options):
+def suppress_option(parser, options):
     if(type(options) == str):
         options = [options]
     for option in options:
-        if parser.has_option(option):
-            parser.remove_option(option)
-        else:
-            print "Warning: Command line switch "+str(option)+" doesn't exist. Your version of mitmproxy might be incompatible."
+        for action in parser._actions:
+            if(option in action.option_strings):
+                action.help = argparse.SUPPRESS
+                return
+        print "Warning: Command line switch "+str(option)+" doesn't exist. Your version of mitmproxy might be incompatible."
 
-def remove_group(parser, option):
-    if parser.has_option(option):
-        if parser.get_option_group(option) in parser.option_groups:
-            parser.option_groups.remove(parser.get_option_group(option))    
+def suppress_group(parser, option):
+    for action_group in parser._action_groups:
+            if(option == action_group.title):
+                action_group.title = action_group.description = argparse.SUPPRESS 
+                return
+    print "Warning: Command line group "+str(option)+" doesn't exist. Your version of mitmproxy might be incompatible."
+
+def allow_overwrite(parser, option):
+    for action in parser._actions:
+        if(option in action.option_strings):
+            action.container.conflict_handler = "resolve"
 
 def fix_options(parser):
     '''Fix mitmproxy proxy options - we don't want all features to be present in HoneyProxy'''
-    remove_option(parser,"--confdir")
-    parser.add_option(
+    suppress_option(parser,"--confdir")
+    allow_overwrite(parser,"--confdir")
+    parser.add_argument(
         "--confdir",
-        action="store", type = "str", dest="confdir", default='./ca-cert',
+        action="store", type = str, dest="confdir", default='./ca-cert',
         help = "Configuration directory. (./ca-cert)"
     )
     
-    parser.add_option(
+    parser.add_argument(
         "--dump-dir",
-        action="store", type = "str", dest="dumpdir", default=None,
+        action="store", type = str, dest="dumpdir", default=None,
         help = "Folder to dump all response objects into"
     )
     
-    parser.add_option(
+    parser.add_argument(
         "--apiport",
-        action="store", type = "int", dest="apiport", default=8082,
+        action="store", type = int, dest="apiport", default=8082,
         help = "WebSocket API service port."
     )
-    parser.add_option(
+    parser.add_argument(
         "--guiport",
-        action="store", type = "int", dest="guiport", default=8081,
+        action="store", type = int, dest="guiport", default=8081,
         help = "GUI service port."
     )
     
-    parser.add_option(
+    parser.add_argument(
         "--api-auth",
-        action="store", type = "str", dest="apiauth", default=None,
+        action="store", type = str, dest="apiauth", default=None,
         help = "API auth key / shared secret"
     )
     
-    parser.add_option(
+    parser.add_argument(
         "--no-gui",
         action="store_true", dest="nogui",
         help="Don't open GUI in browser"
     )    
 
-    remove_option(parser,"-e")
-    remove_option(parser,"-q")
-    remove_option(parser,"-v")
+    suppress_option(parser,"-e")
+    suppress_option(parser,"-q")
+    suppress_option(parser,"-v")
     
     #client replay
-    remove_group(parser,"-c")
-    remove_option(parser,"-c")
+    suppress_group(parser,"Client Replay")
+    suppress_option(parser,"-c")
     
     #server replay
-    remove_group(parser,"-S")
+    suppress_group(parser,"Server Replay")
     
-    remove_option(parser,"-S")
-    remove_option(parser,"-k")
-    remove_option(parser,"--rheader")
-    remove_option(parser,"--norefresh")
-    remove_option(parser,"--no-pop")
+    suppress_option(parser,"-S")
+    suppress_option(parser,"-k")
+    suppress_option(parser,"--rheader")
+    suppress_option(parser,"--norefresh")
+    suppress_option(parser,"--no-pop")

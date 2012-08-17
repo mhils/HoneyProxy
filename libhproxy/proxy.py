@@ -1,4 +1,4 @@
-from libmproxy import flow, controller, filt
+from libmproxy import flow, controller
 from libmproxy.flow import FlowMaster
 import os
 from flowcollection import FlowCollection
@@ -10,7 +10,7 @@ class HoneyProxyMaster(FlowMaster):
     """
         The HoneyProxy proxy core, in some parts pretty similar to mitmproxys DumpMaster.
     """
-    def __init__(self, server, options, filtstr, sessionFactory):
+    def __init__(self, server, options, sessionFactory):
         FlowMaster.__init__(self, server, flow.State())        
         
         self.sessionFactory = sessionFactory
@@ -18,11 +18,6 @@ class HoneyProxyMaster(FlowMaster):
         self.flows = FlowCollection()
         self.anticache = options.anticache
         self.anticomp = options.anticomp
-        
-        if filtstr:
-            self.filt = filt.parse(filtstr)
-        else:
-            self.filt = None
             
         if options.stickycookie:
             self.set_stickycookie(options.stickycookie)

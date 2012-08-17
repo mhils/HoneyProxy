@@ -16,9 +16,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-
-import libhproxy.gui.session as session
 import sys, os, inspect
+from argparse import ArgumentParser
+from twisted.web.server import Site 
+from twisted.web.static import File
+from twisted.internet import reactor, task
+from twisted.web.resource import Resource
+from autobahn.websocket import listenWS
 
 #ensure to load our own version of mitmproxy and netlib
 #http://stackoverflow.com/questions/279237/python-import-a-module-from-a-folder
@@ -29,38 +33,22 @@ def add_subfolder(name):
 add_subfolder("netlib")
 add_subfolder("mitmproxy")
 
-from optparse import OptionParser
-
 from libmproxy import proxy as mproxy, cmdline as mcmdline, dump
-
-from twisted.web.server import Site 
-from twisted.web.static import File
-from twisted.internet import reactor, task
-from twisted.web.resource import Resource
-
-#from libhproxy.websockets import WebSocketsResource
 from libhproxy import proxy as hproxy, cmdline as hcmdline, version, content, api
 from libhproxy.honey import HoneyProxy
-
-from autobahn.websocket import listenWS
+from libhproxy.gui import session
 
 def main():
     
     
     #config stuff
-    parser = OptionParser(
-                usage = "%prog [options] [filter]",
-                version= version.NAMEVERSION,
-            )
+    parser = ArgumentParser(usage = "%(prog)s [options]")
+    parser.add_argument('--version', action='version', version=version.NAMEVERSION)
     mcmdline.common_options(parser)
     hcmdline.fix_options(parser) #remove some mitmproxy stuff
 
-    options, args = parser.parse_args()
-    
-    if args:
-        filt = " ".join(args)
-    else:
-        filt = None
+    options = parser.parse_args()
+
     
     dumpoptions = dump.Options(dumpdir=options.dumpdir,**mcmdline.get_common_options(options))
     
@@ -111,7 +99,7 @@ def main():
     reactor.listenTCP(options.guiport, Site(root))  
         
     #HoneyProxy Master
-    p = hproxy.HoneyProxyMaster(server, dumpoptions, filt, guiSessionFactory)
+    p = hproxy.HoneyProxyMaster(server, dumpoptions, guiSessionFactory)
     HoneyProxy.setProxyMaster(p)
     p.start()
     
