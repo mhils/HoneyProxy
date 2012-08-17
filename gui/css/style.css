@@ -128,8 +128,12 @@ header {
   border-bottom: solid #454545 1px;
 }
 header a {
+  line-height: 12px;
+  font-size: 12px;
   float: right;
   color: black;
+  margin-right: 30px;
+  margin-top: 26px;
   text-decoration: none;
 }
 header a:before {
@@ -302,6 +306,19 @@ header img {
 }
 .table-fixed-header .header th {
   text-align: left;
+  -webkit-user-select: none;
+  /* Chrome all / Safari all */
+
+  -moz-user-select: none;
+  /* Firefox all */
+
+  -ms-user-select: none;
+  /* IE 10+ */
+
+  /* No support for these yet, use at own risk */
+
+  -o-user-select: none;
+  user-select: none;
 }
 .table-fixed-header .data td {
   vertical-align: top;
@@ -325,10 +342,10 @@ header img {
   visibility: hidden;
 }
 #trafficTable th.goog-tablesorter-sorted {
-  background-color: rgba(70, 185, 72, 0.5);
+  background-color: rgba(70, 185, 72, 0.3);
 }
 #trafficTable th.goog-tablesorter-sorted-reverse {
-  background-color: rgba(238, 68, 17, 0.5);
+  background-color: rgba(238, 68, 17, 0.3);
 }
 #trafficTable .size,
 #trafficTable .time {
@@ -338,7 +355,9 @@ header img {
 #trafficTable td {
   cursor: pointer;
 }
-/*//#traffictable th, #traffictable td {
+/*
+test
+//#traffictable th, #traffictable td {
 //	cursor: pointer;
 //}
 th.goog-tablesorter-sorted {

@@ -15,4 +15,21 @@
 	trafficTableSorter.setSortFunction(5, goog.ui.TableSorter.createReverseSort(goog.ui.TableSorter.numericSort));
 	
 	HoneyProxy.trafficTableSorter = trafficTableSorter;
+	
+/**
+ * Table Sorter Proxy - 
+ * proxy click events to the second table.
+ */
+	$(function(){
+		$(".table-fixed-header .header th").click(function(){
+			var index = $(this).index();
+			$(".table-fixed-header .header th").removeClass();
+			var toProxy = $($(".table-fixed-header .data th").get(index));
+			toProxy.click();
+			$(this).addClass(toProxy.attr('class'));
+		});
+	})
+	
+	
 })();
+

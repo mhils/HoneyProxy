@@ -1,7 +1,10 @@
 @lineHeight: 36px;
 @innerLineHeight: 34px;
-@headerHeight: @lineHeight / 1.5;
+
 .table-fixed-header {
+
+	@headerHeight: @lineHeight / 1.5;
+	
 	/* Basic Layout */
 	width: 100%;
 	height: 100%;
@@ -50,6 +53,7 @@
 	/* Cell Layout */
 	.header th {
 		text-align: left;
+		.disable-select;
 	}
 	.data td {
 		vertical-align: top;
@@ -71,10 +75,10 @@
 	
 	.data thead { .hidden; }
 	th.goog-tablesorter-sorted {
-		background-color: hsla(121, 45%, 50%,.5);
+		background-color: hsla(121, 45%, 50%,.3);
 	}
 	th.goog-tablesorter-sorted-reverse {
-	     background-color: hsla(14, 87%, 50%,.5);
+	     background-color: hsla(14, 87%, 50%,.3);
 	}
 	
 	/* Cell Styling */
@@ -89,7 +93,9 @@
 	}
 }
 
-/*//#traffictable th, #traffictable td {
+/*
+test
+//#traffictable th, #traffictable td {
 //	cursor: pointer;
 //}
 th.goog-tablesorter-sorted {

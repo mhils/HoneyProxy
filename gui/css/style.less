@@ -49,18 +49,24 @@ h3 {
 	);
 }
 
+@headerHeight: 64px;
 header {
 	overflow: auto;
 	display: block;
-	height: 64px;
+	height: @headerHeight;
 	padding: 0.5em 100px 0.5em;
 	.lightBg;
 	border-bottom: @darkSeperator;
 }
 
 header a {
+	@fontSize: 12px;
+	line-height: @fontSize;
+	font-size: @fontSize;
 	float: right;
 	color: black;
+	margin-right: 30px;
+	margin-top: (@headerHeight - @fontSize) / 2 ;
 	text-decoration: none;
 	&:before {
 		content: "[";
