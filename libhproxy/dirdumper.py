@@ -40,21 +40,21 @@ class DirDumper:
         
         #forbid relative directory changes.
         subdir = "/".join(i.lstrip(".") for i in subdir.replace("\\","/").split("/"))
-        subdir = "/".join(i[:25]+"[HoneyProxy - cut off]"+i[-25:] if (len(i) > 50) else i for i in subdir.split("/"))
+        subdir = "/".join(i[:20]+"[...]"+i[-20:] if (len(i) > 40) else i for i in subdir.split("/"))
         
         #remove invalid characters
         subdir = os.path.normpath("".join(i for i in subdir if i not in r':*?"<>|'))
         
         #cut off too long filenames
-        MAX_DIR_LENGTH  = 200
-        MAX_FILE_LENGTH = 200
+        MAX_DIR_LENGTH  = 150
+        MAX_FILE_LENGTH = 50
         MAX_EXT_LENGTH  = 30
         if(len(subdir) > MAX_DIR_LENGTH):
             if(subdir[MAX_DIR_LENGTH] == "/"):
                 subdir = subdir[0:MAX_DIR_LENGTH+1]
             else:
                 subdir = subdir[0:MAX_DIR_LENGTH]
-            subdir += "[HoneyProxy - cut off]"
+            subdir += "[...]"
         
         #ensure that subdir is relative, otherwise it could exploit outside of self.path
         #os.path.join(foo,"/bar") => "/bar"
