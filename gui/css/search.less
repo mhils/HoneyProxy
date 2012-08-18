@@ -1,25 +1,11 @@
-
-
 .filter-hide {
 	display: none;
 }
-/*
-.filters .filter-highlight:before {
-	//content: "\2022";
-}*/
 
 //@highlightWidth: 50%;
 //@highlightFull: 50%;
 .highlight(@name, @color) {
 	(~".filters  .filter-highlight-@{name}") {
-		/*
-		.linear-gradient-left(transparent,
-			transparent, (@percentage - @highlightWidth),
-			@color,(@percentage - @highlightFull),
-			@color,(@percentage + @highlightFull),
-			transparent,(@percentage + @highlightWidth)
-			);
-		*/
 		background-color: @color;
 		
 	}
@@ -34,7 +20,7 @@
 .highlight(3,hsla(120, 100%, 25%, 0.20));
 
 .filters {
-	margin-top: (@innerLineHeight - @lineHeight) / 2;
+	margin-top: -@trafficTablePaddingTop;
 	position: absolute;
 	left: 0;
 	right: 0;

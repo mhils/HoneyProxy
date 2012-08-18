@@ -76,10 +76,10 @@ a, a:visited {
 	color: hsl(240, 88%, 27%);
 }
 
-@box-padding-horizontal: 32px;
+@box-padding: 32px;
 .box {
 	background-color: #ffffff;
-	padding: 1em @box-padding-horizontal;
+	padding: @box-padding;
 	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px
 		rgba(0, 0, 0, 0.1) inset;
 	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px
@@ -103,6 +103,14 @@ a, a:visited {
 		inset;
 }*/
 
+.current-state {
+	margin: 0 auto;
+}
+
+.intro {
+	margin: 3em 0;
+}
+
 code {
 	margin: 0 2px;
 	padding: 0px 5px;
@@ -115,8 +123,8 @@ code {
 }
 
 h2:target {
-	margin: -.2em -@box-padding-horizontal;
-	padding: .2em @box-padding-horizontal;
+	margin: -.2em -@box-padding;
+	padding: .2em @box-padding;
 	//background-color: hsla(60, 100%, 50%,0.2);
 	background-image: -webkit-linear-gradient(left,hsla(60, 100%, 50%,0.4),hsla(60, 100%, 50%,0.2));
 }

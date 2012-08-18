@@ -174,57 +174,26 @@ header img {
 .filter-hide {
   display: none;
 }
-/*
-.filters .filter-highlight:before {
-	//content: "\2022";
-}*/
 .filters  .filter-highlight-1 {
-  /*
-		.linear-gradient-left(transparent,
-			transparent, (@percentage - @highlightWidth),
-			@color,(@percentage - @highlightFull),
-			@color,(@percentage + @highlightFull),
-			transparent,(@percentage + @highlightWidth)
-			);
-		*/
-
   background-color: rgba(255, 0, 0, 0.2);
 }
 .search.highlight-1 {
   box-shadow: -6px 0 0 0 #ff0000;
 }
 .filters  .filter-highlight-2 {
-  /*
-		.linear-gradient-left(transparent,
-			transparent, (@percentage - @highlightWidth),
-			@color,(@percentage - @highlightFull),
-			@color,(@percentage + @highlightFull),
-			transparent,(@percentage + @highlightWidth)
-			);
-		*/
-
   background-color: rgba(255, 217, 0, 0.2);
 }
 .search.highlight-2 {
   box-shadow: -6px 0 0 0 #ffd900;
 }
 .filters  .filter-highlight-3 {
-  /*
-		.linear-gradient-left(transparent,
-			transparent, (@percentage - @highlightWidth),
-			@color,(@percentage - @highlightFull),
-			@color,(@percentage + @highlightFull),
-			transparent,(@percentage + @highlightWidth)
-			);
-		*/
-
   background-color: rgba(0, 128, 0, 0.2);
 }
 .search.highlight-3 {
   box-shadow: -6px 0 0 0 #008000;
 }
 .filters {
-  margin-top: -1px;
+  margin-top: -2px;
   position: absolute;
   left: 0;
   right: 0;
@@ -275,9 +244,9 @@ header img {
 .table-fixed-header .header tr {
   height: 24px;
 }
-.table-fixed-header .data tr {
+.table-fixed-header .data td {
   height: 36px;
-  padding: 1px 0;
+  padding: 2px 0 0px;
 }
 .table-fixed-header .data {
   background-color: rgba(0, 0, 0, 0.07);
@@ -350,6 +319,16 @@ header img {
 #trafficTable .size,
 #trafficTable .time {
   text-align: right;
+}
+#trafficTable .subtitle {
+  font-size: 11px;
+  color: grey;
+}
+#trafficTable .time .duration {
+  color: grey;
+}
+#trafficTable .request-scheme-https .ssl {
+  background-color: rgba(66, 212, 43, 0.4);
 }
 #trafficTable th,
 #trafficTable td {
@@ -479,7 +458,6 @@ th.time {
   float: left;
   width: 32px;
   height: 32px;
-  margin-top: 1px;
   margin-right: 3px;
   background-image: url(../images/resourcePlainIcon.png);
 }

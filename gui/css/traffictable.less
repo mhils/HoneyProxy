@@ -1,5 +1,7 @@
 @lineHeight: 36px;
-@innerLineHeight: 34px;
+@trafficTablePaddingTop: 2px;
+@trafficTablePaddingBottom: 0px;
+@innerLineHeight: @lineHeight - @trafficTablePaddingTop - @trafficTablePaddingBottom;
 
 .table-fixed-header {
 
@@ -29,9 +31,9 @@
 	.header tr {
 		height: @headerHeight;
 	}
-	.data tr {
+	.data td {
 		height: @lineHeight;
-		padding: (@lineHeight - @innerLineHeight)/2 0;
+		padding: @trafficTablePaddingTop 0 @trafficTablePaddingBottom;
 	}
 	/* Background & Row Highlight */
 	.data {
@@ -72,7 +74,6 @@
 	min-width: 600px;
 	
 	//FIXME: Remove when we are away from Closures TableSorter
-	
 	.data thead { .hidden; }
 	th.goog-tablesorter-sorted {
 		background-color: hsla(121, 45%, 50%,.3);
@@ -85,6 +86,18 @@
 	.size, .time {
 	    text-align: right;
 	    
+	}
+	
+	.subtitle {
+	    font-size: 11px;
+	    color: grey;    
+	}
+	
+	.time .duration {
+		color: grey;
+	}
+	.request-scheme-https .ssl {
+		background-color: hsla(112, 66%, 50%,0.4);
 	}
 	
 	/* UX: Clickable */
@@ -215,7 +228,6 @@ col.time, th.time {
 		float: left;
 		width: 32px;
 		height: 32px;
-		margin-top: 1px;
 		margin-right: 3px;
 		background-image: url(../images/resourcePlainIcon.png);
 	}

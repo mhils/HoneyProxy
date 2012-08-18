@@ -324,7 +324,7 @@ a:visited {
 }
 .box {
   background-color: #ffffff;
-  padding: 1em 32px;
+  padding: 32px;
   -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
   -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
@@ -343,6 +343,12 @@ a:visited {
 	box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.1)
 		inset;
 }*/
+.current-state {
+  margin: 0 auto;
+}
+.intro {
+  margin: 3em 0;
+}
 code {
   margin: 0 2px;
   padding: 0px 5px;
