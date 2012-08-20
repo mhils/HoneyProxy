@@ -98,8 +98,11 @@ class SearchApiResource(Resource):
                 if(cond["type"] == "regexp"):
                     prog = re.compile(cond["value"],re.DOTALL)
                     cond["match"] = lambda s: prog.search(s)
-                else: #if(cond["type"] == "contains"):
+                elif(cond["type"] == "containsStrict"):
                     cond["match"] = lambda s: cond["value"] in s
+                else: #if(cond["type"] == "contains"):
+                    value = cond["value"].lower()
+                    cond["match"] = lambda s: value in s.lower()
             
             #helper function get an attribute recursively
             def rec_getattr(obj,attr):

@@ -28,6 +28,10 @@
 				negate = true;
 				part = part.substring(1);
 			}
+			if(part.charAt(0) == "="){
+				type = "containsStrict";
+				part = part.substring(1);
+			}
 			if(part.charAt(0) == "~"){
 				type = "regexp";
 				part = part.substring(1);

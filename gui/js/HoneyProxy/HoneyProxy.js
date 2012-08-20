@@ -61,6 +61,7 @@ window.HoneyProxy = HoneyProxy;
 	$(function(){
 		//initialize views
 		HoneyProxy.trafficView = new HoneyProxy.TrafficView({collection: HoneyProxy.traffic, el: $("#trafficTable .data tbody")[0]});		
+		//HoneyProxy.trafficView.on("all",console.log.bind(console));
 		HoneyProxy.detailView = new HoneyProxy.DetailView({el: $("#detail")});
 	});
 })();
