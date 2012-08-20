@@ -42,11 +42,7 @@ def main():
     
     
     #config stuff
-    defaultConfig = True
-    for arg in sys.argv:
-        if arg.lstrip().startswith("@"):
-            defaultConfig = False
-            break
+    defaultConfig = (len(sys.argv) == 1)
     if defaultConfig and os.path.exists('default.conf'):
         sys.argv.insert(1,'@default.conf')
     parser = ArgumentParser(
@@ -118,12 +114,13 @@ def main():
         #start gui
         import webbrowser
         webbrowser.open(guiURL)
-    else:
-        print "Configuration Details:"
-        print "HTTP Root: "+httpGui
-        print "WebSocket API: "+wsURL
-        print "Auth user: " + "honey"
-        print "Auth key: "+ HoneyProxy.getAuthKey()
+        
+    print "HoneyProxy has been started!"
+    print "Configuration Details (normal users: ignore):"
+    print "HTTP Root: "+httpGui
+    print "WebSocket API: "+wsURL
+    print "Auth user: " + "honey"
+    print "Auth key: "+ HoneyProxy.getAuthKey()
         
     #run!
     l = task.LoopingCall(p.tick)
