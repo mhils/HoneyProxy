@@ -42,6 +42,11 @@ def main():
     
     
     #config stuff
+    if(len(sys.argv) == 2):
+        if(os.path.isfile(sys.argv[1])):
+            sys.argv[1] = "@" + sys.argv[1]
+            os.chdir(os.path.split(inspect.getfile( inspect.currentframe() ))[0])
+            
     defaultConfig = (len(sys.argv) == 1)
     if defaultConfig and os.path.exists('default.conf'):
         sys.argv.insert(1,'@default.conf')
@@ -55,7 +60,6 @@ def main():
     hcmdline.fix_options(parser) #remove some mitmproxy stuff
 
     options = parser.parse_args()
-
     
     dumpoptions = dump.Options(dumpdir=options.dumpdir,**mcmdline.get_common_options(options))
     
@@ -83,8 +87,8 @@ def main():
     
     #Config
     wsURL = "ws://localhost:"+str(options.apiport)
-    httpGui = "http://honey:"+HoneyProxy.getAuthKey()+"@localhost:"+str(options.guiport)
-    guiURL = httpGui +"/app"
+    httpGui = "http://honey:"+HoneyProxy.getAuthKey()+"@localhost:"+str(options.guiport)+"/"
+    guiURL = httpGui +"app/"
     HoneyProxy.setConfig({
         "proxy-addr":options.addr,
         "proxy-port":options.port,
@@ -117,7 +121,7 @@ def main():
         
     print "HoneyProxy has been started!"
     print "Configuration Details (normal users: ignore):"
-    print "HTTP Root: "+httpGui
+    print "GUI: "+guiURL
     print "WebSocket API: "+wsURL
     print "Auth user: " + "honey"
     print "Auth key: "+ HoneyProxy.getAuthKey()
