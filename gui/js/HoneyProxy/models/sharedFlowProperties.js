@@ -20,7 +20,7 @@ HoneyProxy.sharedFlowProperties = {
 	},
 	getContentURL: function(action){
 		var url = 
-			HoneyProxy.config.get("content")
+			"/files"
 			+"/"+this._flow.get("id")
 			+"/"+this._attr
 			+"/"+action;
