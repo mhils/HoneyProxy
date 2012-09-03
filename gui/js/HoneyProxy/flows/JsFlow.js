@@ -1,7 +1,7 @@
 /**
  * Flow subclass responsible for proper display of JavaScript
  */
-define("JsFlow",["./PrettyFlow"],function(PrettyFlow){
+define(["./PrettyFlow"],function(PrettyFlow){
 	return PrettyFlow.extend({
 	
 	}, {

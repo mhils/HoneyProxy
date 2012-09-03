@@ -2,7 +2,7 @@
  * Flow subclass responsible for proper display of flows that can be
  * prettyprinted. Subclassed by HTML, JS, ... flows
  */
-define("PrettyFlow",["./DocumentFlow"],function(DocumentFlow){
+define(["./DocumentFlow"],function(DocumentFlow){
 	return DocumentFlow.extend({
 		getPreview : function(callback) {
 			return DocumentFlow.prototype.getPreview.call(this,

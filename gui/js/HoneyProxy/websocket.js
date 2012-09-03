@@ -28,16 +28,19 @@ define(["./config","dojo/json","./traffic"],function(config,JSON,traffic){
 			}
 			
 			console.log(e);
+		},
+		init: function(){
+			this.ws = new WebSocket(config.get("ws"));
+			this.ws.onopen = (function(e){
+				this.send({action:"auth",key:config.get("auth")});
+				console.log("Connection etablished");
+			}).bind(this);
+			websocket.ws.onmessage = this.onmessage.bind(this);
 		}
 	};
 	_.extend(websocket, Backbone.Events);
 	
-	this.ws = new WebSocket(config.get("ws"));
-	this.ws.onopen = function(e){
-		websocket.send({action:"auth",key:config.get("auth")});
-		console.log("Connection etablished");
-	};
-	this.ws.onmessage = this.onmessage;
+	websocket.init();
 	
 	/**
 	 * Backbone.sync implementation using WebSockets.

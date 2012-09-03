@@ -1,7 +1,7 @@
 /**
  * Flow subclass responsible for proper display of images
  */
-define("ImageFlow",["../models/Flow","dojo/text!../../../templates/flow/image.ejs"],function(Flow,tmpl){
+define(["../models/Flow","dojo/text!../templates/flows/image.ejs"],function(Flow,tmpl){
 	
 	var template = _.template(tmpl);
 	

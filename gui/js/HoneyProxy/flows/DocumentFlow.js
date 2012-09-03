@@ -3,7 +3,7 @@
  * loading file content into a pre tag. Most other flow classes inherit from
  * this.
  */
-define("DocumentFlow",["../models/Flow"],function(Flow){
+define(["../models/Flow"],function(Flow){
 	return Flow.extend(
 			{}, 
 			{

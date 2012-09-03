@@ -1,14 +1,11 @@
 /**
  * View class for a Flow or one of its subclasses.
  */
-define(["../detailView","dojo/text!../../templates/flow.ejs"],function(detailView,flowTmpl){
+define(["dojo/text!../templates/flow.ejs"],function(flowTmpl){
 	var flowTemplate = _.template(flowTmpl);
 	
 	return Backbone.View.extend({
 		tagName: "tr",
-		events: {
-			"click": detailView.setModel.bind(detailView)
-		},
 		render: function() {
 			if(this.model === undefined)
 				return this;
@@ -28,7 +25,7 @@ define(["../detailView","dojo/text!../../templates/flow.ejs"],function(detailVie
 				superCls = superCls.constructor.__super__;
 			}
 			this.$el.addClass(categories.join(" "));
-			
+			this.$el.data("flow-id",this.model.id);
 			this.$el.addClass("request-scheme-"+this.model.request.scheme);
 			for(cls in this.model.getFilterClasses()){
 				this.$el.addClass(cls);

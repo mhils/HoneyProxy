@@ -10,7 +10,7 @@
  * One option is to bend the subclasses over to FlowView. getCategory() is clearly something that should
  * be in the model though.
  */
-define([],function(){
+define(["./Request","./Response"],function(Request,Response){
 	return Backbone.Model.extend({
 		/**
 		 * @return {number} the id of the current flow
@@ -22,7 +22,7 @@ define([],function(){
 		 * @return HTML for Preview
 		 * TODO: When moving over to views, make this the default view and let DocumentFlow use it.
 		 */
-		getPreview: function(){
+		getPreview: function(callback){
 			var pre_id = _.uniqueId("preview");
 			var $pre = $("<pre>").attr("id", pre_id).addClass("preview").text(
 					"Loading...");

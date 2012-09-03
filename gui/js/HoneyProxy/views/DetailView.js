@@ -3,9 +3,9 @@
  * TODO: Lazy-load the tabs.
  */
 define(["../MainLayout",
-        "dojo/text!../../templates/preview.ejs",
-        "dojo/text!../../templates/details.ejs",
-        "dojo/text!../../templates/raw.ejs",
+        "dojo/text!../templates/preview.ejs",
+        "dojo/text!../templates/details.ejs",
+        "dojo/text!../templates/raw.ejs",
         "dojo/domReady!"],function(MainLayout,previewTmpl,detailsTmpl,rawTmpl) {
 	
 	var previewTemplate = _.template(previewTmpl);
@@ -30,16 +30,8 @@ define(["../MainLayout",
 			return this;
 		},
 		setModel: function(model){
-			console.warn(arguments);
-			//FIXME resolve
-			this.model = model;//this.model;
+			this.model = model;
 			this.render();
-			MainLayout.openDetail();
-			this.model.$el.addClass("selected");
-			if(currentSelection){
-				currentSelection.$el.removeClass("selected");
-			}
-			currentSelection = this.model;
 		}
 	});
 });

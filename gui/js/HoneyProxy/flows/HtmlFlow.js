@@ -1,7 +1,7 @@
 /**
  * Flow subclass responsible for proper display of CSS files.
  */
-define("HtmlFlow",["./PrettyFlow"],function(PrettyFlow){
+define(["./PrettyFlow"],function(PrettyFlow){
 	return PrettyFlow.extend({
 
 	}, {
