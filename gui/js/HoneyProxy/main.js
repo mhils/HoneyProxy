@@ -4,6 +4,9 @@ require({
         location:"../../HoneyProxy"
     }]
 },	
-[ "HoneyProxy/MainLayout"], function(MainLayout) {
-	HoneyProxy.MainLayout = MainLayout;
+["./MainLayout","./websocket","./traffic"], function(MainLayout,websocket,traffic) {
+	//HoneyProxy.MainLayout = MainLayout;
+	websocket.on("authenticated",function(){
+		traffic.fetch();
+	});
 });

@@ -1,4 +1,5 @@
-(function(){	
+define(["./Flow","../utilities","../flows/flowModels"],function(Flow,utilities,flowModels){
+	
 	/**
 	 * A modelFactory factory
 	 * the returned factory returns a new instance of the model that .matches() the given arguments
@@ -37,12 +38,12 @@
 	 * Returns an instance of Flow or an instance of a subclass of Flow
 	 * that .matches() the given flow data.
 	 */
-	HoneyProxy.flowFactory = modelFactory(
-			HoneyProxy.flowModels,
-			HoneyProxy.Flow,
+	var flowFactory = modelFactory(
+			flowModels,
+			Flow,
 			function aggregate(data){
 				return {
-					contentType : HoneyProxy.getContentTypeFromHeaders(data.response.headers),
+					contentType : utilities.getContentTypeFromHeaders(data.response.headers),
 					path : data.request.path
 				}
 			});
@@ -50,7 +51,9 @@
 	 * HoneyProxy Traffic Model - Stores a list of flows.
 	 * A new flow gets created from data with the flowFactory.
 	 */
-	HoneyProxy.Traffic = Backbone.Collection.extend({
-		  model: HoneyProxy.flowFactory
+	var Traffic = Backbone.Collection.extend({
+		  model: flowFactory
 	});
-})();
+	
+	return Traffic;
+});

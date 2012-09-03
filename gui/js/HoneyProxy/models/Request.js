@@ -2,10 +2,10 @@
  * Proxy object for better access to Flows. 
  * Be aware that both Request and Response objects are stateless!
  */
-Request = function(flow){
-	this._flow = flow;
-};
-(function(){
+define(["../utilities","./sharedFlowProperties"],function(utilities,sharedFlowProperties){
+	Request = function(flow){
+		this._flow = flow;
+	};
 	Request.prototype = {
 		get _attr() {
 			return "request";
@@ -42,7 +42,7 @@ Request = function(flow){
 				callback(this._flow.get("formDataParsed"));
 			else
 				this.getContent((function(data){
-					var formData = HoneyProxy.parseParameters(data)
+					var formData = utilities.parseParameters(data)
 					this._flow.set("formDataParsed",formData);
 					callback(formData);
 				}).bind(this));
@@ -67,6 +67,7 @@ Request = function(flow){
 		}
 	};
 	//depends on https://github.com/documentcloud/underscore/pull/694
-	_.extend(Request.prototype,HoneyProxy.sharedFlowProperties);
+	_.extend(Request.prototype,sharedFlowProperties);
 
-})();
+	return Request;
+});

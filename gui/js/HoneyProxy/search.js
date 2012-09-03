@@ -7,8 +7,7 @@
  * Searching means applying a filter to the flows and hiding all flows that don't match.
  * Highlighting means applying a filter to the flows and marking all flows that match.
  */
-(function(){
-	
+define(["./traffic"],function(traffic){
 	//var parseExp = /([\w\.]+)(==|<|>|~=)(.+)/;
 	
 	function parseSearchString(string) {
@@ -77,10 +76,10 @@
 				matched.shift();
 		}
 		if(ids === undefined)
-			HoneyProxy.traffic.each(handleFlow);
+			traffic.each(handleFlow);
 		else
 			_.each(ids,function(id){
-				handleFlow(HoneyProxy.traffic.get(id));
+				handleFlow(traffic.get(id));
 			})
 	}
 	/**
@@ -90,7 +89,7 @@
 	 * true, if filterClass should be applied to flows that match,
 	 * false, if filterClass should be applied to flows that don't.
 	 */
-	HoneyProxy.search = function(filterClass,string,negate,ids) {
+	function search(filterClass,string,negate,ids) {
 		//disable filter if content is empty.
 		if(string.trim() == "") {
 			return handleSearchResults(filterClass,false,undefined,[]);
@@ -103,48 +102,50 @@
 			filter: JSON.stringify(conditions)
 		}, handleSearchResults.bind(0,filterClass,negate,ids));
 	}
-})();
-
-/**
- * DOM part of the search/highlight feature.
- * Basically just reacting on VK_ENTER and blur events,
- * also applies existing filters to incoming requests.
- * One could argue that this is a feature which should be present
- * in the HoneyProxy controller, but that would make the whole thing
- * just complicated.
- */
-$(function(){
 	
-	function search($el,ids){
-		$el.data("active",$el.val().trim() !== "");
-		return HoneyProxy.search("filter-"+($el.data("filterclass").split(" ").join(" filter-")),$el.val(),$el.data("negate"),ids);
-	}
-	
-	var searchFields = $(".search");
-	
-	searchFields.on("keypress",function(e){
-		if(e.which == 13) {
-			search($(this));
-        }
-	}).on("blur",function(){
-		search($(this));
-	});
-
-	$("#includeContent").on("change",
-			searchFields.trigger.bind(
-					searchFields,"blur"));
-	
-	HoneyProxy.traffic.on("add",function(flow){
-		//premium handling of the filter to avoid flickering
-		if($("#filter").data("active")===true)
-			flow.addFilterClass("filter-hide");
+	require(["dojo/domReady!"], function(){
+		/**
+		 * DOM part of the search/highlight feature.
+		 * Basically just reacting on VK_ENTER and blur events,
+		 * also applies existing filters to incoming requests.
+		 * One could argue that this is a feature which should be present
+		 * in the HoneyProxy controller, but that would make the whole thing
+		 * just complicated.
+		 */
+		function _search($el,ids){
+			$el.data("active",$el.val().trim() !== "");
+			return search("filter-"+($el.data("filterclass").split(" ").join(" filter-")),$el.val(),$el.data("negate"),ids);
+		}
 		
-		searchFields.each(function(index,el){
-			var $el = $(el);
-			if($el.data("active") === true) {
-				search($el,[flow.get("id")]);
-			}
+		var searchFields = $(".search");
+		
+		searchFields.on("keypress",function(e){
+			if(e.which == 13) {
+				_search($(this));
+	        }
+		}).on("blur",function(){
+			_search($(this));
+		});
+
+		$("#includeContent").on("change",
+				searchFields.trigger.bind(
+						searchFields,"blur"));
+		
+		traffic.on("add",function(flow){
+			//premium handling of the filter to avoid flickering
+			if($("#filter").data("active")===true)
+				flow.addFilterClass("filter-hide");
+			
+			searchFields.each(function(index,el){
+				var $el = $(el);
+				if($el.data("active") === true) {
+					_search($el,[flow.get("id")]);
+				}
+			});
 		});
 	});
 	
+	return {
+		search: search
+	};
 });

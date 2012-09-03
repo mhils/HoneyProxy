@@ -4,7 +4,7 @@
  * of the closure library in the future as it's too big/bloated
  * for our needs.
  */
-(function(){
+define(["dojo/domReady!"],function(){
 	
 	var trafficTableSorter = new goog.ui.TableSorter();
 	trafficTableSorter.decorate(goog.dom.getElement('traffictable'));
@@ -16,20 +16,16 @@
 	
 	HoneyProxy.trafficTableSorter = trafficTableSorter;
 	
-/**
- * Table Sorter Proxy - 
- * proxy click events to the second table.
- */
-	$(function(){
-		$(".table-fixed-header .header th").click(function(){
-			var index = $(this).index();
-			$(".table-fixed-header .header th").removeClass();
-			var toProxy = $($(".table-fixed-header .data th").get(index));
-			toProxy.click();
-			$(this).addClass(toProxy.attr('class'));
-		});
-	})
+	/**
+	 * Table Sorter Proxy - 
+	 * proxy click events to the second table.
+	 */
+	$(".table-fixed-header .header th").click(function(){
+		var index = $(this).index();
+		$(".table-fixed-header .header th").removeClass();
+		var toProxy = $($(".table-fixed-header .data th").get(index));
+		toProxy.click();
+		$(this).addClass(toProxy.attr('class'));
+	});
 	
-	
-})();
-
+});
