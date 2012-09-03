@@ -14,8 +14,6 @@ define(["dojo/domReady!"],function(){
 	trafficTableSorter.setSortFunction(3, goog.ui.TableSorter.numericSort);
 	trafficTableSorter.setSortFunction(5, goog.ui.TableSorter.createReverseSort(goog.ui.TableSorter.numericSort));
 	
-	HoneyProxy.trafficTableSorter = trafficTableSorter;
-	
 	/**
 	 * Table Sorter Proxy - 
 	 * proxy click events to the second table.
@@ -28,4 +26,5 @@ define(["dojo/domReady!"],function(){
 		$(this).addClass(toProxy.attr('class'));
 	});
 	
+	return trafficTableSorter;
 });

@@ -1,15 +1,18 @@
 require({
 	packages:[{
         name:"HoneyProxy",
-        location:"../../HoneyProxy"
+        location:"../../HoneyProxy",
+        tlmSiblingOfDojo: false
     }]
 },	
 ["HoneyProxy/MainLayout",
  "HoneyProxy/websocket",
  "HoneyProxy/traffic",
  "HoneyProxy/tutorial",
- "HoneyProxy/search"], function(MainLayout,websocket,traffic) {
-	//HoneyProxy.MainLayout = MainLayout;
+ "HoneyProxy/search",
+ "HoneyProxy/dirdump",
+ "HoneyProxy/TableSorter",
+ "HoneyProxy/popOut"], function(MainLayout,websocket,traffic) {
 	websocket.on("authenticated",function(){
 		traffic.fetch();
 	});
