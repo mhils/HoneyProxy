@@ -8,21 +8,37 @@ define(["../models/Flow","require"],function(Flow,require){
 			var flow = this;
 			
 			var ul_id = _.uniqueId("notModified");
-			var out = $("<div>").append("<h3>Similar Flows with Content:</h3>").append($("<ul>").attr("id", ul_id));
+			var out = $("<div>").attr("id", ul_id);
 			
-			require(["../traffic"],function(traffic){
+			require(["../traffic","../MainLayout"],function(traffic,MainLayout){
 				flow.getSimilarFlows(3,function(ids){
 					var similarFlows = $("#"+ul_id);
+					var ul = $("<ul>");
+					
 					_.each(ids,function(i){
 						var f = traffic.get(i);
-						if(f.request.contentLength == 0)
-							similarFlows.append($("<li>").text(f.id));
+						if(f.response.contentLength > 0)
+							ul.append(
+									$("<li>")
+									.text(f.response.contentLengthFormatted + " - " + f.request.date)
+									.data("flow-id",i)
+							);
+					});
+					
+					if(ul.children().length > 0){
+						similarFlows.append("<h3>Similar Flows with Content:</h3>").append(ul);
+					} else {
+						similarFlows.append("<p>No similar flows found.</p>");
+					}
+					
+					ul.on("click","li",function(e){
+						MainLayout.selectFlow($(e.target).data("flow-id"));
 					});
 				});
 			});
 			
 			var parentPreview = parentPreviewFunc.apply(this,arguments);
-			return parentPreview + out.html();
+			return parentPreview + $("<div>").append(out).html();
 		}
 	}	
 	

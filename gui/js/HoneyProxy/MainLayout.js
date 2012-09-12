@@ -47,15 +47,7 @@ define([ "dojo/query",
 	var detailView = new DetailView({el: $("#detail")});
 	
 	trafficView.$el.on("click","tr",function(e){
-		var $this = $(this);
-		var model = traffic.get($this.data("flow-id"));
-		detailView.setModel(model);
-		MainLayout.openDetail();
-		$this.addClass("selected");
-		if(MainLayout.currentSelection){
-			MainLayout.currentSelection.removeClass("selected");
-		}
-		MainLayout.currentSelection = $this;
+		MainLayout.selectFlow($(this).data("flow-id"));
 	});
 	
 	var isDetailAdded = false;
@@ -64,6 +56,18 @@ define([ "dojo/query",
 			trafficView : trafficView,
 			detailView: detailView,
 			appLayout: appLayout,
+			selectFlow: function(flowId){
+				var model = traffic.get(flowId);
+				var modelView = trafficView.children[model.cid].$el;
+				detailView.setModel(model);
+				
+				MainLayout.openDetail();
+				modelView.addClass("selected");
+				if(MainLayout.currentSelection){
+					MainLayout.currentSelection.removeClass("selected");
+				}
+				MainLayout.currentSelection = modelView;
+			},
 			openDetail: function(){
 				if(isDetailAdded)
 					return;
