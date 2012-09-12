@@ -72,7 +72,7 @@ def main():
         try:
             server = mproxy.ProxyServer(proxyconfig, options.port, options.addr)
         except mproxy.ProxyServerError, v:
-            print >> sys.stderr, "%(name)s:" % version.NAME, v.args[0]
+            print >> sys.stderr, "%(name)s: %(args)s" % {"name": version.NAME, "args": v.args[0]}
             sys.exit(1)
 
     HoneyProxy.setAuthKey(options.apiauth)

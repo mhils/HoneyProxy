@@ -1,4 +1,4 @@
-define(["./Flow","../utilities","../flows/flowModels"],function(Flow,utilities,flowModels){
+define(["./Flow","../utilities","../flows/flowModels","dojo/Deferred"],function(Flow,utilities,flowModels,Deferred){
 	
 	/**
 	 * A modelFactory factory
@@ -44,7 +44,8 @@ define(["./Flow","../utilities","../flows/flowModels"],function(Flow,utilities,f
 			function aggregate(data){
 				return {
 					contentType : utilities.getContentTypeFromHeaders(data.response.headers),
-					path : data.request.path
+					path : data.request.path,
+					responseCode: data.response.code,
 				}
 			});
 	/**
@@ -52,7 +53,19 @@ define(["./Flow","../utilities","../flows/flowModels"],function(Flow,utilities,f
 	 * A new flow gets created from data with the flowFactory.
 	 */
 	var Traffic = Backbone.Collection.extend({
-		  model: flowFactory
+		initialize: function(){
+			this.firstFlow = new Deferred();
+			function firstFlowTrigger() {
+				if(this.length > 0) {
+					this.firstFlow.resolve("firstflow")
+					this.off("newflow",firstFlowTrigger);
+					this.off("reset",firstFlowTrigger);
+				}
+			}
+			this.on("add",firstFlowTrigger);
+			this.on("reset",firstFlowTrigger);
+		},
+		model: flowFactory
 	});
 	
 	return Traffic;

@@ -3,7 +3,7 @@
  * Be aware that both Request and Response objects are stateless!
  */
 define(["../utilities","./sharedFlowProperties"],function(utilities,sharedFlowProperties){
-	Request = function(flow){
+	var Request = function(flow){
 		this._flow = flow;
 	};
 	Request.prototype = {
@@ -64,6 +64,9 @@ define(["../utilities","./sharedFlowProperties"],function(utilities,sharedFlowPr
 			if(!this._flow.has("fullpath"))
 				this._processName();
 			return this._flow.get("fullpath");
+		},
+		get url() {
+			
 		}
 	};
 	//depends on https://github.com/documentcloud/underscore/pull/694

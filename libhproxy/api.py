@@ -58,7 +58,6 @@ class SearchApiResource(Resource):
                         field = string
                             the field to search in, e.g. "request.content".
                             If you want to search in all fields, specify "any".
-                            Default behaviour for HNP is "any" currently.
                         type = string
                             a valid search type currently the only supported types are
                             "regexp" and "contains".
@@ -100,9 +99,29 @@ class SearchApiResource(Resource):
                     cond["match"] = lambda s: prog.search(s)
                 elif(cond["type"] == "containsStrict"):
                     cond["match"] = lambda s: cond["value"] in s
+                elif(cond["type"] == "similarTo"):
+                    cond["field"] = []
+                    flow, level = cond["value"].split(",")
+                    flow = allFlows[int(flow)]
+                    level = int(level)
+                    cond["match"] = lambda s: similarTo(flow,s,level)
                 else: #if(cond["type"] == "contains"):
                     value = cond["value"].lower()
                     cond["match"] = lambda s: value in s.lower()
+            
+            def similarTo(this,other,level):
+                if(this == other):
+                    return False
+                diff = ((this.get("request").get("host")               != other.get("request").get("host")) * 4 +
+                        (this.get("request").get("method")             != other.get("request").get("method")) * 4 +
+                        (this.get("request").get("path")               != other.get("request").get("path")) * 4 +
+                        (this.get("request").get("contentLength")      != other.get("request").get("contentLength")) +
+                        (this.get("response").get("code")              != other.get("response").get("code")) +
+                        (this.get("response").get("contentLength")     != other.get("response").get("contentLength")))
+                if(diff <= level):
+                    return True
+                else:
+                    return False
             
             #helper function get an attribute recursively
             def rec_getattr(obj,attr):
@@ -146,11 +165,11 @@ class SearchApiResource(Resource):
                         return False
                 return True
             
-            if("includeContent" in request.args and request.args["includeContent"][0].lower() == "false"):
-                filteredFlows = filter(filterFunc,flows)
-            else:
+            if("includeContent" in request.args and request.args["includeContent"][0].lower() == "true"):
                 with includeDecodedContent(flows):
                     filteredFlows = filter(filterFunc,flows)
+            else:
+                filteredFlows = filter(filterFunc,flows)
             
             if(not("idsOnly" in request.args) or request.args["idsOnly"][0].lower() != "false"):
                 filteredFlows = map(lambda flow: flow.get("id"), filteredFlows)

@@ -5,15 +5,26 @@ require({
         tlmSiblingOfDojo: false
     }]
 },	
-["HoneyProxy/MainLayout",
+["dojo/when",
+ "dojo/on",
+ "dojo/topic", 
+ "HoneyProxy/MainLayout",
  "HoneyProxy/websocket",
  "HoneyProxy/traffic",
  "HoneyProxy/tutorial",
  "HoneyProxy/search",
  "HoneyProxy/dirdump",
  "HoneyProxy/TableSorter",
- "HoneyProxy/popOut"], function(MainLayout,websocket,traffic) {
-	websocket.on("authenticated",function(){
+ "HoneyProxy/popOut"], function(when,on,topic,MainLayout,websocket,traffic) {
+	
+	//Debug
+	window.HoneyProxy = {traffic:traffic};
+	
+	when(websocket.authenticated,function(){
 		traffic.fetch();
+	});
+	
+	topic.subscribe("HoneyProxy/newFlow",function(flowData){
+		traffic.add(flowData);
 	});
 });

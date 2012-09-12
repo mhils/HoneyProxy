@@ -3,7 +3,7 @@
  * Stateless.
  */
 define([],function(){
-	sharedFlowProperties = {
+	var sharedFlowProperties = {
 		get httpversion() {
 			return this.data.httpversion || [1,0] /* stay compatible with mitmproxy 0.8 */;
 		},

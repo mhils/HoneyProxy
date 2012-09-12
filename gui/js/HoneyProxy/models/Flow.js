@@ -33,6 +33,9 @@ define(["./Request","./Response"],function(Request,Response){
 			});
 			return $('<div>').append($pre).html();
 		},
+		getPreviewEmpty: function(){
+			return "No response content.";
+		},
 		/**
 		 * Add a filter class to the model. This doesn't affect the model itself,
 		 * but a view may listen for a change here.
@@ -57,6 +60,16 @@ define(["./Request","./Response"],function(Request,Response){
 			if(!this.has("filterClasses"))
 				this.set("filterClasses",{});
 			return this.get("filterClasses");
+		},
+		getSimilarFlows: function(level,callback) {
+			$.getJSON("/api/search",{
+				idsOnly: true,
+				filter: JSON.stringify([{
+					"type":"similarTo",
+					"value":this.id+","+level,
+					"field":"any"
+				}])
+			}, callback);
 		},
 		/**
 		 * @return the Request proxy object

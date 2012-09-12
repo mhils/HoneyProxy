@@ -3,7 +3,7 @@
  * Be aware that both Request and Response objects are stateless!
  */
 define(["../utilities","./sharedFlowProperties"],function(utilities,sharedFlowProperties){
-	Response = function(flow){
+	var Response = function(flow){
 		this._flow = flow;
 	};
 	Response.prototype = {

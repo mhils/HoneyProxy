@@ -27,6 +27,10 @@ define(["./traffic"],function(traffic){
 				negate = true;
 				part = part.substring(1);
 			}
+			if(part.indexOf("similarTo:") == 0){
+				type = "similarTo";
+				part = part.substring(10)
+			}
 			if(part.charAt(0) == "="){
 				type = "containsStrict";
 				part = part.substring(1);
@@ -79,7 +83,7 @@ define(["./traffic"],function(traffic){
 			traffic.each(handleFlow);
 		else
 			_.each(ids,function(id){
-				handleFlow(traffic.get(id));
+				handleFlow(DumpManager.get(id));
 			})
 	}
 	/**

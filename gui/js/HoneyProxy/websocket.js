@@ -1,4 +1,4 @@
-define(["./config","dojo/json","./traffic"],function(config,JSON,traffic){
+define(["./config","dojo/json","dojo/topic","dojo/Deferred"],function(config,JSON,topic,Deferred){
 	
 	/**
 	 * HoneyProxy Websocket Client.
@@ -12,7 +12,7 @@ define(["./config","dojo/json","./traffic"],function(config,JSON,traffic){
 			var e = JSON.parse(o.data);
 			switch(e.msg) {
 				case "Authenticated.":
-					websocket.trigger("authenticated");
+					websocket.authenticated.resolve("authenticated");
 					break;
 				case "read":
 					if(e.id in Backbone._syncrequests)
@@ -23,12 +23,16 @@ define(["./config","dojo/json","./traffic"],function(config,JSON,traffic){
 					}
 					break;
 				case "newflow":
-					traffic.add(e.data);
+					topic.publish("HoneyProxy/newFlow",e.data);
+					break;
+				default:
+					console.warn("unsupported message",e)
 					break;
 			}
 			
 			console.log(e);
 		},
+		authenticated: new Deferred(),
 		init: function(){
 			this.ws = new WebSocket(config.get("ws"));
 			this.ws.onopen = (function(e){
@@ -38,7 +42,6 @@ define(["./config","dojo/json","./traffic"],function(config,JSON,traffic){
 			websocket.ws.onmessage = this.onmessage.bind(this);
 		}
 	};
-	_.extend(websocket, Backbone.Events);
 	
 	websocket.init();
 	

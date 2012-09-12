@@ -3,5 +3,5 @@
 <div class=content>
 	<h2 class=title><%- request.filename %></h2>
 	<% if(response.hasContent) print(getPreview()); 
-		else print("No response content."); %>
+		else print(getPreviewEmpty()); %>
 </div>
