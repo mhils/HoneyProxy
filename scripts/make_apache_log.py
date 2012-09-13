@@ -1,7 +1,7 @@
 from datetime import datetime
 import pytz
 
-f = open("access.log","a")
+f = open("./dump/access.log","a")
 
 def response(context, flow):
     size = str(len(flow.response.content))
