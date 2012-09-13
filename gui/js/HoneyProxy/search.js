@@ -130,6 +130,10 @@ define(["./traffic"],function(traffic){
 		}).on("blur",function(){
 			_search($(this));
 		});
+		
+		$(document).on("click",".searchlink",function(e){
+			$("#filter").val($(e.target).data("search")).blur();
+		});
 
 		$("#includeContent").on("change",
 				searchFields.trigger.bind(

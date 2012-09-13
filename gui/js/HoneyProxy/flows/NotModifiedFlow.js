@@ -13,7 +13,7 @@ define(["../models/Flow","require"],function(Flow,require){
 			require(["../traffic","../MainLayout"],function(traffic,MainLayout){
 				flow.getSimilarFlows(3,function(ids){
 					var similarFlows = $("#"+ul_id);
-					var ul = $("<ul>");
+					var ul = $("<ul>").addClass("flowlist");
 					
 					_.each(ids,function(i){
 						var f = traffic.get(i);

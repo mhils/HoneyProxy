@@ -19,7 +19,7 @@
 	</div></td>
 <td class=time>
 	<div class=hidden><%- /*table sorter */ request.timestamp %></div>
-	<div class=timestamp title="Timestamp: <%- request.timestamp %>">
+	<div class=timestamp title="UNIX Timestamp: <%- request.timestamp %>">
 	<%- request.date.toLocaleTimeString() %>, <%- ("0"+request.date.getDay()).slice(-2)+"."+("0"+request.date.getMonth()).slice(-2) %>.<br>
 	</div>	
 	<div class=duration>
