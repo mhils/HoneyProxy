@@ -111,7 +111,7 @@ class SearchApiResource(Resource):
             
             def similarTo(this,other,level):
                 if(this == other):
-                    return False
+                    return True #Include own flow.
                 diff = ((this.get("request").get("host")               != other.get("request").get("host")) * 4 +
                         (this.get("request").get("method")             != other.get("request").get("method")) * 4 +
                         (this.get("request").get("path")               != other.get("request").get("path")) * 4 +
