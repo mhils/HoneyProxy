@@ -16,6 +16,9 @@ define([],function(){
 		get contentLength() {
 			return this.data.contentLength;
 		},
+		get contentChecksums() {
+			return this.data.contentChecksums;
+		},
 		get hasContent() {
 			return this.contentLength > 0;
 		},

@@ -83,7 +83,7 @@ define(["./traffic"],function(traffic){
 			traffic.each(handleFlow);
 		else
 			_.each(ids,function(id){
-				handleFlow(DumpManager.get(id));
+				handleFlow(traffic.get(id));
 			})
 	}
 	/**

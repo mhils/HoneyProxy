@@ -1,6 +1,6 @@
 from libmproxy import encoding
 from libhproxy.honey import HoneyProxy
-import re, json, socket
+import re, socket, hashlib
 
 class FlowCollection:
     """
@@ -49,7 +49,8 @@ class FlowCollection:
                 import traceback
                 print traceback.format_exc()
             
-            
+        
+        #Save decoded content    
         decoded_content = {}
         for i in ["request","response"]:
             #strip content out of the flowRepr
@@ -84,6 +85,15 @@ class FlowCollection:
                     print traceback.format_exc()
                     
             decoded_content[i] = decoded
+        
+        #calculate hashsums
+        algorithms = ["md5","sha256"]
+        for i in ["request","response"]:
+            checksums = {}
+            for a in algorithms:
+                checksums[a] = getattr(hashlib,a)(decoded_content[i]).hexdigest()
+            flowRepr[i]["contentChecksums"] = checksums
+        
         
         self._flows.append(flow)
         self._flows_serialized.append(flowRepr)
