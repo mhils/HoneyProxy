@@ -1,7 +1,8 @@
-import os, re
+import os, re, time
 
 def update():
     isPage = re.compile("^[^_].+\.html$")
+    time.sleep(0.3)
     with open("_template.html", 'r') as tmpl:
         template = tmpl.read()
         
@@ -9,8 +10,10 @@ def update():
         if(isPage.match(filename)):
             with open(filename, 'r') as page:
                 with open("../"+filename, 'w') as result:
-                    result.write(template % page.read())
-
+                    try:
+                        result.write(template % page.read())
+                    except TypeError as e:
+                        print e
 def watch():
     """
     Windows only

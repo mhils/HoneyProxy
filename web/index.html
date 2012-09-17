@@ -5,7 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
 	<title>HoneyProxy - HTTP(S) Traffic Investigation</title>
-	<meta name="description" content="">
+	<meta name="description" content="HoneyProxy is a lightweight SSL-capable proxy that helps you analyze HTTP traffic.">
 	<meta name="author" content="Maximilian Hils">
 
 	<meta name="viewport" content="width=device-width">
@@ -13,25 +13,25 @@
 	<link rel="stylesheet" href="css/style.css">
 
 </head>
-<body>
+<body itemscope itemtype="http://schema.org/SoftwareApplication">
 <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 <a href="https://github.com/mhils/HoneyProxy"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
 <header>
 	<ul id=topnav>
-		<li><a href="./">Home</a>
+		<li><a itemprop="url" href="./">Home</a>
 		<li><a href="./#quickstart">Download</a>
 		<li><a href="https://github.com/mhils/HoneyProxy/wiki/Features">Docs</a>
 		<li><a href="./about.html">About</a>
 	</ul>
 	<a href="./">
-	<img id=logo src="./img/logo.png" alt="Logo">
+	<img itemprop="image" id=logo src="./img/logo.png" alt="Logo">
 	</a>
-	<h1>HoneyProxy</h1>
-	<h2>a man-in-the-middle SSL proxy & traffic analyzer</h2>
+	<h1 itemprop="name">HoneyProxy</h1>
+	<h2 itemprop="description">a man-in-the-middle SSL proxy & traffic analyzer</h2>
 </header>
 <div id="main">
 	<div class=box>
-		<img class=current-state width=735 height=482 src="./img/current-status.png">
+		<img itemprop="screenshot" class=current-state width=735 height=482 alt="Screenshot of HoneyProxy" src="./img/current-status.png">
 		<p class=intro>
 		<strong>HoneyProxy</strong> is a lightweight tool that allows live <strong>HTTP(S) traffic inspection</strong> and analysis.<br>
 		It focuses on features that are useful for malware analysis and network forensics.
@@ -43,14 +43,16 @@
 		<li><strong>Save</strong> HTTP conversations for later analysis
 		<li>Make <strong>scripted changes</strong> with Python, e.g. remove Cache Header.
 		<li>based on and <strong>compatible to <a href="http://mitmproxy.org/">mitmproxy</a></strong>.
-		<li><strong>cross-platform</strong> (Windows, OSX and Linux)
+		<li><strong>cross-platform</strong> (<span itemprop="operatingSystems">Windows</span>, <span itemprop="operatingSystems">OSX</span> and <span itemprop="operatingSystems">Linux</span>)
 		<li>SSL interception certs generated on the fly
 	</ul>
 	Looking for more? Check out our <a href="https://github.com/mhils/HoneyProxy/wiki/Features">GitHub wiki</a>!
 	<h2 id="quickstart">Quick Start</h2>
 	<p>
 		<strong>Download</strong> the <a target="_blank" href="https://github.com/downloads/mhils/HoneyProxy/honeyproxy-latest.zip"><strong>latest release.</strong></a> 
-		<!-- <span style="font-size: 0.85em; color: hsl(0, 0%, 50%);">or clone the git repo: <code>git clone --recursive git://github.com/mhils/HoneyProxy.git</code>.</span>  -->
+		<link itemprop="SoftwareApplicationCategory" href="http://schema.org/SecurityApplication"/>
+        <span itemprop="offers" itemscope itemtype="http://schema.org/Offer"><meta itemprop="price" content="0.00"><meta itemprop="priceCurrency" content="USD" /></span>
+        <!-- <span style="font-size: 0.85em; color: hsl(0, 0%, 50%);">or clone the git repo: <code>git clone &#8208;&#8208;recursive git://github.com/mhils/HoneyProxy.git</code>.</span>  -->
 	</p>
 	<p>
 		<strong>Install all dependencies</strong>: <code>pip install pyOpenSSL pyasn1 Twisted Autobahn</code><br>
@@ -67,7 +69,15 @@
 </div>
 </div> 
 <footer>
-	<p><a href="https://plus.google.com/111960278782881436247/?rel=author">Circle us on Google+</a> &nbsp;&nbsp;&nbsp; &copy; 2012 Maximilian Hils</p>
+	<p>
+        <!-- <a href="https://plus.google.com/111960278782881436247/" rel="publisher">Circle us on Google+</a> &nbsp;&nbsp;&nbsp; --> 
+        &copy; 2012 
+        <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <a itemprop="url" href="http://maximilianhils.com">
+            <span itemprop="name">Maximilian Hils</span>
+            </a>
+        </span>    
+    </p>
 </footer>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
