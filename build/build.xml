@@ -24,6 +24,15 @@
     />
   	<!-- <move file="${dist}/snapshot.zip" todir="dir/to/move/to"/> -->
   </target>
+	
+  <target name="deploy-snapshot" depends="pack" description="deploy to github! :)">
+  	<exec dir="build/" executable="python">
+  		<arg line='-u' />
+  		<arg line='deploy-snapshot.py' />
+  	</exec>
+  </target>	
+	
+	
 
   <target name="clean" description="clean up" >
     <!-- Delete the ${dist} directory trees -->

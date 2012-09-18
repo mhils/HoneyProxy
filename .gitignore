@@ -5,3 +5,4 @@ outfile
 dump/
 build/dojo/
 web/build/
+build/github_oauth_token.txt
