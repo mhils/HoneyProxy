@@ -24,10 +24,24 @@ from twisted.internet import reactor, task
 from twisted.web.resource import Resource
 from autobahn.websocket import listenWS
 
+
+honeyproxy_dir = os.path.split(inspect.getfile( inspect.currentframe() ))[0]
+#Verify that submodules are in place
+if not os.path.isfile(os.path.join(honeyproxy_dir,"mitmproxy","mitmproxy")):
+    print """
+It looks like you did not initialize HoneyProxys git submodules.
+HoneyProxy won't work properly.
+To fix this, run the following command in your HoneyProxy directory:
+
+    git submodule update --init
+    """
+    raw_input("Press any key to continue...")
+    sys.exit(1)
+
 #ensure to load our own version of mitmproxy and netlib
 #http://stackoverflow.com/questions/279237/python-import-a-module-from-a-folder
 def add_subfolder(name):
-    subdir = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],name)))
+    subdir = os.path.realpath(os.path.abspath(os.path.join(honeyproxy_dir,name)))
     if subdir not in sys.path:
         sys.path.insert(0, subdir)
 add_subfolder("netlib")
