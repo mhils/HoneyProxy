@@ -93,7 +93,7 @@ class FlowCollection:
         for i in ["request","response"]:
             checksums = {}
             for a in algorithms:
-                checksums[a] = getattr(hashlib,a)(decoded_content[i]).hexdigest()
+                checksums[a] = getattr(hashlib,a)(decoded_content[i].encode('utf-8')).hexdigest()
             flowRepr[i]["contentChecksums"] = checksums
         
         
