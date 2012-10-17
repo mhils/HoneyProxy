@@ -2,6 +2,7 @@
   <property name="dist"  location="dist"/>
 	
   <tstamp/>
+  <property name="zipfile" value="${dist}/snapshot-${DSTAMP}.zip"/>
 	
   <target name="build" depends="clean">
     <mkdir dir="${dist}"/>
@@ -19,13 +20,19 @@
   </target>
 	
   <target name="pack" depends="build" description="put it into a zip file! :)">
-    <zip destfile="${dist}/snapshot-${DSTAMP}.zip"
+    <zip destfile="${zipfile}"
          basedir="${dist}"
     />
   	<!-- <move file="${dist}/snapshot.zip" todir="dir/to/move/to"/> -->
   </target>
 	
   <target name="deploy-snapshot" depends="pack" description="deploy to github! :)">
+  	<if>
+  		<not><available file="${zipfile}"/></not>
+  		<then>
+  			<antcall target="pack" />
+  		</then>
+  	</if>
   	<exec dir="build/" executable="python">
   		<arg line='-u' />
   		<arg line='deploy-snapshot.py' />

@@ -1,6 +1,7 @@
 from libmproxy import encoding
 from libhproxy.honey import HoneyProxy
-import re, socket, hashlib
+import re, socket
+import hashlib #@UnusedImport
 
 class FlowCollection:
     """
@@ -68,6 +69,7 @@ class FlowCollection:
             #decode with http content-type encoding
             ct = r.headers["content-type"]
             default_charset = "latin-1" #HTTP 1.1 says that the default charset is ISO-8859-1
+            #RFC2616 3.7.1
             charset = default_charset
             if ct:
                 m = FlowCollection.regex_charset.search(ct[0])

@@ -12,7 +12,7 @@ filesize = os.path.getsize(filepath)
 def common_curl_options(c):
     
     c.setopt(curl.CAINFO, os.path.abspath("cacert.pem"))
-    #c.setopt(curl.FAILONERROR, True)
+    c.setopt(curl.FAILONERROR, True)
     #c.setopt(curl.VERBOSE, True)
     #c.setopt(curl.SSL_VERIFYPEER, 0)   
     #c.setopt(curl.SSL_VERIFYHOST, 0)
