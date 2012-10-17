@@ -6,6 +6,7 @@ config = {
 }
 filename = "snapshot-%(date)s.zip" % {"date": date.today().strftime("%Y%m%d")}
 filepath = os.path.abspath("../dist/"+filename)
+print "File Path: "+str(filepath)
 assert os.path.isfile(filepath)
 filesize = os.path.getsize(filepath)
 

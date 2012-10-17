@@ -1,4 +1,13 @@
 <project name="HoneyProxy" default="build" basedir="../">
+  
+	
+  <taskdef resource="net/sf/antcontrib/antlib.xml">
+  	<classpath>
+  		<pathelement location="${basedir}/build/ant-contrib-1.0b3.jar"/>
+  	</classpath>
+  </taskdef>
+        	
+        	
   <property name="dist"  location="dist"/>
 	
   <tstamp/>
@@ -26,7 +35,7 @@
   	<!-- <move file="${dist}/snapshot.zip" todir="dir/to/move/to"/> -->
   </target>
 	
-  <target name="deploy-snapshot" depends="pack" description="deploy to github! :)">
+  <target name="deploy-snapshot" description="deploy to github! :)">
   	<if>
   		<not><available file="${zipfile}"/></not>
   		<then>
