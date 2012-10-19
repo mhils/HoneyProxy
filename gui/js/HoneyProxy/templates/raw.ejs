@@ -10,13 +10,17 @@ for(var i=0;i<headers.length;i++){
 	print(_.escape(headers[i][0]+": "+headers[i][1])+"\n");
 }
 print("\n");
+var domPromise = _domPromise;
 //Request Content
 if(request.hasContent) {
-var request_id = _.uniqueId("raw");
-print('<div id="'+request_id+'">Loading...</div>');
-request.getContent(function(data){
-	$("#"+request_id).after(_.escape(data)).remove();
-}); } else print("&lt;empty request content&gt;"); %>
+	var request_id = _.uniqueId("raw");
+	print('<div id="'+request_id+'">Loading...</div>');
+	request.getContent(function(data){
+		domPromise.then(function(){
+			$("#"+request_id).after(_.escape(data)).remove();
+		});
+	}); 
+} else print("&lt;empty response content&gt;"); %>
 </pre>
 
 
@@ -29,11 +33,14 @@ for(var i=0;i<headers.length;i++){
 print("\n");
 //Response Content
 if(response.hasContent) {
-var response_id = _.uniqueId("raw");
-print('<div id="'+response_id+'">Loading...</div>');
-response.getContent(function(data){
-	$("#"+response_id).after(_.escape(data)).remove();
-}); } else print("&lt;empty response content&gt;"); %>
+	var response_id = _.uniqueId("raw");
+	print('<div id="'+response_id+'">Loading...</div>');
+	response.getContent(function(data){
+		domPromise.then(function(){
+			$("#"+response_id).after(_.escape(data)).remove();
+		});
+	}); 
+} else print("&lt;empty response content&gt;"); %>
 
 </pre>
 </div>

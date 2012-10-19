@@ -2,6 +2,6 @@
 <a href="<%= response.downloadUrl %>" title="Download" class="button button-download"></a>
 <div class=content>
 	<h2 class=title><%- request.filename %></h2>
-	<% if(response.hasContent) print(getPreview()); 
+	<% if(response.hasContent) print(getPreview(_domPromise)); 
 		else print(getPreviewEmpty()); %>
 </div>

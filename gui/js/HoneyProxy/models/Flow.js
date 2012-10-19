@@ -22,14 +22,18 @@ define(["./Request","./Response"],function(Request,Response){
 		 * @return HTML for Preview
 		 * TODO: When moving over to views, make this the default view and let DocumentFlow use it.
 		 */
-		getPreview: function(callback){
+		getPreview: function(domPromise, callback){
 			var pre_id = _.uniqueId("preview");
 			var $pre = $("<pre>").attr("id", pre_id).addClass("preview").text(
 					"Loading...");
+			
+			
 			this.response.getContent(function(data) {
-				var $pre = $("#" + pre_id).text(data);
-				if (_.isFunction(callback))
-					callback($pre);
+				domPromise.then(function(){
+					var $pre = $("#" + pre_id).text(data);
+					if (_.isFunction(callback))
+						callback($pre);
+				});
 			});
 			return $('<div>').append($pre).html();
 		},

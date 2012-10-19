@@ -37,7 +37,14 @@ define([],function(){
 			return this.getContentURL("attachment");
 		},
 		getContent: function(callback) {
-			if(this.hasContent)
+			if(this.contentLength > 1024 * 1024 * 1){
+				if(confirm("This request is pretty big and might cause performance issues ("+this.contentLengthFormatted+") if we load it. Press abort to continue anyway."))
+				{
+					callback("--- big chunk of data ---");
+					return this;
+				}
+			}
+			if(this.hasContent) 
 				$.get(this.viewUrl,callback,"text");
 			else
 				callback("");
