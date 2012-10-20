@@ -1,4 +1,5 @@
-define(["./NotModifiedFlow",
+define(["./RedirectFlow",
+        "./NotModifiedFlow",
         "./ImageFlow",
         "./HtmlFlow",
         "./XmlFlow",

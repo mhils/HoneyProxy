@@ -21,7 +21,7 @@ define(["../MainLayout",
 		render: function() {
 			//TODO: Interfering the model from a view is terrible and should be changed ASAP.
 			this.model._domPromise = new Deferred();
-			this.model.foo = "bar";
+
 			this._$details = this._$details || this.$el.find("#details");
 			this._$details.html(detailsTemplate(this.model));
 			
