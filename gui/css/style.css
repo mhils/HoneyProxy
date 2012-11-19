@@ -148,7 +148,8 @@ header img {
   float: left;
 }
 #detail {
-  height: 200px;
+  min-height: 200px;
+  height: 40%;
 }
 #searchbox {
   width: 100%;
@@ -548,6 +549,9 @@ pre.raw {
   padding: 1em;
   background-color: #f0f0f0;
 }
+#detail {
+  font-size: 11px;
+}
 .headers {
   table-layout: fixed;
 }
@@ -558,4 +562,14 @@ pre.raw {
 }
 .headers tr td:first-child {
   width: 300px;
+}
+.headers tr td:first-child {
+  color: #545454;
+  font-weight: bold;
+}
+.headers tr td:first-child.title {
+  color: black;
+}
+.headers .header-value {
+  font-family: Consolas, Lucida Console, monospace;
 }

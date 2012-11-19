@@ -26,7 +26,7 @@ class HoneyProxyMaster(FlowMaster):
             self.set_stickyauth(options.stickyauth)
 
         if options.wfile:
-            path = os.path.expanduser(options.wfile)
+            path = os.path.abspath(os.path.expanduser(options.wfile))
             directory = os.path.split(path)[0]
             if not os.path.exists(directory):
                 os.makedirs(directory)

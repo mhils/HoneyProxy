@@ -13,6 +13,8 @@ define(["../MainLayout",
 	var detailsTemplate = _.template(detailsTmpl);
 	var rawTemplate     = _.template(rawTmpl);
 	
+	
+	
 	var currentSelection;
 	
 	$(".tabs").tabs();

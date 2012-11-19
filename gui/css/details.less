@@ -1,3 +1,7 @@
+#detail {
+	font-size: 11px;
+}
+
 .headers {
 	table-layout:fixed;
 }
@@ -7,5 +11,16 @@
 	overflow: hidden;
 }
 .headers tr td:first-child {
+	
 	width: 300px;
+}
+.headers tr td:first-child {
+	color: hsl(0,0,33%);
+	font-weight: bold;
+	&.title {
+		color: black;
+	}
+}
+.headers .header-value {
+	font-family: Consolas, Lucida Console, monospace;
 }

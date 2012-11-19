@@ -5,9 +5,7 @@ define(["dojo/text!./templates/popout.ejs","dojo/domReady!"],function(tmpl){
 	
 	var template = _.template(tmpl);
 	
-	return { 
-		initialize: function(){
-			$(document).on("click",".button-popout", function(){
+	$(document).on("click",".button-popout", function(){
 				var content = $(this).siblings(".content");
 				var html = template({
 					"title":content.find(".title").text()+" - Detail View",
@@ -16,8 +14,7 @@ define(["dojo/text!./templates/popout.ejs","dojo/domReady!"],function(tmpl){
 				var win = window.open("","popout","height=400,width=500");
 				win.document.write(html);
 				win.document.close();
-			});
-	}};
-	
+	});
+	return true;
 });	
 	

@@ -17,14 +17,14 @@
 	%>
 	
 	<table class=headers>
-	<tr><td colspan=2><b>Request Headers:</b></td></tr>
+	<tr><td class=title colspan=2>Request Headers:</td></tr>
 		<%
 			var headers = request.headers;
 			for(var i=0;i<headers.length;i++){
 				%> 
-				<tr>
-					<td><%- headers[i][0] %></td>
-					<td><%- headers[i][1] %></td>
+				<tr class=request-headers>
+					<td class=header-name><%- headers[i][0] %></td>
+					<td class=header-value><%- headers[i][1] %></td>
 				</tr>
 				<%
 			}
@@ -51,28 +51,31 @@
 			printChecksums(request);
 		}
 %>	
-	<tr><td colspan=2><b>Response Headers:</b></td></tr>
+	<tr><td class=title colspan=2>Response Headers:</td></tr>
 		<%
 			var headers = response.headers;
 			for(var i=0;i<headers.length;i++){ 
 				%> 
-				<tr>
-					<td><%- headers[i][0] %></td>
-					<td><%- headers[i][1] %></td>
+				<tr class=response-headers>
+					<td class=header-name><%- headers[i][0] %></td>
+					<td class=header-value><%- headers[i][1] %></td>
 				</tr>
 				<%
 			}
  		%>
  	<% if(response.hasContent) { %>
- 	<tr><td colspan=2><b>Response Data:</b></td></tr>
+ 	<tr><td colspan=2 class=title>Response Data:</td></tr>
  		<tr><td>Size</td><td><%- response.contentLengthFormatted %></td></tr>
  		<% printChecksums(response); %>
  	<% } %>
-	</table>
-	<% if(response.cert) { %>
-		<b>Server certificate:</b>
-		<pre class="raw raw-cert">
-		<%- response.cert %>
-		</pre>
+ 	<% if(response.cert) { %>
+ 	<tr><td colspan=2 class=title>Server certificate:</td></tr>
+	 	<tr><td colspan=2>
+			<pre class="raw raw-cert">
+			<%- response.cert %>
+			</pre>
+		</td></tr>
 	<% } %>
+	</table>
+	
 </div>

@@ -37,7 +37,7 @@ define(["./config","dojo/json","dojo/topic","dojo/Deferred"],function(config,JSO
 			this.ws = new WebSocket(config.get("ws"));
 			this.ws.onopen = (function(e){
 				this.send({action:"auth",key:config.get("auth")});
-				console.log("Connection etablished");
+				console.log("Connection established");
 			}).bind(this);
 			websocket.ws.onmessage = this.onmessage.bind(this);
 		}
