@@ -65,8 +65,9 @@ define(["../utilities","./sharedFlowProperties"],function(utilities,sharedFlowPr
 				this._processName();
 			return this._flow.get("fullpath");
 		},
-		get url() {
-			
+		get rawFirstLine() {
+			return [this.method,this.path,"HTTP/" + this.httpversion.join(".")]
+	        		.join(" ")+"\n";
 		}
 	};
 	//depends on https://github.com/documentcloud/underscore/pull/694

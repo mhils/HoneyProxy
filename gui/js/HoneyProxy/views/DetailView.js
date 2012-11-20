@@ -4,20 +4,44 @@
  */
 define(["../MainLayout",
         "dojo/Deferred",
+        "dijit/layout/TabContainer", 
+        "dijit/layout/ContentPane",
+        "./DetailView/RawPane",
         "dojo/text!../templates/preview.ejs",
         "dojo/text!../templates/details.ejs",
         "dojo/text!../templates/raw.ejs",
-        "dojo/domReady!"],function(MainLayout,Deferred,previewTmpl,detailsTmpl,rawTmpl) {
+        "dojo/domReady!"],function(MainLayout,Deferred,TabContainer,ContentPane,RawPane,previewTmpl,detailsTmpl,rawTmpl) {
 	
 	var previewTemplate = _.template(previewTmpl);
 	var detailsTemplate = _.template(detailsTmpl);
 	var rawTemplate     = _.template(rawTmpl);
 	
+	var tc = new TabContainer({
+		 style: "height: 100%; width: 100%;"
+	},"detail-tabs");
 	
+    var preview = new ContentPane({
+        title: "Preview",
+        content: "TBD"
+    });
+    tc.addChild(preview);
+    
+    var details = new ContentPane({
+        title: "Details",
+        content: "TBD",
+        onShow: function(){console.warn("details.onShow",this,arguments)}
+    });
+    tc.addChild(details);
+
+    var raw = RawPane();
+    tc.addChild(raw);
+
+
+    tc.startup();
 	
 	var currentSelection;
 	
-	$(".tabs").tabs();
+	//$(".tabs").tabs();
 	
 	return Backbone.View.extend({
 		render: function() {
@@ -38,7 +62,10 @@ define(["../MainLayout",
 			return this;
 		},
 		setModel: function(model){
+			if(this.model == model)
+				return;
 			this.model = model;
+			raw.set("model",model);
 			this.render();
 		}
 	});

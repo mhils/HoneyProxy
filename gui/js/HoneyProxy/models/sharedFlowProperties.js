@@ -90,6 +90,20 @@ define([],function(){
 						new Date(this.timestamp * 1000));
 			}
 			return this._flow.get(attr);
+		},
+		get rawHeader() {
+			var attr = this._attr + "RawHeader";
+			if(!this._flow.has(attr)){
+				//set request header
+	        	var rawHeader = this.rawFirstLine;
+	        	var headers = this.headers;
+	        	for(var i=0;i<headers.length;i++){
+	        		rawHeader += headers[i][0]+": "+headers[i][1]+"\n";
+	        	}
+	        	rawHeader += "\n"; //terminate with \n\n
+	        	this._flow.set(attr,rawHeader);
+			}
+			return this._flow.get(attr);
 		}
 	};
 	return sharedFlowProperties;

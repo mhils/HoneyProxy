@@ -23,6 +23,10 @@ define(["../utilities","./sharedFlowProperties"],function(utilities,sharedFlowPr
 				this._flow.set("contentType", contentType);
 			}
 			return this._flow.get("contentType");
+		},
+		get rawFirstLine() {
+			return ["HTTP/" + this.httpversion.join("."),this.code,this.msg]
+	        		.join(" ")+"\n";
 		}
 	};
 	_.extend(Response.prototype,sharedFlowProperties);
