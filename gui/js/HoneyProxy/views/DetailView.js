@@ -2,47 +2,42 @@
  * Second pane - shows details when clicking on a flow.
  * TODO: Lazy-load the tabs.
  */
-define(["../MainLayout",
-        "dojo/Deferred",
+define(["dojo/_base/declare",
         "dijit/layout/TabContainer", 
-        "dijit/layout/ContentPane",
         "./DetailView/RawPane",
-        "dojo/text!../templates/preview.ejs",
-        "dojo/text!../templates/details.ejs",
-        "dojo/text!../templates/raw.ejs",
-        "dojo/domReady!"],function(MainLayout,Deferred,TabContainer,ContentPane,RawPane,previewTmpl,detailsTmpl,rawTmpl) {
-	
-	var previewTemplate = _.template(previewTmpl);
-	var detailsTemplate = _.template(detailsTmpl);
-	var rawTemplate     = _.template(rawTmpl);
-	
-	var tc = new TabContainer({
-		 style: "height: 100%; width: 100%;"
-	},"detail-tabs");
-	
-    var preview = new ContentPane({
-        title: "Preview",
-        content: "TBD"
-    });
-    tc.addChild(preview);
+        "./DetailView/PreviewPane"],function(declare,TabContainer,RawPane,PreviewPane) {
+	return declare([TabContainer], {
+		
+		postCreate: function(){
+			this.inherited(arguments);
+			var preview = PreviewPane();
+			var raw = RawPane();
+		    this.addChild(preview);
+		    this.addChild(raw);
+		    this.set("raw",raw);
+		    this.set("preview",preview)
+		},
+		style: "height: 100%; width: 100%;",
+		setModel: function(model){
+			if(this.model == model)
+				return;
+			this.model = model;
+			this.get("raw").set("model",model);
+			this.get("preview").set("model",model);
+		}
+	});
     
+    
+    /* TODO: Add again
     var details = new ContentPane({
         title: "Details",
         content: "TBD",
         onShow: function(){console.warn("details.onShow",this,arguments)}
     });
-    tc.addChild(details);
+    tc.addChild(details); */
 
-    var raw = RawPane();
-    tc.addChild(raw);
-
-
-    tc.startup();
-	
-	var currentSelection;
-	
 	//$(".tabs").tabs();
-	
+	/*
 	return Backbone.View.extend({
 		render: function() {
 			//TODO: Interfering the model from a view is terrible and should be changed ASAP.
@@ -62,11 +57,7 @@ define(["../MainLayout",
 			return this;
 		},
 		setModel: function(model){
-			if(this.model == model)
-				return;
-			this.model = model;
-			raw.set("model",model);
-			this.render();
+			
 		}
-	});
+	});*/
 });

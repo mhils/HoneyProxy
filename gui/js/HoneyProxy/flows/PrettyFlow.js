@@ -2,12 +2,13 @@
  * Flow subclass responsible for proper display of flows that can be
  * prettyprinted. Subclassed by HTML, JS, ... flows
  */
-define(["./DocumentFlow"],function(DocumentFlow){
+define(["dojo/Deferred","./DocumentFlow"],function(Deferred,DocumentFlow){
 	
 	var autoPretty = 1024 * 15,
 	askPretty = 1024 * 300;
 	
 	var prettyPrint = function($pre){
+		return $pre;
 		$pre.addClass("prettyprint linenums");
 
 		var contentLength = $pre.html().length;
@@ -25,8 +26,13 @@ define(["./DocumentFlow"],function(DocumentFlow){
 	
 	return DocumentFlow.extend({
 		prettyPrint : prettyPrint,
-		getPreview : function(domPromise) {
-			return DocumentFlow.prototype.getPreview.call(this,domPromise,prettyPrint.bind(this));
+		getPreview : function() {
+			var deferred = new Deferred();
+			DocumentFlow.prototype.getPreview.call(this)
+			.then(function(pre){
+					deferred.resolve(prettyPrint(pre));
+				});
+			return deferred;
 		}
 	}, {
 		'autoPretty': autoPretty,

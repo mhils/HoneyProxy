@@ -1,22 +1,23 @@
 /**
  * Flow subclass responsible for proper display of JavaScript
  */
-define(["./PrettyFlow","./DocumentFlow"],function(PrettyFlow, DocumentFlow){
+define(["dojo/Deferred","./PrettyFlow","./DocumentFlow"],function(Deferred,PrettyFlow, DocumentFlow){
 	return PrettyFlow.extend({
-		getPreview : function(domPromise){
-			return DocumentFlow.prototype.getPreview.call(this,domPromise,function($pre){
+		getPreview : function(){
+			var deferred = new Deferred();
+			DocumentFlow.prototype.getPreview.call(this).then(function(pre){
 				//Indent JSON
-				var contentLength = $pre.html().length;
-				console.log(PrettyFlow);
-				window.pf = PrettyFlow;
+				var contentLength = pre.textContent.length;
 				if(contentLength < PrettyFlow.askPretty) {
 					try {
-						var json = JSON.parse($pre.html());
-						$pre.html(JSON.stringify(json,null,"  "));
+						var json = JSON.parse(pre.textContent);
+						pre.textContent = JSON.stringify(json,null,"  ");
 					} catch(e){}
 				}
-				return PrettyFlow.prototype.prettyPrint.call(this,$pre)
+				PrettyFlow.prototype.prettyPrint.call(this,pre)
+				.then(deferred.resolve.bind(deferred));
 			});
+			return deferred;
 		}
 	}, {
 		matches : function(data) {

@@ -10,7 +10,7 @@
  * One option is to bend the subclasses over to FlowView. getCategory() is clearly something that should
  * be in the model though.
  */
-define(["./Request","./Response"],function(Request,Response){
+define(["./Request","./Response","dojo/Deferred","dojo/dom-construct"],function(Request,Response,Deferred,domConstruct){
 	return Backbone.Model.extend({
 		/**
 		 * @return {number} the id of the current flow
@@ -19,26 +19,21 @@ define(["./Request","./Response"],function(Request,Response){
 			return this.get("id");
 		},
 		/**
-		 * @return HTML for Preview
+		 * @return Deferred with preview HTML as first argument if fulfilled
 		 * TODO: When moving over to views, make this the default view and let DocumentFlow use it.
 		 */
-		getPreview: function(domPromise, callback){
-			var pre_id = _.uniqueId("preview");
-			var $pre = $("<pre>").attr("id", pre_id).addClass("preview").text(
-					"Loading...");
-			
-			
-			this.response.getContent(function(data) {
-				domPromise.then(function(){
-					var $pre = $("#" + pre_id).text(data);
-					if (_.isFunction(callback))
-						callback($pre);
-				});
+		getPreview: function(){
+			var deferred = new Deferred();
+			this.response.getContent().then(function(content){
+				var pre = domConstruct.create("pre");
+				pre.textContent = content;
+				deferred.resolve(pre);
 			});
-			return $('<div>').append($pre).html();
+			return deferred;
 		},
 		getPreviewEmpty: function(){
-			return "No response content.";
+			return (new Deferred()).resolve(
+					domConstruct.create("pre",{innerHTML:"No response content."}));
 		},
 		/**
 		 * Add a filter class to the model. This doesn't affect the model itself,

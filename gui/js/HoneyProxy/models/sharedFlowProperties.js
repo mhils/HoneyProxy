@@ -2,7 +2,7 @@
  * Contains shared methods of Request and Response objects.
  * Stateless.
  */
-define([],function(){
+define(["dojo/Deferred","dojo/request"],function(Deferred,request){
 	var sharedFlowProperties = {
 		get httpversion() {
 			return this.data.httpversion || [1,0] /* stay compatible with mitmproxy 0.8 */;
@@ -36,19 +36,19 @@ define([],function(){
 		get downloadUrl() {
 			return this.getContentURL("attachment");
 		},
-		getContent: function(callback) {
+		getContent: function() {
 			if(this.contentLength > 1024 * 1024 * 1){
 				if(confirm("This request is pretty big and might cause performance issues ("+this.contentLengthFormatted+") if we load it. Press abort to continue anyway."))
 				{
-					callback("--- big chunk of data ---");
-					return this;
+					return (new Deferred())
+						.resolve("--- big chunk of data ---");
 				}
 			}
-			if(this.hasContent) 
-				$.get(this.viewUrl,callback,"text");
+			if(this.hasContent)
+				return request.get(this.viewUrl,{handleAs:"text"});
 			else
-				callback("");
-			return this;
+				return (new Deferred())
+					.resolve("");
 		},
 		get contentLengthFormatted() {
 			var attr = this._attr+"ContentLength";

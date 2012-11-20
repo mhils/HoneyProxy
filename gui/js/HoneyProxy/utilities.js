@@ -26,6 +26,18 @@ define([],function(){
 		        return param;
 		    }
 		    return queryString.split("&").map(_parse);
+		},
+		/**
+		 * Dojo Polyfill for 
+		 * setXXXAttr: { node: "myNode", type: "textContent"}
+		 * http://bugs.dojotoolkit.org/ticket/10291
+		 * Works for >=IE9
+		 */
+		textContentPolyfill : function(nodeName)
+		{
+			return function(text){
+				this[nodeName].textContent = text;
+			}
 		}
 	};
 });

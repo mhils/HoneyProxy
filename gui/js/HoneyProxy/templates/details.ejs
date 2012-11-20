@@ -32,6 +32,7 @@
 		<% if(request.hasFormData) {
 			var tr_id = _.uniqueId("formdata");
 			print('<tr id="'+tr_id+'"><td><b>Form Data:</b></td><td>Loading...</td></tr>');
+			//FIXME: Deferred now.
 			request.getFormData(function(formData){
 				var $tr = $("#"+tr_id);
 				var html = "";

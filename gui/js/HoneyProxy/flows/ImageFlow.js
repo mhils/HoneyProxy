@@ -1,7 +1,7 @@
 /**
  * Flow subclass responsible for proper display of images
  */
-define(["../models/Flow","dojo/text!../templates/flows/image.ejs"],function(Flow,tmpl){
+define(["dojo/Deferred","../models/Flow","dojo/text!../templates/flows/image.ejs"],function(Deferred,Flow,tmpl){
 	
 	var template = _.template(tmpl);
 	
@@ -10,7 +10,7 @@ define(["../models/Flow","dojo/text!../templates/flows/image.ejs"],function(Flow
 			var html = template({
 				"response" : this.response
 			});
-			return html;
+			return (new Deferred()).resolve(html);
 		}
 	}, {
 		matches : function(data) {

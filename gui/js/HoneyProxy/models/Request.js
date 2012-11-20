@@ -2,7 +2,7 @@
  * Proxy object for better access to Flows. 
  * Be aware that both Request and Response objects are stateless!
  */
-define(["../utilities","./sharedFlowProperties"],function(utilities,sharedFlowProperties){
+define(["dojo/Deferred","../utilities","./sharedFlowProperties"],function(Deferred,utilities,sharedFlowProperties){
 	var Request = function(flow){
 		this._flow = flow;
 	};
@@ -39,14 +39,18 @@ define(["../utilities","./sharedFlowProperties"],function(utilities,sharedFlowPr
 		},
 		getFormData: function(callback){
 			if(this._flow.has("formDataParsed"))
-				callback(this._flow.get("formDataParsed"));
-			else
-				this.getContent((function(data){
+				return (new Deferred())
+					.resolve(this._flow.get("formDataParsed"));
+			else {
+				var self = this;
+				var deferred = new Deferred();
+				this.getContent().then(function(data){
 					var formData = utilities.parseParameters(data)
-					this._flow.set("formDataParsed",formData);
-					callback(formData);
-				}).bind(this));
-			return this;
+					self._flow.set("formDataParsed",formData);
+					deferred.resolve(formData);
+				});
+				return deferred;
+			}
 		},
 		_processName: function(){
 			var params = this.path.split("?");

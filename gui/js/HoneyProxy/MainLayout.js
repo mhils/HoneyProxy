@@ -44,7 +44,7 @@ define([ "dojo/query",
 	
 	var trafficView = new TrafficView({collection: traffic, el: $("#trafficTable .data tbody")[0]});		
 	
-	var detailView = new DetailView({el: $("#detail")});
+	var detailView = new DetailView({},"detail-tabs");
 	
 	trafficView.$el.on("click","tr",function(e){
 		MainLayout.selectFlow($(this).data("flow-id"));
