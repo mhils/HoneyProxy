@@ -14,8 +14,7 @@ define(["dojo/Deferred","./PrettyFlow","./DocumentFlow"],function(Deferred,Prett
 						pre.textContent = JSON.stringify(json,null,"  ");
 					} catch(e){}
 				}
-				PrettyFlow.prototype.prettyPrint.call(this,pre)
-				.then(deferred.resolve.bind(deferred));
+				deferred.resolve(PrettyFlow.prototype.prettyPrint.call(this,pre));
 			});
 			return deferred;
 		}

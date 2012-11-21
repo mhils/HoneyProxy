@@ -2,26 +2,29 @@
  * Flow subclass responsible for proper display of flows that can be
  * prettyprinted. Subclassed by HTML, JS, ... flows
  */
-define(["dojo/Deferred","./DocumentFlow"],function(Deferred,DocumentFlow){
+define(["dojo/Deferred","./DocumentFlow","highlight","dojo/dom-construct","dojo/on"],function(Deferred,DocumentFlow,hljs,domConstruct,on){
 	
 	var autoPretty = 1024 * 15,
 	askPretty = 1024 * 300;
 	
-	var prettyPrint = function($pre){
-		return $pre;
-		$pre.addClass("prettyprint linenums");
-
-		var contentLength = $pre.html().length;
+	var prettyPrint = function(pre){
+		
+		var contentLength = pre.innerHTML.length;
+		
 		if (contentLength < autoPretty) {
-			//FIXME: Still necessary?
-			window.setTimeout(window.prettyPrint, 1);
+			//pre.innerHTML = hljs.highlightAuto(pre.textContent).value;
+			hljs.highlightBlock(pre);
 		} else if (contentLength < askPretty) {
-			$pre.before($("<div>").addClass("pre-menu-item").text(
-					"Prettify (slow)").click(function() {
-				window.prettyPrint();
-				$(this).hide('slow');
-			}));
+			var span = domConstruct.create("span");
+			var prettifyButton = domConstruct.create("div",{className:"pre-menu-item", innerHTML: "Prettify (slow)"},span);
+			on(prettifyButton,"click",function(evt){
+				hljs.highlightBlock(pre);
+				domConstruct.destroy(prettifyButton);
+			})
+			domConstruct.place(pre,span);
+			return span;
 		}
+		return pre;
 	};
 	
 	return DocumentFlow.extend({
