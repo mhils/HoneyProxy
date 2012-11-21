@@ -25,7 +25,7 @@ define(["./Request","./Response","dojo/Deferred","dojo/dom-construct"],function(
 		getPreview: function(){
 			var deferred = new Deferred();
 			this.response.getContent().then(function(content){
-				var pre = domConstruct.create("pre");
+				var pre = domConstruct.create("pre",{"className":"preview"});
 				pre.textContent = content;
 				deferred.resolve(pre);
 			});
