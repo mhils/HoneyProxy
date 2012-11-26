@@ -91,10 +91,13 @@ class FlowCollection:
         #calculate hashsums
         algorithms = ["md5","sha256"]
         for i in ["request","response"]:
-            checksums = {}
-            for a in algorithms:
-                checksums[a] = getattr(hashlib,a)(decoded_content[i].encode('utf-8')).hexdigest()
-            flowRepr[i]["contentChecksums"] = checksums
+            flowRepr[i]["contentChecksums"] = {}
+            #TODO: Analyze request and split it up into parameters to match file upload
+            for item, data in ((" ",decoded_content[i].encode('utf-8')),):
+                checksums = {}
+                for a in algorithms:
+                    checksums[a] = getattr(hashlib,a)(data).hexdigest()
+                flowRepr[i]["contentChecksums"][item] = checksums
         
         
         self._flows.append(flow)

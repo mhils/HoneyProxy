@@ -83,6 +83,18 @@
 .claro .dijitContentPane {
   padding: 0;
 }
+.claro .dijitTabPaneWrapper {
+  overflow: auto;
+  box-sizing: content-box;
+}
+.claro .dijitTabContainerTop-tabs .dijitTab,
+.claro .dijitTabContainerTop-tabs .dijitTabChecked {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+.claro .dijitTabContainerTop-tabs .dijitTabChecked {
+  padding-bottom: 1px;
+}
 html,
 body {
   margin: 0;

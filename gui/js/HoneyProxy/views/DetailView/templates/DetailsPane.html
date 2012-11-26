@@ -1,0 +1,20 @@
+<span>
+<div title="Pop out" class="button button-popout"></div>
+<div title="Filter for similar requests" data-dojo-attach-point="searchSimilar" data-search="similarTo:id,3" class="button button-similar searchlink"></div>
+<div class=content>
+	<h2 class=title data-dojo-attach-point='filenameNode'></h2>
+	Request URL: <span data-dojo-attach-point='fullPathNode'></span><br>
+	Request Method: <span data-dojo-attach-point='requestMethodNode'></span><br>
+	Status Code:  <span data-dojo-attach-point='statusCodeNode'></span><br>
+	
+	<table class=headers>
+	<!-- Looks odd, but multiple tbody tags are allowed by W3C -->
+	<tbody data-dojo-attach-point='requestHeaderNode'></tbody>
+	<tbody data-dojo-attach-point='requestContentNode'></tbody>
+	<tbody data-dojo-attach-point='requestContentDetailsNode'></tbody>
+	<tbody data-dojo-attach-point='responseHeaderNode'></tbody>
+	<tbody data-dojo-attach-point='responseContentDetailsNode'></tbody>
+	<tbody data-dojo-attach-point='responseCertNode'></tbody>
+	</table>
+</div>
+</span>

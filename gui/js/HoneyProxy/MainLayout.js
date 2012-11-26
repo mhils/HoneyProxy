@@ -24,12 +24,15 @@ define([ "dojo/query",
 		    },"main")
 		);
 	
+	//Somehow we need to wrap our DetailView in another ContenPane.
+	//TODO: investigate why this is necessary
 	var detail = new ContentPane({
         region: "bottom",
         splitter: true,
         layoutPriority:2
-    },"detail");
-	//appLayout.addChild(detail);
+    });
+	var detailView = new DetailView({},"detail");
+	detail.addChild(detailView);
 	
 	
 	appLayout.addChild(
@@ -43,8 +46,6 @@ define([ "dojo/query",
 	appLayout.startup();
 	
 	var trafficView = new TrafficView({collection: traffic, el: $("#trafficTable .data tbody")[0]});		
-	
-	var detailView = new DetailView({},"detail-tabs");
 	
 	trafficView.$el.on("click","tr",function(e){
 		MainLayout.selectFlow($(this).data("flow-id"));

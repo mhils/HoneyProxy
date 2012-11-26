@@ -4,16 +4,20 @@
  */
 define(["dojo/_base/declare",
         "dijit/layout/TabContainer", 
+        "dojo/_base/array",
         "./DetailView/RawPane",
-        "./DetailView/PreviewPane"],function(declare,TabContainer,RawPane,PreviewPane) {
+        "./DetailView/PreviewPane",
+        "./DetailView/DetailsPane"],function(declare,TabContainer,array,RawPane,PreviewPane,DetailsPane) {
 	return declare([TabContainer], {
 		
 		postCreate: function(){
 			this.inherited(arguments);
 			var preview = PreviewPane();
 			var raw = RawPane();
+			var details = DetailsPane();
 		    this.addChild(preview);
 		    this.addChild(raw);
+		    this.addChild(details);
 		    this.set("raw",raw);
 		    this.set("preview",preview)
 		},
@@ -22,8 +26,9 @@ define(["dojo/_base/declare",
 			if(this.model == model)
 				return;
 			this.model = model;
-			this.get("raw").set("model",model);
-			this.get("preview").set("model",model);
+			array.forEach(this.getChildren(),function(c){
+				c.set("model",model);
+			});
 		}
 	});
     
