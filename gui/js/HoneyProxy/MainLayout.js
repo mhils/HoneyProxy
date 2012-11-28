@@ -46,11 +46,6 @@ define([
 
 	appLayout.startup();
 	
-	//FIXME: Debug
-	window.trafficPane = trafficPane;
-	window.main = main;
-	
-	
 	var trafficView = new TrafficView({
 		collection: traffic,
 		el: $("#trafficTable .data tbody")[0]

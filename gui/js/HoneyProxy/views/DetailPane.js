@@ -8,7 +8,6 @@ define(["dojo/_base/declare",
         "./DetailPane/PreviewPane",
         "./DetailPane/DetailsPane"],function(declare,TabContainer,array,RawPane,PreviewPane,DetailsPane) {
 	return declare([TabContainer], {
-		
 		postCreate: function(){
 			this.inherited(arguments);
 			var preview = PreviewPane();
@@ -18,6 +17,7 @@ define(["dojo/_base/declare",
 		    this.addChild(details);
 		    this.addChild(raw);
 		    
+		    this.domNode.classList.add("detailPane");
 		    //Scroll to top when switching tab.
 		    this.watch("selectedChildWidget",function(){
 		    	this.containerNode.scrollTop = 0;
@@ -26,9 +26,9 @@ define(["dojo/_base/declare",
 		},
 		style: "height: 100%; width: 100%;",
 		setModel: function(model){
-			if(this.model == model)
+			if(this.get("model") == model)
 				return;
-			this.model = model;
+			this.set("model",model);
 			array.forEach(this.getChildren(),function(c){
 				c.set("model",model);
 			});

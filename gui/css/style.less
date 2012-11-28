@@ -43,6 +43,8 @@ html, body {
 }
 @import "helper.less";
 
+
+//Headline
 @font-face {
   font-family: 'Cantora One';
   font-style: normal;
@@ -110,8 +112,8 @@ header img {
 	}
 }
 
-#main {
-	border-right: @darkSeperator;
+#trafficPane {
+	border-right: @lightSeperator;
 	border-bottom: @lightSeperator;
 }
 
@@ -124,7 +126,7 @@ header img {
 
 #tutorial {
 	position: absolute;
-	top: 30px;
+	top: @headerHeight + 30px;
 	left: 30px;
 }
 

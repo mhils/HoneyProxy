@@ -169,8 +169,8 @@ header img {
 #searchbox input[type=text] {
   width: 100%;
 }
-#main {
-  border-right: solid #454545 1px;
+#trafficPane {
+  border-right: solid #cccccc 1px;
   border-bottom: solid #cccccc 1px;
 }
 #rightCol {
@@ -181,7 +181,7 @@ header img {
 }
 #tutorial {
   position: absolute;
-  top: 30px;
+  top: 94px;
   left: 30px;
 }
 .filter-hide {
@@ -584,4 +584,13 @@ pre.raw {
 }
 .headers .header-value {
   font-family: Consolas, Lucida Console, monospace;
+}
+.detailPane .dijitTabListWrapper {
+  background-color: #f2f2f2;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100% #f2f2f2));
+  background-image: -webkit-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+  background-image: -moz-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+  background-image: -ms-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+  background-image: -o-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+  background-image: linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
 }
