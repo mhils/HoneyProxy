@@ -2,7 +2,10 @@
  * Use  templating within dojo.
  * not in use
  */
-define(["dojo/_base/declare","dojo/_base/lang","dojo/dom-construct","dijit/_TemplatedMixin"], 
+define(["dojo/_base/declare",
+        "dojo/_base/lang",
+        "dojo/dom-construct",
+        "dijit/_TemplatedMixin"], 
 		function(declare,lang,domConstruct,_TemplatedMixin) {
 	var _DynamicTemplatedMixin = declare(null,{
 		// templateString: [protected] String

@@ -1,86 +1,70 @@
-define([ "dojo/query",
+define([
+  "dojo/query", 
   "dijit/layout/BorderContainer", 
   "dijit/layout/TabContainer",
+  "dijit/layout/StackContainer",
   "dijit/layout/ContentPane",
-  "./views/TrafficView",
+  "./views/TrafficPane",
+  "./views/TrafficView", //Deprecated, refactor to dojo
   "./traffic",
-  "./views/DetailView",
-  "dojo/domReady!"], function(query, BorderContainer, TabContainer, ContentPane,TrafficView,traffic,DetailView) {
+  "dojo/domReady!"], function(query, BorderContainer, TabContainer, StackContainer, ContentPane, TrafficPane, TrafficView, traffic) {
+
+	//appLayout covers everything
 	var appLayout = new BorderContainer({
-		design : "headline",
+		design: "headline",
 		liveSplitters: false,
 		gutters: false
 	}, "appLayout");
+
+	var header = new ContentPane({
+			region: "top",
+		}, "header");
 	
-	appLayout.addChild(
-		    new ContentPane({
-		        region: "top",
-		    },"header")
-		)
-	appLayout.addChild(
-		    new ContentPane({
-		        region: "center",
-		        splitter: true
-		    },"main")
-		);
-	
-	//Somehow we need to wrap our DetailView in another ContenPane.
-	//TODO: investigate why this is necessary
-	var detail = new ContentPane({
-        region: "bottom",
-        splitter: true,
-        layoutPriority:2
-    });
-	var detailView = new DetailView({},"detail");
-	detail.addChild(detailView);
-	
-	
-	appLayout.addChild(
-		    new ContentPane({
-		        region: "right",
-		        splitter: true,
-		        layoutPriority:1
-		    },"rightCol")
-		);
-	
-	appLayout.startup();
-	
-	var trafficView = new TrafficView({collection: traffic, el: $("#trafficTable .data tbody")[0]});		
-	
-	trafficView.$el.on("click","tr",function(e){
-		MainLayout.selectFlow($(this).data("flow-id"));
+
+	//main covers the whole content area, but not the header
+	var main = new StackContainer({
+		id: "main",
+		region: "center"
 	});
 	
-	var isDetailAdded = false;
+	//populate appLayout
+	appLayout.addChild(main);
+	appLayout.addChild(header);
+	
+	//Traffic Pane, our default view with search sidebar and traffic table.
+	var trafficPane = new TrafficPane({
+		liveSplitters: false,
+		gutters: false
+	});
+	
+	//Report Pane
+	var reportPane = new ContentPane({}, "reportPane");
+
+	//populate main
+	main.addChild(trafficPane);
+	main.addChild(reportPane);
+
+	appLayout.startup();
+	
+	//FIXME: Debug
+	window.trafficPane = trafficPane;
+	window.main = main;
+	
+	
+	var trafficView = new TrafficView({
+		collection: traffic,
+		el: $("#trafficTable .data tbody")[0]
+	});
+
+	trafficView.$el.on("click", "tr", function(e) {
+		trafficPane.selectFlow($(this).data("flow-id"));
+	});
+	
+	//TODO: Still neccessary?
 	var MainLayout = {
-			currentSelection: undefined,
-			trafficView : trafficView,
-			detailView: detailView,
-			appLayout: appLayout,
-			selectFlow: function(flowId){
-				var model = traffic.get(flowId);
-				var modelView = trafficView.children[model.cid].$el;
-				detailView.setModel(model);
-				
-				MainLayout.openDetail();
-				modelView.addClass("selected");
-				if(MainLayout.currentSelection){
-					MainLayout.currentSelection.removeClass("selected");
-				}
-				MainLayout.currentSelection = modelView;
-			},
-			openDetail: function(){
-				if(isDetailAdded)
-					return;
-				appLayout.addChild(detail);
-				isDetailAdded = true;
-			},
-			closeDetail: function(){
-				if(!isDetailAdded)
-					return;
-				appLayout.removeChild(detail);
-				isDetailAdded = false;
-			}
+		trafficView: trafficView,
+		trafficPane: trafficPane,
+		appLayout: appLayout
 	}
 	return MainLayout;
 });

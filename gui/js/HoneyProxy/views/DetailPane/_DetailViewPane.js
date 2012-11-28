@@ -8,7 +8,6 @@ define([
     return declare([_WidgetBase, _DynamicTemplatedMixin], {
         templateCompileFunction: _.template,
         templateRenderFunction: function(compiled){
-        	//TODO: Necessary?
         	return this.get("model") ? compiled(this) : "<div></div>";
         },
         //TODO: Maybe subscribe to attr change of "selected"
@@ -20,7 +19,6 @@ define([
         	return true;
         },
         _loadContent: function(){
-        	console.debug("Load Content...");
         	this.set("loadedModel",this.get("model"));
         	this.refresh();
         	return this.loadContent();
