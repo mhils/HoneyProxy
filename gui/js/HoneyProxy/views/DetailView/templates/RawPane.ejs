@@ -1,0 +1,25 @@
+<div>
+	<div title="Pop out" class="button button-popout"></div>
+	<div class=content>
+	
+		<% function headers(r){
+			for(var i=0;i<r.headers.length;i++){
+				print(_.escape(r.headers[i][0]+": "+r.headers[i][1])+"\n");
+			}
+		print("\n");
+		} %>
+	
+		<h2 class=title><%- model.request.filename %></h2>
+		<pre class="raw raw-request"><%- 
+		model.request.method %> <%- model.request.path %> HTTP/<%- model.request.httpversion.join(".") %><%
+		print("\n");
+		headers(model.request);
+		%><span data-dojo-attach-point='requestContentNode'></span></pre>
+		<pre class="raw raw-response">HTTP/<%- 
+		model.response.httpversion.join(".") %> <%- model.response.code %> <%- model.response.msg %><%
+		print("\n");
+		headers(model.response);
+		%><span data-dojo-attach-point='responseContentNode'></span></pre>
+	</div>
+
+</div>
