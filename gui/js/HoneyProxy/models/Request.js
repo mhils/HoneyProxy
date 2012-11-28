@@ -55,9 +55,10 @@ define(["dojo/Deferred","../utilities","./sharedFlowProperties"],function(Deferr
 		_processName: function(){
 			var params = this.path.split("?");
 			var path = params.shift().split("/");
+			var fullpath = this.scheme + "://" + this.hostFormatted + ":" + this.port + path.join("/");
 			var filename = path.pop();
 			this._flow.set("filename", filename==="" ? "/" : filename );
-			this._flow.set("fullpath", this.scheme + "://" + this.hostFormatted + ":" + this.port + path.join("/") + "/" );		
+			this._flow.set("fullpath", fullpath );		
 		},
 		get filename() {
 			if(!this._flow.has("filename"))

@@ -1,0 +1,84 @@
+<span>
+<div title="Pop out" class="button button-popout"></div>
+<div title="Filter for similar requests" data-search="similarTo:<%- model.id %>,3" class="button button-similar searchlink"></div>
+<div class=content>
+
+	<% function printChecksums(r){ %>
+		<% for(var item in r.contentChecksums){ %>
+			<tr>
+				<td><%- item %></td>
+				<td><ul>
+				<% for(var algo in r.contentChecksums[item]){ %>
+					<li><%- algo %>: <%- r.contentChecksums[item][algo] %></li>
+				<% } %>
+				</ul></td>
+			</tr>
+		<% } %>
+	<% } %>
+		
+	<% function printHeaders(title, r){ %>
+		<tr><td class=title colspan=2><%- title %></td></tr> 
+		<% for(var i=0;i<r.headers.length;i++){ %> 
+			<tr class=request-headers>
+				<td class=header-name><%- r.headers[i][0] %></td>
+				<td class=header-value><%- r.headers[i][1] %></td>
+			</tr>
+		<% } %>
+	<% } %>
+	
+	<% function download(r){ %>
+		<tr>
+			<td></td>
+			<td><a class="button-download button-request-payload" href="<%- r.downloadUrl %>">Download (<%- r.contentLengthFormatted %>)</a></td>
+		</tr>
+	<% } %>
+
+	<h2 class=title><%- model.request.filename %></h2>
+	
+	<table class=headers>
+		<tbody>
+			<tr><td class=title>Request URL:</td><td><%- model.request.fullPath %></td></tr>
+			<tr><td class=title>Request Method:</td><td><%- model.request.method %></td></tr>
+			<tr><td class=title>Status Code:</td><td><%- model.response.code %></td></tr>
+			<tr><td>&nbsp;</td><td></td></tr>
+		</tbody>
+
+
+		<tbody>
+			<% printHeaders("Request Headers:",model.request) %>
+		</tbody>
+		
+		<tbody data-dojo-attach-point='requestContentNode'>
+		</tbody>
+		
+		<% if(model.request.hasContent) { %>
+			<tbody>
+				<% download(model.request); %>
+				<% printChecksums(model.request); %>
+			</tbody>
+		<% } %>
+		
+		
+		<tbody>
+			<% printHeaders("Response Headers:",model.response); %>
+		</tbody>
+		
+		<% if(model.response.hasContent) { %>
+			<tbody>
+				<tr><td colspan=2 class=title>Response Data:</td></tr>
+				 <% download(model.response); %>
+				 <% printChecksums(model.response); %>			 	
+			</tbody>
+		<% } %>
+ 	
+	 	<% if(model.response.cert) { %>
+	 		<tbody>
+	 			<tr><td colspan=2 class=title>Server certificate:</td></tr>
+			 	<tr><td colspan=2>
+					<pre class="raw raw-cert"><%- model.response.cert %></pre>
+				</td></tr>
+			</tbody>
+		<% } %>
+	</table>
+</div>
+</span>

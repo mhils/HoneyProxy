@@ -93,7 +93,7 @@ class FlowCollection:
         for i in ["request","response"]:
             flowRepr[i]["contentChecksums"] = {}
             #TODO: Analyze request and split it up into parameters to match file upload
-            for item, data in ((" ",decoded_content[i].encode('utf-8')),):
+            for item, data in (("Checksum",decoded_content[i].encode('utf-8')),):
                 checksums = {}
                 for a in algorithms:
                     checksums[a] = getattr(hashlib,a)(data).hexdigest()
