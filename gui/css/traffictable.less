@@ -6,7 +6,7 @@
 .table-fixed-header {
 
 	@headerHeight: @lineHeight / 1.5;
-	
+	@headerBorderWidth: 1px;
 	/* Basic Layout */
 	width: 100%;
 	height: 100%;
@@ -20,7 +20,7 @@
 	/* Fixed header */
 	.scroll {
 		position: absolute;
-		top: @headerHeight;
+		top: @headerHeight + @headerBorderWidth;
 		left: 0;
 		right: 0;
 		bottom: 0;
@@ -49,7 +49,7 @@
 	.header {
 		.linear-gradient-top(hsl(0, 0%, 93%),hsl(0, 0%, 93%),0%,hsl(0, 0%, 85%),100%);
 		th {
-			border-bottom: 1px solid hsl(0, 0%, 64%);
+			border-bottom: @headerBorderWidth solid hsl(0, 0%, 64%);
 		}
 	}
 	/* Cell Layout */

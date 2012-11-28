@@ -248,7 +248,7 @@ header img {
 }
 .table-fixed-header .scroll {
   position: absolute;
-  top: 24px;
+  top: 25px;
   left: 0;
   right: 0;
   bottom: 0;
@@ -593,4 +593,11 @@ pre.raw {
   background-image: -ms-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
   background-image: -o-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
   background-image: linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+}
+ul.checksums {
+  list-style-type: none;
+  padding-left: 0;
+}
+ul.checksums .value {
+  font-style: italic;
 }

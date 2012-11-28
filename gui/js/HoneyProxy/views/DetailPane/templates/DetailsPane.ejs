@@ -7,9 +7,9 @@
 		<% for(var item in r.contentChecksums){ %>
 			<tr>
 				<td><%- item %></td>
-				<td><ul>
+				<td><ul class=checksums>
 				<% for(var algo in r.contentChecksums[item]){ %>
-					<li><%- algo %>: <%- r.contentChecksums[item][algo] %></li>
+					<li><%- algo %>: <span class=value><%- r.contentChecksums[item][algo] %></span></li>
 				<% } %>
 				</ul></td>
 			</tr>
