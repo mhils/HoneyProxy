@@ -1,5 +1,5 @@
 /**
- * Main View
+ * Main traffic view. Shows traffic table, search and details
  */
 define(["require",
         "dojo/_base/declare",
@@ -20,10 +20,10 @@ define(["require",
 				splitter: true
 			});
 			
-			this.addChild(new TrafficSidebar({
+			var trafficSidebar = new TrafficSidebar({
 				region: "right",
 				splitter: true
-			}));
+			});
 			
 			//Somehow we need to wrap our DetailView in another ContentPane.
 			//TODO: investigate why this is necessary
@@ -39,6 +39,7 @@ define(["require",
 			
 			//populate trafficPane
 			this.addChild(trafficTable);
+			this.addChild(trafficSidebar);
 		},
 		currentSelection: undefined,
 		/*

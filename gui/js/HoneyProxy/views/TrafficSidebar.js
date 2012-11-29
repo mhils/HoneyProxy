@@ -1,13 +1,10 @@
 define([
     "dojo/_base/declare",
-    "dijit/_WidgetBase",
-    "../util/_DynamicTemplatedMixin",
-    "lodash",
+    "../util/_DynamicTemplatedWidget",
     "dojo/text!./templates/TrafficSidebar.ejs"
-], function(declare, _WidgetBase, _DynamicTemplatedMixin, _, template) {
+], function(declare, _DynamicTemplatedWidget, template) {
  
-    return declare([_WidgetBase, _DynamicTemplatedMixin], {
-    	templateCompileFunction: _.template,
+    return declare([_DynamicTemplatedWidget], {
         templateString: template
     });
  

@@ -1,16 +1,13 @@
 define([
     "require",
     "dojo/_base/declare",
-    "dijit/_WidgetBase",
     "dijit/form/Button",
-    "../util/_DynamicTemplatedMixin",
-    "lodash",
+    "../util/_DynamicTemplatedWidget",
     "../MainLayout",
     "dojo/text!./templates/HeaderPane.ejs"
-], function(require,declare, _WidgetBase, Button, _DynamicTemplatedMixin, _, MainLayout, template) {
+], function(require, declare, Button, _DynamicTemplatedWidget, MainLayout, template) {
  
-    return declare([_WidgetBase, _DynamicTemplatedMixin], {
-    	templateCompileFunction: _.template,
+    return declare([_DynamicTemplatedWidget], {
         templateString: template,
         nodeTag: "header",
         postCreate: function(){

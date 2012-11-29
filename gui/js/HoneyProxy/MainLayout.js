@@ -7,10 +7,11 @@ define([
 	"dijit/layout/ContentPane",
 	"./views/HeaderPane",
 	"./views/TrafficPane",
+	"./views/ReportPane",
 	"./views/TrafficView", //Deprecated, refactor to dojo
 	"./traffic",
 	"dojo/domReady!"
-], function(exports,query, BorderContainer, TabContainer, StackContainer, ContentPane, HeaderPane, TrafficPane, TrafficView, traffic) {
+], function(exports,query, BorderContainer, TabContainer, StackContainer, ContentPane, HeaderPane, TrafficPane, ReportPane, TrafficView, traffic) {
 
 	//appLayout covers everything
 	var appLayout = new BorderContainer({
@@ -44,7 +45,7 @@ define([
 	});
 	
 	//Report Pane
-	var reportPane = new ContentPane({}, "reportPane");
+	var reportPane = new ReportPane();
 
 	//populate main
 	main.addChild(trafficPane);
