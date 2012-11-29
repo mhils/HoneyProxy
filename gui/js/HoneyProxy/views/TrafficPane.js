@@ -6,8 +6,9 @@ define(["require",
         "dijit/layout/BorderContainer", 
         "dijit/layout/ContentPane",
         "./TrafficTable",
-        "./DetailPane"
-        ],function(require,declare,BorderContainer,ContentPane,TrafficTable,DetailPane) {
+        "./DetailPane",
+        "./TrafficSidebar"
+        ],function(require,declare,BorderContainer,ContentPane,TrafficTable,DetailPane,TrafficSidebar) {
 	return declare([BorderContainer], {
 		design: "sidebar",
 		postCreate: function(){
@@ -19,10 +20,10 @@ define(["require",
 				splitter: true
 			});
 			
-			this.addChild(new ContentPane({
+			this.addChild(new TrafficSidebar({
 				region: "right",
 				splitter: true
-			}, "rightCol"));
+			}));
 			
 			//Somehow we need to wrap our DetailView in another ContentPane.
 			//TODO: investigate why this is necessary

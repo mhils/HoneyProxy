@@ -76,9 +76,14 @@
 /* Text Shadow */
 /* Transforms */
 /* Transitions */
-*:not(.dijitContentPane ) {
-  -webkit-box-sizing: border-box;
+* {
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+.dijitContentPane,
+.dijitBorderContainerNoGutterPane {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
 }
 .claro .dijitContentPane {
   padding: 0;
@@ -129,7 +134,7 @@ header {
   overflow: auto;
   display: block;
   height: 64px;
-  padding: 0.5em 100px 0.5em;
+  padding: 0px 10px;
   background-color: #f2f2f2;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100% #f2f2f2));
   background-image: -webkit-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
@@ -138,6 +143,20 @@ header {
   background-image: -o-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
   background-image: linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
   border-bottom: solid #454545 1px;
+  /*
+	.dijitToolbar {
+		//width: 50%;
+		position: relative;
+		top: 20px;
+		left: 300px;
+		width: 300px;
+	}*/
+
+}
+header h3 {
+  margin: 0;
+  line-height: 58.18181818181818px;
+  float: left;
 }
 header a {
   line-height: 12px;
@@ -163,21 +182,25 @@ header img {
   min-height: 200px;
   height: 40%;
 }
-#searchbox {
+.detailPane .dijitTabPane {
+  padding: 1px 10px 20px;
+}
+.searchbox {
   width: 100%;
 }
-#searchbox input[type=text] {
+.searchbox input[type=text] {
   width: 100%;
 }
 #trafficPane {
   border-right: solid #cccccc 1px;
   border-bottom: solid #cccccc 1px;
 }
-#rightCol {
+.trafficSidebar {
   padding: 20px;
   border-left: solid #cccccc 1px;
   background-color: #f7f7f7;
   width: 200px;
+  height: 100%;
 }
 #tutorial {
   position: absolute;
@@ -261,6 +284,10 @@ header img {
 .table-fixed-header .data td {
   height: 36px;
   padding: 2px 0 0px;
+  vertical-align: top;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .table-fixed-header .data {
   background-color: rgba(0, 0, 0, 0.07);
@@ -302,12 +329,6 @@ header img {
 
   -o-user-select: none;
   user-select: none;
-}
-.table-fixed-header .data td {
-  vertical-align: top;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
 }
 .table-fixed-header th:last-child,
 .table-fixed-header td:last-child {
@@ -571,6 +592,7 @@ pre.raw {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  vertical-align: top;
 }
 .headers tr td:first-child {
   width: 300px;
@@ -597,6 +619,7 @@ pre.raw {
 ul.checksums {
   list-style-type: none;
   padding-left: 0;
+  margin: 0;
 }
 ul.checksums .value {
   font-style: italic;

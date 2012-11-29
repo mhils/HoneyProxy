@@ -48,7 +48,7 @@ define(["dojo/_base/declare",
 			return (cache[templateString] = template);
 		},
 		buildRendering: function(){
-			this.domNode = domConstruct.create("div");
+			this.domNode = domConstruct.create(this.nodeTag ? this.nodeTag : "div");
 			
 			this.inherited(arguments);
 			

@@ -34,6 +34,10 @@
 	.data td {
 		height: @lineHeight;
 		padding: @trafficTablePaddingTop 0 @trafficTablePaddingBottom;
+		vertical-align: top;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	    overflow: hidden;
 	}
 	/* Background & Row Highlight */
 	.data {
@@ -57,12 +61,9 @@
 		text-align: left;
 		.disable-select;
 	}
-	.data td {
-		vertical-align: top;
-		white-space: nowrap;
-		text-overflow: ellipsis;
-	    overflow: hidden;
-    }
+	//.data td {
+	// moved up into Line height section for performance
+    //}
     //Acount vor overflow-y: overlay;
     th:last-child, td:last-child {
     	padding-right: 30px;

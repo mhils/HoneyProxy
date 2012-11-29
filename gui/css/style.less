@@ -3,9 +3,14 @@
 @lightSeperator: solid hsl(0, 0%, 80%) 1px;
 @darkSeperator: solid hsl(0, 0%, 27%) 1px;
 
-*:not(.dijitContentPane ) {
-	-webkit-box-sizing: border-box;
+* {
+	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+}
+
+.dijitContentPane, .dijitBorderContainerNoGutterPane  {
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
 }
 
 .claro .dijitContentPane {
@@ -71,9 +76,23 @@ header {
 	overflow: auto;
 	display: block;
 	height: @headerHeight;
-	padding: 0.5em 100px 0.5em;
+	padding: 0px 10px;
 	.lightBg;
 	border-bottom: @darkSeperator;
+
+	h3 {
+		margin: 0;
+		line-height: @headerHeight / 1.1;
+		float: left;
+	}
+	/*
+	.dijitToolbar {
+		//width: 50%;
+		position: relative;
+		top: 20px;
+		left: 300px;
+		width: 300px;
+	}*/
 }
 
 header a {
@@ -105,7 +124,11 @@ header img {
 	height: 40%;
 }
 
-#searchbox {
+.detailPane .dijitTabPane {
+	padding: 1px 10px 20px;
+}
+
+.searchbox {
 	width: 100%;
 	input[type=text] {
 		width: 100%;
@@ -117,11 +140,12 @@ header img {
 	border-bottom: @lightSeperator;
 }
 
-#rightCol {
+.trafficSidebar {
 	padding: 20px;
 	border-left: @lightSeperator;
 	background-color: hsl(0,0%,97%);
 	width: 200px;
+	height: 100%;
 }
 
 #tutorial {

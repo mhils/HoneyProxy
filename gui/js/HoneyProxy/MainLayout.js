@@ -1,13 +1,16 @@
 define([
-  "dojo/query", 
-  "dijit/layout/BorderContainer", 
-  "dijit/layout/TabContainer",
-  "dijit/layout/StackContainer",
-  "dijit/layout/ContentPane",
-  "./views/TrafficPane",
-  "./views/TrafficView", //Deprecated, refactor to dojo
-  "./traffic",
-  "dojo/domReady!"], function(query, BorderContainer, TabContainer, StackContainer, ContentPane, TrafficPane, TrafficView, traffic) {
+	"exports",
+	"dojo/query",
+	"dijit/layout/BorderContainer", 
+	"dijit/layout/TabContainer",
+	"dijit/layout/StackContainer",
+	"dijit/layout/ContentPane",
+	"./views/HeaderPane",
+	"./views/TrafficPane",
+	"./views/TrafficView", //Deprecated, refactor to dojo
+	"./traffic",
+	"dojo/domReady!"
+], function(exports,query, BorderContainer, TabContainer, StackContainer, ContentPane, HeaderPane, TrafficPane, TrafficView, traffic) {
 
 	//appLayout covers everything
 	var appLayout = new BorderContainer({
@@ -16,9 +19,11 @@ define([
 		gutters: false
 	}, "appLayout");
 
-	var header = new ContentPane({
+	var header = new HeaderPane({
 			region: "top",
-		}, "header");
+			id: "header",
+			style: "width: 100%;"
+		});
 	
 
 	//main covers the whole content area, but not the header
@@ -28,8 +33,9 @@ define([
 	});
 	
 	//populate appLayout
-	appLayout.addChild(main);
 	appLayout.addChild(header);
+	appLayout.addChild(main);
+	
 	
 	//Traffic Pane, our default view with search sidebar and traffic table.
 	var trafficPane = new TrafficPane({
@@ -55,11 +61,11 @@ define([
 		trafficPane.selectFlow($(this).data("flow-id"));
 	});
 	
-	//TODO: Still neccessary?
-	var MainLayout = {
-		trafficView: trafficView,
-		trafficPane: trafficPane,
-		appLayout: appLayout
-	}
-	return MainLayout;
+	
+	exports.showPane = function(index){
+		main.selectChild(main.getChildren()[index]);
+	};
+	exports.trafficView = trafficView;
+
+	return exports;
 });
