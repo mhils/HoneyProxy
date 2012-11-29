@@ -67,6 +67,7 @@ define([
 		main.selectChild(main.getChildren()[index]);
 	};
 	exports.trafficView = trafficView;
+	exports.trafficPane = trafficPane;
 
 	return exports;
 });

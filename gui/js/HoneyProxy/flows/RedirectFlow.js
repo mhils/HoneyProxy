@@ -1,48 +1,52 @@
 /**
  * Flow subclass responsible for proper display of images
  */
-define(["../models/Flow","require"],function(Flow,require){
+define([
+	"require",
+	"dojo/Deferred",
+	"dojo/dom-construct",
+	"../models/Flow",
+	"../util/flowlist"
+],function(require, Deferred, domConstruct, Flow, flowlist){
 
 	function preview(parentPreviewFunc){
 		return function(domPromise){
+			var deferred = new Deferred();
 			var flow = this;
-			var location = flow.response.getHeader(/^Location$/i);
-			console.warn(flow);
-			window.flow = flow;
-			var div_id = _.uniqueId("redirectLocation");
-			var out = $("<div>").attr("id", div_id);
 			
-			if(location) {
-				require(["../traffic","../MainLayout"],function(traffic,MainLayout){
-					var i = flow.id;
-					while(i < traffic.length && i < flow.id + 100) {
-						var nextFlow = traffic.get(i);
-						if(location.indexOf(nextFlow.request.path) >= 0)
-							break;
-						nextFlow = undefined;
-					}
-					domPromise.then(function(){
-						var container = $("#"+div_id);
-						var ul = $("<ul>").addClass("flowlist");
+			var location = flow.response.getHeader(/^Location$/i);
 
-						if(nextFlow){
-							ul.append(
-									$("<li>")
-									.text(nextFlow.response.contentLengthFormatted + " - " + nextFlow.request.date)
-									.data("flow-id",nextFlow.id)
-							);
-							ul.on("click","li",function(e){
-								MainLayout.selectFlow($(e.target).data("flow-id"));
-							});
-							container.append("<h3>Possible subsequent requests:</h3>").append(ul);
-						} else {
-							container.append("<p>No subsequent requests found.</p>");
-						}
+			if(location) {
+				require(["../traffic"],(function(traffic){
+					var flows = [];
+					for(var i = flow.id + 1; i < Math.min(traffic.length,flow.id + 100); i++)  {
+						var nextFlow = traffic.get(i);
+						if ((flow.response.timestamp + 3) < nextFlow.request.timestamp)
+							break;
+						if(location.indexOf(nextFlow.request.path) >= 0)
+							flows.push(nextFlow);
+					}
+					window.redirectFlows = flows;
+					var nextFlows = domConstruct.create("span");
+					if(flows.length > 0){
+						domConstruct.place("<h3>Possible subsequent requests:</h3>",nextFlows);
+						domConstruct.place(flowlist(flows),nextFlows);						
+					} else {
+						domConstruct.place("<p>No subsequent requests found.</p>",nextFlows);
+					}
+					
+					var parentPreview = parentPreviewFunc.apply(this,arguments).then(function(content){
+						var container = domConstruct.create("div");
+						domConstruct.place(content,container);
+						domConstruct.place(nextFlows,container);
+						deferred.resolve(container);
 					});
-				});
+					
+				}).bind(this));
+			} else {
+				return parentPreviewFunc.apply(this,arguments);
 			}
-			var parentPreview = parentPreviewFunc.apply(this,arguments);
-			return parentPreview + $("<div>").append(out).html();
+			return deferred;
 		}
 	}	
 	

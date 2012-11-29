@@ -6,38 +6,31 @@ define(["require",
         "dojo/query",
         "dojo/dom-construct",
         "dojo/Deferred",
-        "../models/Flow"],function(require,on,query,domConstruct,Deferred,Flow){
+        "../models/Flow",
+        "../util/flowlist"],function(require,on,query,domConstruct,Deferred,Flow,flowlist){
 
 	function preview(parentPreviewFunc){
 		return function(){
 			var deferred = new Deferred();
 			var flow = this;
 			
-			require(["../traffic","../MainLayout"],function(traffic,MainLayout){
+			require(["../traffic"],(function(traffic){
 				flow.getSimilarFlows(3,function(ids){
-					var similarFlows = domConstruct.create("span");
-					var ul = domConstruct.create("ul",{className:"flowlist"});
 					
-					_.each(ids,function(i){
-						var f = traffic.get(i);
-						if(f.response.contentLength > 0){
-							var li = domConstruct.create(
-									"li",{'data-flow-id': i},ul);
-							li.innerText = f.response.contentLengthFormatted + " - " + f.request.date;
-						}
-							
+					var flows = _.map(ids, function(i) {
+						return traffic.get(i);
 					});
-					if(ul.children.length > 0){
+					flows = _.filter(flows, function(f) {
+						return (f.response.contentLength > 0);
+					})
+					
+					var similarFlows = domConstruct.create("span");
+					if(flows.length > 0){
 						domConstruct.place("<h3>Similar Flows with Content:</h3>",similarFlows);
-						domConstruct.place(ul,similarFlows);
+						domConstruct.place(flowlist(flows),similarFlows);
 					} else {
 						domConstruct.place("<p>No similar flows found.</p>",similarFlows)
 					}
-					
-					on(ul,"li:click",function(e){
-						console.log("NotModifiedFlow.li:click",this,arguments);
-						MainLayout.selectFlow($(e.target).data("flow-id"));
-					});
 					
 					var parentPreview = parentPreviewFunc.apply(this,arguments).then(function(content){
 						var span = domConstruct.create("span");
@@ -46,7 +39,7 @@ define(["require",
 						deferred.resolve(span);
 					});
 				});
-			});
+			}).bind(this));
 			return deferred;
 		}
 	}	
