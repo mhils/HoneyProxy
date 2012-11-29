@@ -1,12 +1,9 @@
 define([
     "dojo/_base/declare",
-    "dijit/_WidgetBase",
-    "../../util/_DynamicTemplatedMixin",
-    "lodash"
-], function(declare, _WidgetBase, _DynamicTemplatedMixin, _) {
+    "../../util/_DynamicTemplatedWidget",
+], function(declare, _DynamicTemplatedWidget) {
  
-    return declare([_WidgetBase, _DynamicTemplatedMixin], {
-        templateCompileFunction: _.template,
+    return declare([_DynamicTemplatedWidget], {
         templateRenderFunction: function(compiled){
         	return this.get("model") ? compiled(this) : "<div></div>";
         },

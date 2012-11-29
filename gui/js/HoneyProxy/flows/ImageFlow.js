@@ -4,16 +4,13 @@
 define([
     "dojo/_base/declare",
 	"dojo/Deferred",
+	"../util/_DynamicTemplatedWidget",
     "../models/Flow",
-    "dojo/text!./templates/image.ejs",
-    "lodash",
-    "dijit/_WidgetBase",
-    "../util/_DynamicTemplatedMixin"
-],function(declare,Deferred,Flow,template,_,_WidgetBase,_DynamicTemplatedMixin){
+    "dojo/text!./templates/image.ejs"
+],function(declare,Deferred,_DynamicTemplatedWidget,Flow,template){
 	
-	var ImagePreview = declare([_WidgetBase, _DynamicTemplatedMixin], {
+	var ImagePreview = declare([_DynamicTemplatedWidget], {
 		templateString: template,
-		templateCompileFunction: _.template,
 		postCreate: function(){
 			this.inherited(arguments);
 			//TODO: Replace jquery with dojo
