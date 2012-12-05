@@ -23,17 +23,20 @@ We love to hear from your experience with HoneyProxy. If you have any feature su
 
 Download the [**latest release**](https://github.com/downloads/mhils/HoneyProxy/honeyproxy-latest.zip) or clone the git repo: `git clone --recursive git://github.com/mhils/HoneyProxy.git`.
 
-Install all dependencies: `pip install pyOpenSSL pyasn1 Twisted Autobahn`
+**Install all dependencies**: `pip install pyOpenSSL pyasn1 Twisted Autobahn`   
+Windows users: Install the binaries for [pyOpenSSL](http://pypi.python.org/pypi/pyOpenSSL) and [Twisted](http://twistedmatrix.com/trac/wiki/Downloads) manually.   
+Ubuntu / Debian users: Install twisted as package (sudo apt-get install python-twisted)
 
-To start HoneyProxy, just run `python honeyproxy.py` or `python honeyproxy.py --help`. If you don't use a modern browser, a kitten will die. We currently support both Firefox and Chrome!
+**Start HoneyProxy** with `python honeyproxy.py` or `python honeyproxy.py --help`.   
+If you don't use a modern browser, a kitten will die. We currently support both Firefox and Chrome!
 
 Most command line parameters are documented in the [mitmproxy docs](http://mitmproxy.org/doc/index.html).
 
 ### Dependencies
-* [Python](http://www.python.org) 2.6.x or 2.7.x.
+* [Python](http://www.python.org) 2.7.x.
 * [pyOpenSSL](http://pypi.python.org/pypi/pyOpenSSL) 0.12 or newer.
 * [pyasn1](http://pypi.python.org/pypi/pyasn1) 0.1.2 or newer.
-* [Twisted](http://twistedmatrix.com/) 12.0 or newer.
+* [Twisted](http://twistedmatrix.com/) 12.2.0 or newer.
 * [Autobahn](http://pypi.python.org/pypi/autobahn) 0.5.2 or newer.
 
 ## Contributing
