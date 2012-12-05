@@ -1,7 +1,41 @@
 from libmproxy import encoding
 from libhproxy.honey import HoneyProxy
-import re, socket
+import re, socket, cgi, StringIO
 import hashlib #@UnusedImport
+
+"""
+flatten a given fieldStorage and return a dict with the following structure:
+{"filenameA":"filecontentA",...}
+This dict will be processed for creating hash checksums
+"""
+def getParts(fieldStorage,parts={}):
+                if type(fieldStorage.value) != type([]):
+                    name = ""
+                    if fieldStorage.name == fieldStorage.filename == None:
+                        name = "Checksum"
+                    else:
+                        if len(fieldStorage.value) < 1025:
+                            return #don't calculate md5s for really small chunks
+                        if fieldStorage.name != None:
+                            name = str(fieldStorage.name)
+                            if fieldStorage.filename != None:
+                                name += ": " + str(fieldStorage.filename)
+                        elif fieldStorage.filename != None:
+                            name = str(fieldStorage.filename)
+                            
+                    #find next avail. name
+                    i=2
+                    if name in parts:
+                        name += " (2)"
+                    while name in parts:
+                        i += 1
+                        name = name[:-(2+len(str(i)))] + ("(%d)" % i)
+
+                    parts[name] = str(fieldStorage.value)
+                else:
+                    for i in fieldStorage.value:
+                        getParts(i,parts)
+                return parts
 
 class FlowCollection:
     """
@@ -62,9 +96,12 @@ class FlowCollection:
             decoded = r.content
             
             #decode with http content-encoding
-            ce = r.headers["content-encoding"]
-            if ce and ce[0] in encoding.ENCODINGS:
-                decoded = encoding.decode(ce[0],r.content)
+            try:
+                ce = r.headers["content-encoding"]
+                if ce and ce[0] in encoding.ENCODINGS:
+                    decoded = encoding.decode(ce[0],r.content)
+            except:
+                print "Warning: Data cannot be decoded with given Content Encoding."
             
             #decode with http content-type encoding
             ct = r.headers["content-type"]
@@ -85,15 +122,33 @@ class FlowCollection:
                     print "Warning: Could not decode request."
                     import traceback
                     print traceback.format_exc()
-                    
+            
+            try:
+                decoded = decoded.encode('utf-8')
+            except:
+                print "Warning: Cannod encode request to utf8"
             decoded_content[i] = decoded
         
         #calculate hashsums
         algorithms = ["md5","sha256"]
         for i in ["request","response"]:
+            r = getattr(flow,i)
+            
             flowRepr[i]["contentChecksums"] = {}
+            
+            parts = {"Checksum":decoded_content[i]}
+                    
+            try:
+                headers = dict(map(str.lower, map(str,a)) for a in r.headers) # odict -> (lowered) dict
+                fs = cgi.FieldStorage(StringIO.StringIO(decoded_content[i]),headers,environ={ 'REQUEST_METHOD':'POST' })
+                parts = getParts(fs)
+            except Exception as e:
+                import traceback
+                traceback.print_exc()
+                print "Warning: Cannot decode multipart"
+            
             #TODO: Analyze request and split it up into parameters to match file upload
-            for item, data in (("Checksum",decoded_content[i].encode('utf-8')),):
+            for item, data in parts.viewitems():
                 checksums = {}
                 for a in algorithms:
                     checksums[a] = getattr(hashlib,a)(data).hexdigest()
