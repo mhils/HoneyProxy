@@ -11,15 +11,21 @@ This dict will be processed for creating hash checksums
 def getParts(fieldStorage,parts={}):
                 if type(fieldStorage.value) != type([]):
                     name = ""
-                    if fieldStorage.name == fieldStorage.filename == None:
+                    # empty strings -> None; else: strip()
+                    fieldStorage.name     = fieldStorage.name.strip()     if (fieldStorage.name     != None and fieldStorage.name.strip()     != "") else None
+                    fieldStorage.filename = fieldStorage.filename.strip() if (fieldStorage.filename != None and fieldStorage.filename.strip() != "") else None
+                    if fieldStorage.name == None and fieldStorage.filename == None:
+                        if "Checksum" in parts:
+                            return parts
                         name = "Checksum"
                     else:
-                        if len(fieldStorage.value) < 1025:
-                            return #don't calculate md5s for really small chunks
                         if fieldStorage.name != None:
                             name = str(fieldStorage.name)
                             if fieldStorage.filename != None:
                                 name += ": " + str(fieldStorage.filename)
+                            else:
+                                if len(fieldStorage.value) < 1025:
+                                    return parts #don't calculate md5s for really small chunks
                         elif fieldStorage.filename != None:
                             name = str(fieldStorage.filename)
                             
@@ -132,20 +138,21 @@ class FlowCollection:
         #calculate hashsums
         algorithms = ["md5","sha256"]
         for i in ["request","response"]:
-            r = getattr(flow,i)
             
             flowRepr[i]["contentChecksums"] = {}
             
             parts = {"Checksum":decoded_content[i]}
-                    
-            try:
-                headers = dict(map(str.lower, map(str,a)) for a in r.headers) # odict -> (lowered) dict
-                fs = cgi.FieldStorage(StringIO.StringIO(decoded_content[i]),headers,environ={ 'REQUEST_METHOD':'POST' })
-                parts = getParts(fs)
-            except Exception as e:
-                import traceback
-                traceback.print_exc()
-                print "Warning: Cannot decode multipart"
+            
+            #Handle multipart checksums
+            if i == "request":        
+                try:
+                    headers = dict(map(str.lower, map(str,a)) for a in flow.request.headers) # odict -> (lowered) dict
+                    fs = cgi.FieldStorage(StringIO.StringIO(decoded_content[i]),headers,environ={ 'REQUEST_METHOD':'POST' })
+                    parts = getParts(fs)
+                except Exception as e:
+                    import traceback
+                    traceback.print_exc()
+                    print "Warning: Cannot decode multipart"
             
             #TODO: Analyze request and split it up into parameters to match file upload
             for item, data in parts.viewitems():
