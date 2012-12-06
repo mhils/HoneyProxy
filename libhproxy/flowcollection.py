@@ -8,40 +8,42 @@ flatten a given fieldStorage and return a dict with the following structure:
 {"filenameA":"filecontentA",...}
 This dict will be processed for creating hash checksums
 """
-def getParts(fieldStorage,parts={}):
-                if type(fieldStorage.value) != type([]):
-                    name = ""
-                    # empty strings -> None; else: strip()
-                    fieldStorage.name     = fieldStorage.name.strip()     if (fieldStorage.name     != None and fieldStorage.name.strip()     != "") else None
-                    fieldStorage.filename = fieldStorage.filename.strip() if (fieldStorage.filename != None and fieldStorage.filename.strip() != "") else None
-                    if fieldStorage.name == None and fieldStorage.filename == None:
-                        if "Checksum" in parts:
-                            return parts
-                        name = "Checksum"
-                    else:
-                        if fieldStorage.name != None:
-                            name = str(fieldStorage.name)
-                            if fieldStorage.filename != None:
-                                name += ": " + str(fieldStorage.filename)
-                            else:
-                                if len(fieldStorage.value) < 1025:
-                                    return parts #don't calculate md5s for really small chunks
-                        elif fieldStorage.filename != None:
-                            name = str(fieldStorage.filename)
-                            
-                    #find next avail. name
-                    i=2
-                    if name in parts:
-                        name += " (2)"
-                    while name in parts:
-                        i += 1
-                        name = name[:-(2+len(str(i)))] + ("(%d)" % i)
-
-                    parts[name] = str(fieldStorage.value)
-                else:
-                    for i in fieldStorage.value:
-                        getParts(i,parts)
+def getParts(fieldStorage,parts=None):
+    if parts == None:
+        parts = {}
+    if type(fieldStorage.value) != type([]):
+        name = ""
+        # empty strings -> None; else: strip()
+        fieldStorage.name     = fieldStorage.name.strip()     if (fieldStorage.name     != None and fieldStorage.name.strip()     != "") else None
+        fieldStorage.filename = fieldStorage.filename.strip() if (fieldStorage.filename != None and fieldStorage.filename.strip() != "") else None
+        if fieldStorage.name == None and fieldStorage.filename == None:
+            if "Checksum" in parts:
                 return parts
+            name = "Checksum"
+        else:
+            if fieldStorage.name != None:
+                name = str(fieldStorage.name)
+                if fieldStorage.filename != None:
+                    name += ": " + str(fieldStorage.filename)
+                else:
+                    if len(fieldStorage.value) < 1025:
+                        return parts #don't calculate md5s for really small chunks
+            elif fieldStorage.filename != None:
+                name = str(fieldStorage.filename)
+                
+        #find next avail. name
+        i=2
+        if name in parts:
+            name += " (2)"
+        while name in parts:
+            i += 1
+            name = name[:-(2+len(str(i)))] + ("(%d)" % i)
+
+        parts[name] = str(fieldStorage.value)
+    else:
+        for i in fieldStorage.value:
+            getParts(i,parts)
+    return parts
 
 class FlowCollection:
     """
