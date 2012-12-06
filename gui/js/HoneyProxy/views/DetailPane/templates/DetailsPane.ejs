@@ -1,6 +1,6 @@
 <div>
-<div title="Pop out" class="button button-popout"></div>
-<div title="Filter for similar requests" data-search="similarTo:<%- model.id %>,3" class="button button-similar searchlink"></div>
+<div title="Pop out" class="button button-topright button-popout"></div>
+<div title="Filter for similar requests" data-search="similarTo:<%- model.id %>,3" class="button button-topright button-similar searchlink"></div>
 <div class=content>
 
 	<% function printChecksums(r){ %>
@@ -27,10 +27,7 @@
 	<% } %>
 	
 	<% function download(r){ %>
-		<tr>
-			<td></td>
-			<td><a class="button-download button-request-payload" href="<%- r.downloadUrl %>">Download (<%- r.contentLengthFormatted %>)</a></td>
-		</tr>
+		<td><a class="button button-text button-download" href="<%- r.downloadUrl %>">Download (<%- r.contentLengthFormatted %>)</a></td>
 	<% } %>
 
 	<h2 class=title><%- model.request.filename %></h2>
@@ -48,16 +45,25 @@
 			<% printHeaders("Request Headers:",model.request) %>
 		</tbody>
 		
-		<tbody data-dojo-attach-point='requestContentNode'>
-		</tbody>
+
 		
 		<% if(model.request.hasContent) { %>
 			<tbody>
-				<% download(model.request); %>
-				<% printChecksums(model.request); %>
+				<tr>
+					<td class=title>Request Data:</td>
+					<% download(model.request); %>
+				</tr>		 	
 			</tbody>
 		<% } %>
+
+		<tbody data-dojo-attach-point='requestContentNode'>
+		</tbody>
 		
+		<% if(model.request.hasPayload) { %>
+			<tbody>
+				<% printChecksums(model.request); %>	
+			</tbody>
+		<% } %>	
 		
 		<tbody>
 			<% printHeaders("Response Headers:",model.response); %>
@@ -65,8 +71,10 @@
 		
 		<% if(model.response.hasContent) { %>
 			<tbody>
-				<tr><td colspan=2 class=title>Response Data:</td></tr>
-				 <% download(model.response); %>
+				<tr>
+					<td class=title>Response Data:</td>
+					<% download(model.response); %>
+				</tr>
 				 <% printChecksums(model.response); %>			 	
 			</tbody>
 		<% } %>

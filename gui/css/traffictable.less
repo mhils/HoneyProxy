@@ -39,6 +39,11 @@
 		text-overflow: ellipsis;
 	    overflow: hidden;
 	}
+	.data td * {
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	    overflow: hidden;
+	}
 	/* Background & Row Highlight */
 	.data {
 		.linear-gradient-top(
@@ -106,99 +111,6 @@
 		cursor: pointer;
 	}
 }
-
-/*
-test
-//#traffictable th, #traffictable td {
-//	cursor: pointer;
-//}
-th.goog-tablesorter-sorted {
-     background-color: hsla(121, 45%, 50%,.5);
-}
-
-th.goog-tablesorter-sorted-reverse {
-     background-color: hsla(14, 87%, 50%,.5);
-   }
-   
-   
-//@lineheight: 36px;
-//@innerlineheight: 34px;
-//#traffictable {
-//	background-color: hsla(0,0%,0%,0.07);
-//	background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.5, transparent), color-stop(0.5, hsla(0, 0%, 0%, 0.05)), to(hsla(0, 0%, 0%, 0.05)));
-//	-webkit-background-size: 1px @lineheight*2;
-//}
-//#traffictable {
-//    width: 100%;
-//    table-layout: fixed;
-//    border-spacing: 0;
-//	border-collapse: collapse;
-//	min-width: 600px;
-//}
-//#traffic tr.selected td {
-//	background-color: hsla(55, 100%, 74%, 0.1);
-//}
-//#traffic td {
-//	height: 36px;
-//	vertical-align: top;
-//	white-space: nowrap;
-//	text-overflow: ellipsis;
-//    overflow: hidden;
-//    padding: (@lineheight - @innerlineheight)/2 0;
-//}
-#traffic .size, #traffic .time {
-    text-align: right;
-}
-#traffic .time .duration {
-	color: #666;
-}
-
-#traffictable thead {
-    background-color: white;
-    text-align: left;
-}
-
-@headerheight: @lineheight/2;//neccessary because of the background hack
-
-#traffictable {
-	margin-top: @headerheight;
-}
-
-
-#traffictable thead {
-	//margin-top: -@headerheight;
-	//position: absolute;
-	
-	/*
-	height: @headerheight;
-	display: block;
-	width: 100%;
-	tr {
-		width: 100%;
-		display: inline-table;
-	}
-	th {
-	&:before {
-		content: "";
-		display: inline-block;
-	    width: 7px;
-	}
-	padding: 0;
-	margin: 0;
-	height: @headerheight - 1;
-	line-height: @headerheight;
-	}
-}
-#traffic .subtitle {
-    font-size: 11px;
-    color: grey;    
-}
-
-#traffic .request-scheme-https .ssl {
-	background-color: hsla(112, 66%, 50%,0.4);
-}
-
-*/
 
 /* Column Width */
 

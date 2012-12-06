@@ -1,25 +1,63 @@
+.button{
+	min-width: 16px;
+	min-height: 16px;
+	display: inline-block;
+	cursor: pointer;
+	background-repeat: no-repeat;
+	color: hsl(216, 100%, 39%);
+	text-decoration: none;
+}
+.button-text {
+	padding-left: 20px;
+	line-height: 16px;
+}
+
+.button-topright {
+	float: right;
+	margin-left: 10px;
+}
+
+.button-popout {
+	background-image: url(../images/window-new.png);
+}
+.button-similar {
+	background-image: url(../images/search-similar.png);
+}
+.button-download {
+	background-image: url(../images/document-save.png);
+}
+
 #detail {
 	font-size: 11px;
 }
 
 .headers {
 	table-layout:fixed;
+	width: 100%;
 }
-.headers td {
+
+.headers td, .headers td *:not(pre) {
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
-	vertical-align: top;
 }
 .headers tr td:first-child {
-	
 	width: 300px;
 }
+
+.headers td {
+	padding: 0;	
+	vertical-align: top;
+}
+
 .headers tr td:first-child {
 	color: hsl(0,0,33%);
 	font-weight: bold;
+	width: 200px;
+	overflow: hidden;
 	&.title {
 		color: black;
+		padding: 0 0 3px;
 	}
 }
 .headers .header-value {

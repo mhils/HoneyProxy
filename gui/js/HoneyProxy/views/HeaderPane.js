@@ -14,17 +14,18 @@ define([
         	this.inherited(arguments);
 
         	new Button({
-        		label: "Generate Report",
-        		iconClass: "dijitIcon dijitIconChart",
-        		onClick: function(){
-        			MainLayout.showPane(1);
-        		}
-        	}).placeAt(this.toolbarNode);
-        	new Button({
         		label: "Show Traffic",
         		iconClass: "dijitIcon dijitIconTable",
         		onClick: function(){
         			MainLayout.showPane(0);
+        		}
+        	}).placeAt(this.toolbarNode);
+        	
+        	new Button({
+        		label: "Generate Report",
+        		iconClass: "dijitIcon dijitIconChart",
+        		onClick: function(){
+        			MainLayout.showPane(1);
         		}
         	}).placeAt(this.toolbarNode);
         }
