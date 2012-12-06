@@ -66,6 +66,7 @@ define([
 	exports.showPane = function(index){
 		main.selectChild(main.getChildren()[index]);
 	};
+	exports.header = header;
 	exports.trafficView = trafficView;
 	exports.trafficPane = trafficPane;
 

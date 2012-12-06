@@ -12,10 +12,7 @@ define([
         nodeTag: "header",
         postCreate: function(){
         	this.inherited(arguments);
-        	
-        	//Styling of the buttons
-        	this.domNode.classList.add("dijitToolbar");
-        	
+
         	new Button({
         		label: "Generate Report",
         		iconClass: "dijitIcon dijitIconChart",

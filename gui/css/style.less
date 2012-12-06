@@ -3,6 +3,10 @@
 @lightSeperator: solid hsl(0, 0%, 80%) 1px;
 @darkSeperator: solid hsl(0, 0%, 27%) 1px;
 
+.consoleFont(){
+	font-family: Consolas, Lucida Console, monospace;
+}
+
 * {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -85,14 +89,14 @@ header {
 		line-height: @headerHeight / 1.1;
 		float: left;
 	}
-	/*
-	.dijitToolbar {
-		//width: 50%;
-		position: relative;
-		top: 20px;
-		left: 300px;
-		width: 300px;
-	}*/
+	
+	.mainToolbar.dijitToolbar {
+		float: left;
+		margin-top: 20px;
+		margin-left: 30px;
+		background: none;
+		border: none;
+	}
 }
 
 header a {
