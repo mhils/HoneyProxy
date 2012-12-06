@@ -11,11 +11,13 @@ require({
  "HoneyProxy/MainLayout",
  "HoneyProxy/websocket",
  "HoneyProxy/traffic",
+ "HoneyProxy/util/versionCheck",
  "HoneyProxy/tutorial",
  "HoneyProxy/search",
  "HoneyProxy/dirdump",
  "HoneyProxy/TableSorter",
- "HoneyProxy/popOut"], function(when,on,topic,MainLayout,websocket,traffic) {
+ "HoneyProxy/popOut"
+ ], function(when,on,topic,MainLayout,websocket,traffic,versionCheck) {
 	
 	//Debug
 	window.HoneyProxy = {traffic:traffic};
@@ -27,4 +29,6 @@ require({
 	topic.subscribe("HoneyProxy/newFlow",function(flowData){
 		traffic.add(flowData);
 	});
+	
+	window.setTimeout(versionCheck,1000);
 });
