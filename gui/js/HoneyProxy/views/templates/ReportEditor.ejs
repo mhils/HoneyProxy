@@ -1,9 +1,54 @@
-<div>
+<div class="sidebar reportEditor">
 <h3>Report Editor</h3>
-Sample List
+<textarea style="width: 100%; min-width: 400px; height: 300px;" data-dojo-attach-point="reportCodeNode">
+require([
+	"dojo/dom-style",
+    "dojox/charting/Chart",
+    "dojox/charting/themes/Claro",
+    "dojox/charting/plot2d/ClusteredColumns",
+    "dojox/charting/plot2d/Markers",
+    "dojox/charting/axis2d/Default"
+], function(domStyle, Chart, theme) {
+	
+	domStyle.set(outNode, {
+	    width: "100%",
+	    height: "300px"
+	  });
+	
+    // Define the data
+	var requestSizes = traffic.map(function(t){return t.request.contentLength});
+    var responseSizes = traffic.map(function(t){return t.response.contentLength});
+ 
+    // Create the chart within it's "holding" node
+    var chart = new Chart(outNode,{
+      title: "Request / Response Size"
+    });
+ 
+    // Set the theme
+    chart.setTheme(theme);
+ 
+    // Add the only/default plot
+    chart.addPlot("default", {
+        type: "ClusteredColumns",
+        markers: true,
+        gap: 5
+    });
+ 
+    // Add axes
+    chart.addAxis("x");
+    chart.addAxis("y", { vertical: true, fixLower: "major", fixUpper: "major", max: 5000 });
+ 
+    // Add the series of data
+    chart.addSeries("Request Size",requestSizes);
+    chart.addSeries("Response Size",responseSizes);
+    
+ 
+    // Render the chart!
+    chart.render();
+ 
+});
 
-Textarea
-
-Start
-
+</textarea>
+<br>
+<div data-dojo-attach-point="startButtonNode">Generate Report</div>
 </div>

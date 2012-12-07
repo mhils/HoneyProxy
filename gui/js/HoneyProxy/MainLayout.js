@@ -45,7 +45,10 @@ define([
 	});
 	
 	//Report Pane
-	var reportPane = new ReportPane();
+	var reportPane = new ReportPane({
+		liveSplitters: false,
+		gutters: false
+	});
 
 	//populate main
 	main.addChild(trafficPane);
