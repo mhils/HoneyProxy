@@ -12,20 +12,25 @@ define(["require",
         ],function(require,declare,domConstruct,BorderContainer,ContentPane,ReportEditor,ReportOutput,on) {
 	return declare([BorderContainer], {
 		design: "sidebar",
+		_onShow: function(){
+			this.reportEditor._onShow(); //TODO: little bit dirty. maybe replace with .watch("selected"). See how dojo 2.0 handles this
+		},
 		postCreate: function(){
 			this.inherited(arguments);
 			
-			var reportOutput = new ReportOutput({
+			var reportOutput =  new ReportOutput({
 				id: "reportOutput",
 				region: "center",
 				splitter: true
 			});
+			this.reportOutput = reportOutput;
 			
 			var reportEditor = new ReportEditor({
 				id: "reportEditor",
 				region: "right",
 				splitter: true
 			});
+			this.reportEditor = reportEditor;
 			
 
 			//TODO: Wrap into a correct Controller
@@ -48,8 +53,8 @@ define(["require",
 			});
 			
 			//populate trafficPane
-			this.addChild(reportOutput);
-			this.addChild(reportEditor);
+			this.addChild(this.reportOutput);
+			this.addChild(this.reportEditor);
 		}
 	});
 });
