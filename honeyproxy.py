@@ -47,6 +47,8 @@ def add_subfolder(name):
 add_subfolder("netlib")
 add_subfolder("mitmproxy")
 
+os.chdir(honeyproxy_dir) # normalize working directory to be HoneyProxy/
+
 from libmproxy import proxy as mproxy, cmdline as mcmdline, dump
 from libhproxy import proxy as hproxy, cmdline as hcmdline, version, content, api
 from libhproxy.honey import HoneyProxy
