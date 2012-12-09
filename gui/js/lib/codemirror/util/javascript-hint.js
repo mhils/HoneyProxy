@@ -16,7 +16,13 @@
     return arr.indexOf(item) != -1;
   }
 
-  function scriptHint(editor, keywords, getToken) {
+  function scriptHint(editor, keywords, getToken, givenOptions) {
+	  
+	 var options = {}, defaults = CodeMirror.javascriptHint.defaults;
+	 for (var opt in defaults)
+	   if (defaults.hasOwnProperty(opt))
+	     options[opt] = (givenOptions && givenOptions.hasOwnProperty(opt) ? givenOptions : defaults)[opt];
+	  
     // Find the token at the cursor
     var cur = editor.getCursor(), token = getToken(editor, cur), tprop = token;
     // If it's not a 'word-style' token, ignore the token.
@@ -47,14 +53,15 @@
       if (!context) var context = [];
       context.push(tprop);
     }
-    return {list: getCompletions(token, context, keywords),
+    return {list: getCompletions(token, context, keywords, givenOptions),
             from: {line: cur.line, ch: token.start},
             to: {line: cur.line, ch: token.end}};
   }
 
-  CodeMirror.javascriptHint = function(editor) {
+  CodeMirror.javascriptHint = function(editor, givenOptions) {
     return scriptHint(editor, javascriptKeywords,
-                      function (e, cur) {return e.getTokenAt(cur);});
+                      function (e, cur) {return e.getTokenAt(cur);}, 
+                      givenOptions);
   };
 
   function getCoffeeScriptToken(editor, cur) {
@@ -75,8 +82,8 @@
     return token;
   }
 
-  CodeMirror.coffeescriptHint = function(editor) {
-    return scriptHint(editor, coffeescriptKeywords, getCoffeeScriptToken);
+  CodeMirror.coffeescriptHint = function(editor, givenOptions) {
+    return scriptHint(editor, coffeescriptKeywords, getCoffeeScriptToken, givenOptions);
   };
 
   var stringProps = ("charAt charCodeAt indexOf lastIndexOf substring substr slice trim trimLeft trimRight " +
@@ -89,24 +96,36 @@
   var coffeescriptKeywords = ("and break catch class continue delete do else extends false finally for " +
                   "if in instanceof isnt new no not null of off on or return switch then throw true try typeof until void while with yes").split(" ");
 
-  function getCompletions(token, context, keywords) {
+  function getCompletions(token, context, keywords, options) {
     var found = [], start = token.string;
     function maybeAdd(str) {
-      if (str.indexOf(start) == 0 && !arrayContains(found, str)) found.push(str);
+      if (str.indexOf("_") != 0 && str.indexOf(start) == 0 && !arrayContains(found, str)) found.push(str);
     }
     function gatherCompletions(obj) {
       if (typeof obj == "string") forEach(stringProps, maybeAdd);
       else if (obj instanceof Array) forEach(arrayProps, maybeAdd);
       else if (obj instanceof Function) forEach(funcProps, maybeAdd);
-      for (var name in obj) maybeAdd(name);
+      for (var name in obj){
+    	  var toAdd;
+    	  /*if(typeof(obj[name]) == "function") {
+    		  toAdd = obj[name].toString()
+              toAdd = name + toAdd.substring(toAdd.indexOf("("),toAdd.indexOf(")")+1);
+    	  }
+    	  else*/
+    		  toAdd = name;	  
+    	  maybeAdd(toAdd);
+      }
     }
 
     if (context) {
       // If this is a property, see if it belongs to some object we can
       // find in the current environment.
       var obj = context.pop(), base;
-      if (obj.type == "variable")
-        base = window[obj.string];
+      if (obj.type == "variable") {
+        if(options["additionalContext"])
+        	base = options["additionalContext"][obj.string];
+        base = base || window[obj.string];
+      }
       else if (obj.type == "string")
         base = "";
       else if (obj.type == "atom")
@@ -131,4 +150,8 @@
     }
     return found;
   }
+  
+  CodeMirror.javascriptHint.defaults = {
+    additionalContext: undefined
+  };
 })();

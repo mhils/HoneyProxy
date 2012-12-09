@@ -37,7 +37,7 @@ define(["dojo/Deferred","../utilities","./sharedFlowProperties"],function(Deferr
 		get hasPayload() {
 			return this.hasContent && (!this.hasFormData);
 		},
-		getFormData: function(callback){
+		getFormData: function(){
 			if(this._flow.has("formDataParsed"))
 				return (new Deferred())
 					.resolve(this._flow.get("formDataParsed"));

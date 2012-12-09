@@ -15,7 +15,7 @@ define(["./Request","./Response","dojo/Deferred","dojo/dom-construct"],function(
 		/**
 		 * @return {number} the id of the current flow
 		 */
-		get id() { //depends on https://github.com/documentcloud/underscore/pull/694
+		get id() { 
 			return this.get("id");
 		},
 		/**
@@ -73,7 +73,7 @@ define(["./Request","./Response","dojo/Deferred","dojo/dom-construct"],function(
 		/**
 		 * @return the Request proxy object
 		 */
-		get request() { //depends on https://github.com/documentcloud/underscore/pull/694
+		get request() {
 			if(!this._request)
 				this._request = new Request(this);
 			return this._request;
@@ -81,7 +81,7 @@ define(["./Request","./Response","dojo/Deferred","dojo/dom-construct"],function(
 		/**
 		 * @return the Response proxy object
 		 */
-		get response() { //depends on https://github.com/documentcloud/underscore/pull/694
+		get response() { 
 			if(!this._response)
 				this._response = new Response(this);
 			return this._response;
