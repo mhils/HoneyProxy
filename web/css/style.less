@@ -80,6 +80,9 @@ a, a:visited {
 .box {
 	background-color: #ffffff;
 	padding: @box-padding;
+	&.download {
+		padding: 0;
+	}
 	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px
 		rgba(0, 0, 0, 0.1) inset;
 	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px
@@ -102,6 +105,14 @@ a, a:visited {
 	box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.1)
 		inset;
 }*/
+
+.box > iframe {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	min-height: 500px;
+}
 
 .current-state {
 	margin: 0 auto;
@@ -126,12 +137,17 @@ code {
 	font-size: .8em;
 }
 
-h2:target {
-	margin: -.2em -@box-padding;
-	padding: .2em @box-padding;
-	//background-color: hsla(60, 100%, 50%,0.2);
-	background-image: -webkit-linear-gradient(left,hsla(60, 100%, 50%,0.4),hsla(60, 100%, 50%,0.2));
+@h2vmargin: .2em;
+h2 {
+	margin: @h2vmargin 0;
+	padding: 0;
+	&:target {
+		margin: (@h2vmargin / 2) -@box-padding;
+		padding: (@h2vmargin / 2) @box-padding;
+		background-image: -webkit-linear-gradient(left,hsla(60, 100%, 50%,0.4),hsla(60, 100%, 50%,0.2));
+	}
 }
+
 
 footer p {
 	text-align: right;

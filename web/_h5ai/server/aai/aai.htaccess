@@ -1,0 +1,23 @@
+################################
+# h5ai 0.22.1
+# customized .htaccess
+################################
+
+Options       +Indexes
+Options       +FollowSymLinks
+
+HeaderName    /_h5ai/server/aai/header.html
+ReadmeName    /_h5ai/server/aai/footer.html
+
+IndexIgnore   _h5ai*
+
+IndexOptions  Charset=UTF-8
+IndexOptions  FancyIndexing
+IndexOptions  FoldersFirst
+IndexOptions  HTMLTable
+IndexOptions  NameWidth=*
+IndexOptions  SuppressDescription
+IndexOptions  SuppressHTMLPreamble
+IndexOptions  SuppressRules
+IndexOptions  Type=text/html;h5ai=0.22.1
+IndexOptions  XHTML
