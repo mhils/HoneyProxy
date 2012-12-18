@@ -5,4 +5,4 @@ outfile
 dump/
 build/dojo/
 web/build/
-build/github_oauth_token.txt
+build/ftp_config.json

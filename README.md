@@ -21,11 +21,11 @@ We love to hear from your experience with HoneyProxy. If you have any feature su
 
 ## Quick start
 
-Download the [**latest release**](https://github.com/downloads/mhils/HoneyProxy/honeyproxy-latest.zip) or clone the git repo: `git clone --recursive git://github.com/mhils/HoneyProxy.git`.
+Download the [**latest release**](http://honeyproxy.org/download/honeyproxy-latest.zip), a [development snapshot](http://honeyproxy.org/download.html) or clone the git repo: `git clone --recursive git://github.com/mhils/HoneyProxy.git`.
 
 **Install all dependencies**: `pip install pyOpenSSL pyasn1 Twisted Autobahn`   
 Windows users: Install the binaries for [pyOpenSSL](http://pypi.python.org/pypi/pyOpenSSL) and [Twisted](http://twistedmatrix.com/trac/wiki/Downloads) manually.   
-Ubuntu / Debian users: Install twisted as package (sudo apt-get install python-twisted)
+Ubuntu / Debian users: Install twisted as a package (sudo apt-get install python-twisted)
 
 **Start HoneyProxy** with `python honeyproxy.py` or `python honeyproxy.py --help`.   
 If you don't use a modern browser, a kitten will die. We currently support both Firefox and Chrome!

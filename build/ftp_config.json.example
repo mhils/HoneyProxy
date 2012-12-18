@@ -1,0 +1,7 @@
+{
+	"host":"example.com",
+	"port":21,
+	"uploaddir":"/download",
+	"user":"user",
+	"password":"42"
+}
