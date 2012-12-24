@@ -4,8 +4,8 @@
  * of the closure library in the future as it's too big/bloated
  * for our needs.
  */
+/*global goog: false*/
 define(["dojo/domReady!"],function(){
-	
 	var trafficTableSorter = new goog.ui.TableSorter();
 	trafficTableSorter.decorate(goog.dom.getElement('traffictable'));
 	

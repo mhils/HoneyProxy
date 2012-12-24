@@ -8,9 +8,9 @@ define([
 	"../models/Flow",
 	"../util/flowlist"
 ],function(require, Deferred, domConstruct, Flow, flowlist){
-
+	
 	function preview(parentPreviewFunc){
-		return function(domPromise){
+		return function(){
 			var deferred = new Deferred();
 			var flow = this;
 			
@@ -35,7 +35,7 @@ define([
 						domConstruct.place("<p>No subsequent requests found.</p>",nextFlows);
 					}
 					
-					var parentPreview = parentPreviewFunc.apply(this,arguments).then(function(content){
+					parentPreviewFunc.apply(this,arguments).then(function(content){
 						var container = domConstruct.create("div");
 						domConstruct.place(content,container);
 						domConstruct.place(nextFlows,container);
@@ -47,7 +47,7 @@ define([
 				return parentPreviewFunc.apply(this,arguments);
 			}
 			return deferred;
-		}
+		};
 	}	
 	
 	return Flow.extend({

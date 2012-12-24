@@ -9,6 +9,7 @@ define(["require",
         "./DetailPane",
         "./TrafficSidebar"
         ],function(require,declare,BorderContainer,ContentPane,TrafficTable,DetailPane,TrafficSidebar) {
+
 	return declare([BorderContainer], {
 		design: "sidebar",
 		postCreate: function(){

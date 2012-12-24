@@ -1,8 +1,9 @@
 /**
- * Proxy object for better access to Flows. 
- * Be aware that both Request and Response objects are stateless!
+ * Proxy object for better access to Flows. Be aware that both Request and
+ * Response objects are stateless!
  */
 define(["dojo/Deferred","../utilities","./sharedFlowProperties"],function(Deferred,utilities,sharedFlowProperties){
+	
 	var Request = function(flow){
 		this._flow = flow;
 	};
@@ -45,7 +46,7 @@ define(["dojo/Deferred","../utilities","./sharedFlowProperties"],function(Deferr
 				var self = this;
 				var deferred = new Deferred();
 				this.getContent().then(function(data){
-					var formData = utilities.parseParameters(data)
+					var formData = utilities.parseParameters(data);
 					self._flow.set("formDataParsed",formData);
 					deferred.resolve(formData);
 				});
@@ -72,10 +73,10 @@ define(["dojo/Deferred","../utilities","./sharedFlowProperties"],function(Deferr
 		},
 		get rawFirstLine() {
 			return [this.method,this.path,"HTTP/" + this.httpversion.join(".")]
-	        		.join(" ")+"\n";
+					.join(" ")+"\n";
 		}
 	};
-	//depends on https://github.com/documentcloud/underscore/pull/694
+	// depends on https://github.com/documentcloud/underscore/pull/694
 	_.extend(Request.prototype,sharedFlowProperties);
 
 	return Request;

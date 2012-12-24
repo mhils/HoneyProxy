@@ -8,7 +8,8 @@ define([
 	"lodash",
 	"../MainLayout"
 ],function(require, domConstruct, on, _, MainLayout){
-	return function(flows, filter) {
+	
+	return function(flows) {
 		var ul = domConstruct.create("ul", {
 			className: "flowlist"
 		});
@@ -17,8 +18,7 @@ define([
 			var li = domConstruct.create("li", {
 				'data-flow-id': flow.id
 			}, ul);
-			li.textContent = flow.response.contentLengthFormatted + " - "
-					+ flow.request.date;
+			li.textContent = flow.response.contentLengthFormatted + " - " + flow.request.date;
 		});
 		
 		if(ul.children.length > 0){
@@ -29,6 +29,6 @@ define([
 		}
 		
 		return ul;
-	}
+	};
 
 });

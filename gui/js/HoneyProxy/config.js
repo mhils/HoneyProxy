@@ -11,7 +11,7 @@ define(["dojo/json","dojo/text!/api/config"], function(JSON,configstr){
 	};
 	Config.prototype.set = function(id,val){
 		this.storage[id] = val;
-	}
+	};
 	
 	var config = new Config(JSON.parse(configstr));
 	

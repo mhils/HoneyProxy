@@ -11,11 +11,11 @@ define(["dojo/request"],function(request){
 			var release = "stable";
 			var releaseId = 1; //change in /web/version.json, /gui/js/HoneyProxy/util/versionCheck.js and /libhproxy/version.py
 			
-			var currentReleaseId = data[release]["releaseId"];
+			var currentReleaseId = data[release].releaseId;
 			
 			if (currentReleaseId > releaseId && currentReleaseId > (localStorage.getItem("HoneyProxyReleaseId") || 0)) {
-				var msg = "Update Notice: Version "+data[release]["version"]+" is available.\nOpen download page?\n\nRelease Notes:\n"+data[release]["message"];
-				if (confirm(msg)) {
+				var msg = "Update Notice: Version "+data[release].version+" is available.\nOpen download page?\n\nRelease Notes:\n"+data[release].message;
+				if (window.confirm(msg)) {
 					//Go directly to GitHub in case honeyproxy.org got compromised and serves a fake update message.
 					//This way, an attacker would need to compromise both our GitHub account and honeyproxy.org
 					window.open("https://github.com/mhils/HoneyProxy", '_blank');

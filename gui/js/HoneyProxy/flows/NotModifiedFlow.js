@@ -8,7 +8,7 @@ define(["require",
         "dojo/Deferred",
         "../models/Flow",
         "../util/flowlist"],function(require,on,query,domConstruct,Deferred,Flow,flowlist){
-
+	
 	function preview(parentPreviewFunc){
 		return function(){
 			var deferred = new Deferred();
@@ -22,17 +22,17 @@ define(["require",
 					});
 					flows = _.filter(flows, function(f) {
 						return (f.response.contentLength > 0);
-					})
+					});
 					
 					var similarFlows = domConstruct.create("span");
 					if(flows.length > 0){
 						domConstruct.place("<h3>Similar Flows with Content:</h3>",similarFlows);
 						domConstruct.place(flowlist(flows),similarFlows);
 					} else {
-						domConstruct.place("<p>No similar flows found.</p>",similarFlows)
+						domConstruct.place("<p>No similar flows found.</p>",similarFlows);
 					}
 					
-					var parentPreview = parentPreviewFunc.apply(this,arguments).then(function(content){
+					parentPreviewFunc.apply(this,arguments).then(function(content){
 						var span = domConstruct.create("span");
 						domConstruct.place(content,span);
 						domConstruct.place(similarFlows,span);
@@ -41,7 +41,7 @@ define(["require",
 				});
 			}).bind(this));
 			return deferred;
-		}
+		};
 	}	
 	
 	return Flow.extend({

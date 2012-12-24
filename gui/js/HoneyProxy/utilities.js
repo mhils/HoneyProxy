@@ -1,4 +1,4 @@
-define([],function(){
+define([], function() {
 	return {
 		/**
 		 * Get the ContentType out of an array of headers (without charset).
@@ -6,8 +6,8 @@ define([],function(){
 		 * A [[headnerName,value],[headerName,value]] array of headers.
 		 * @returns
 		 */
-		getContentTypeFromHeaders : function getContentTypeFromHeaders(headers){
-			var contentType = _.find(headers, function(header){
+		getContentTypeFromHeaders: function getContentTypeFromHeaders(headers) {
+			var contentType = _.find(headers, function(header) {
 				return !!header[0].match(/^Content-Type$/i);
 			});
 			return contentType ? contentType[1].split(";")[0] : undefined;
@@ -15,17 +15,15 @@ define([],function(){
 		/**
 		 * Parse a query string and return its components
 		 */
-		parseParameters : function(queryString)
-		{
-			function _parse(pairStr)
-		    {
-		        var param = {};
-		        var pair = pairStr.split("=", 2);
-		        param.name = pair[0];
-		        param.value = (pair.length === 1) ? "" : pair[1];
-		        return param;
-		    }
-		    return queryString.split("&").map(_parse);
+		parseParameters: function(queryString) {
+			function _parse(pairStr) {
+				var param = {};
+				var pair = pairStr.split("=", 2);
+				param.name = pair[0];
+				param.value = (pair.length === 1) ? "" : pair[1];
+				return param;
+			}
+			return queryString.split("&").map(_parse);
 		},
 		/**
 		 * Dojo Polyfill for 
@@ -33,12 +31,10 @@ define([],function(){
 		 * http://bugs.dojotoolkit.org/ticket/10291
 		 * Works for >=IE9
 		 */
-		textContentPolyfill : function(nodeName)
-		{
-			return function(text){
+		textContentPolyfill: function(nodeName) {
+			return function(text) {
 				this[nodeName].textContent = text;
-			}
+			};
 		}
 	};
 });
-

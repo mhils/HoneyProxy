@@ -3,6 +3,7 @@
  * Be aware that both Request and Response objects are stateless!
  */
 define(["../utilities","./sharedFlowProperties"],function(utilities,sharedFlowProperties){
+	
 	var Response = function(flow){
 		this._flow = flow;
 	};
@@ -26,7 +27,7 @@ define(["../utilities","./sharedFlowProperties"],function(utilities,sharedFlowPr
 		},
 		get rawFirstLine() {
 			return ["HTTP/" + this.httpversion.join("."),this.code,this.msg]
-	        		.join(" ")+"\n";
+					.join(" ")+"\n";
 		}
 	};
 	_.extend(Response.prototype,sharedFlowProperties);

@@ -17,10 +17,10 @@ define(["dojo/Deferred","./DocumentFlow","highlight","dojo/dom-construct","dojo/
 		} else if (contentLength < askPretty) {
 			var span = domConstruct.create("span");
 			var prettifyButton = domConstruct.create("div",{className:"pre-menu-item", innerHTML: "Prettify (slow)"},span);
-			on(prettifyButton,"click",function(evt){
+			on(prettifyButton,"click",function(){
 				hljs.highlightBlock(pre);
 				domConstruct.destroy(prettifyButton);
-			})
+			});
 			domConstruct.place(pre,span);
 			return span;
 		}

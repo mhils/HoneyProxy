@@ -12,6 +12,7 @@ require({
  "HoneyProxy/websocket",
  "HoneyProxy/traffic",
  "HoneyProxy/util/versionCheck",
+ "HoneyProxy/util/requestAuthenticator",
  "HoneyProxy/tutorial",
  "HoneyProxy/search",
  "HoneyProxy/dirdump",

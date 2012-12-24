@@ -11,6 +11,7 @@
  * be in the model though.
  */
 define(["./Request","./Response","dojo/Deferred","dojo/dom-construct"],function(Request,Response,Deferred,domConstruct){
+	
 	return Backbone.Model.extend({
 		/**
 		 * @return {number} the id of the current flow
@@ -98,6 +99,6 @@ define(["./Request","./Response","dojo/Deferred","dojo/dom-construct"],function(
 		 */
 		matches: function(){
 			return false; //favor subclasses
-		},
+		}
 	});
-})
+});

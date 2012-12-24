@@ -2,6 +2,7 @@
  * Flow subclass responsible for proper display of JavaScript
  */
 define(["dojo/Deferred","./PrettyFlow","./DocumentFlow"],function(Deferred,PrettyFlow, DocumentFlow){
+	
 	return PrettyFlow.extend({
 		getPreview : function(){
 			var deferred = new Deferred();

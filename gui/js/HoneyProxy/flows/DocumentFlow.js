@@ -4,6 +4,7 @@
  * this.
  */
 define(["../models/Flow"],function(Flow){
+	
 	return Flow.extend(
 			{}, 
 			{

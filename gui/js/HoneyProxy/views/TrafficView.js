@@ -1,8 +1,9 @@
 /**
  * Our main traffic table showing all flows.
  */
-define(["./FlowView"],function(FlowView){
+define([ "./FlowView" ], function(FlowView) {
+	
 	return Backbone.Marionette.CollectionView.extend({
-		  itemView: FlowView
+		itemView: FlowView
 	});
 });

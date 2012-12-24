@@ -14,12 +14,12 @@ define(["dojo/text!../templates/flow.ejs"],function(flowTmpl){
 			
 			//iterate through all parent classes to get their categories and add them as classes
 			var superCls = this.model;
-			var categories = []
+			var categories = [];
 			while(superCls !== undefined){
 				if(superCls.constructor.hasOwnProperty("getCategory"))
 				{
 					var cat = "category-"+superCls.constructor.getCategory();
-					if(categories.length == 0 || (cat != categories[categories.length -1] && cat != "category-none"))
+					if(categories.length === 0 || (cat != categories[categories.length -1] && cat != "category-none"))
 						categories.push(cat);
 				}
 				superCls = superCls.constructor.__super__;
@@ -27,7 +27,7 @@ define(["dojo/text!../templates/flow.ejs"],function(flowTmpl){
 			this.$el.addClass(categories.join(" "));
 			this.$el.data("flow-id",this.model.id);
 			this.$el.addClass("request-scheme-"+this.model.request.scheme);
-			for(cls in this.model.getFilterClasses()){
+			for(var cls in this.model.getFilterClasses()){
 				this.$el.addClass(cls);
 			}
 			
@@ -43,12 +43,12 @@ define(["dojo/text!../templates/flow.ejs"],function(flowTmpl){
 			for(var i=0;i<children.length && !inserted;i++) {
 				var child = $(children[i]);
 				if (child.attr("class") > cls) {
-					child.before('<div class="'+cls+'"></div>')
+					child.before('<div class="'+cls+'"></div>');
 					inserted = true;
 				}
 			}
 			if(!inserted)
-				this.$filterEl.append('<div class="'+cls+'"></div>')
+				this.$filterEl.append('<div class="'+cls+'"></div>');
 			return this.$el.addClass(cls);
 		},
 		onFilterClassRemove: function(cls){

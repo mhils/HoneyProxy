@@ -2,6 +2,7 @@
  * Handles the quick start tutorial that is shown if no requests are recorded yet.
  */
 define(["./config","./traffic","dojo/when","dojo/domReady!"],function(config,traffic,when){
+	
 	when(traffic.firstFlow,function(){
 		$("#tutorial").hide();
 	});

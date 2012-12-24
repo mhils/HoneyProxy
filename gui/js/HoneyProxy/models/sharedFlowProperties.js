@@ -1,8 +1,8 @@
 /**
- * Contains shared methods of Request and Response objects.
- * Stateless.
+ * Contains shared methods of Request and Response objects. Stateless.
  */
 define(["dojo/Deferred","dojo/request","../util/formatSize"],function(Deferred,request,formatSize){
+	
 	var sharedFlowProperties = {
 		get httpversion() {
 			return this.data.httpversion || [1,0] /* stay compatible with mitmproxy 0.8 */;
@@ -24,10 +24,10 @@ define(["dojo/Deferred","dojo/request","../util/formatSize"],function(Deferred,r
 		},
 		getContentURL: function(action){
 			var url = 
-				"/files"
-				+"/"+this._flow.get("id")
-				+"/"+this._attr
-				+"/"+action;
+				"/files"+
+				"/"+this._flow.get("id")+
+				"/"+this._attr+
+				"/"+action;
 			return url;
 		},
 		get viewUrl() {
@@ -38,7 +38,7 @@ define(["dojo/Deferred","dojo/request","../util/formatSize"],function(Deferred,r
 		},
 		getContent: function() {
 			if(this.contentLength > 1024 * 1024 * 1){
-				if(confirm("This request is pretty big and might cause performance issues ("+this.contentLengthFormatted+") if we load it. Press abort to continue anyway."))
+				if(window.confirm("This request is pretty big and might cause performance issues ("+this.contentLengthFormatted+") if we load it. Press abort to continue anyway."))
 				{
 					return (new Deferred())
 						.resolve("--- big chunk of data ---");
@@ -89,13 +89,13 @@ define(["dojo/Deferred","dojo/request","../util/formatSize"],function(Deferred,r
 			var attr = this._attr + "RawHeader";
 			if(!this._flow.has(attr)){
 				//set request header
-	        	var rawHeader = this.rawFirstLine;
-	        	var headers = this.headers;
-	        	for(var i=0;i<headers.length;i++){
-	        		rawHeader += headers[i][0]+": "+headers[i][1]+"\n";
-	        	}
-	        	rawHeader += "\n"; //terminate with \n\n
-	        	this._flow.set(attr,rawHeader);
+				var rawHeader = this.rawFirstLine;
+				var headers = this.headers;
+				for(var i=0;i<headers.length;i++){
+					rawHeader += headers[i][0]+": "+headers[i][1]+"\n";
+				}
+				rawHeader += "\n"; //terminate with \n\n
+				this._flow.set(attr,rawHeader);
 			}
 			return this._flow.get(attr);
 		}

@@ -12,7 +12,7 @@ define([
 	"./traffic",
 	"dojo/domReady!"
 ], function(exports,query, BorderContainer, TabContainer, StackContainer, ContentPane, HeaderPane, TrafficPane, ReportPane, TrafficView, traffic) {
-
+	
 	//appLayout covers everything
 	var appLayout = new BorderContainer({
 		design: "headline",
@@ -61,7 +61,7 @@ define([
 		el: $("#trafficTable .data tbody")[0]
 	});
 
-	trafficView.$el.on("click", "tr", function(e) {
+	trafficView.$el.on("click", "tr", function() {
 		trafficPane.selectFlow($(this).data("flow-id"));
 	});
 	

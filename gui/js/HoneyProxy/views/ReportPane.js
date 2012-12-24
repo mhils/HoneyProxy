@@ -1,6 +1,7 @@
 /**
  * Main View
  */
+/*jshint unused:false */
 define(["require",
         "dojo/_base/declare",
         "dojo/dom-construct",
@@ -35,12 +36,13 @@ define(["require",
 
 			//TODO: Wrap into a correct Controller
 			on(reportEditor.startButton,"click",function(){
+				
 				require(["../traffic"],function(traffic){
-					
 					var code = reportEditor.getCode();
 					var outNode = reportOutput.outputNode;
 					domConstruct.empty(outNode);
 					try {
+						/*jshint evil:true */
 						eval(code);
 					} catch(e) {
 						//TODO: This is ugly.

@@ -2,6 +2,7 @@
  * Flow subclass responsible for proper display of CSS files.
  */
 define(["./PrettyFlow"],function(PrettyFlow){
+	
 	return PrettyFlow.extend({}, {
 		matches : function(data) {
 			if (data.contentType)
@@ -14,4 +15,4 @@ define(["./PrettyFlow"],function(PrettyFlow){
 			return "css";
 		}
 	});
-})
+});
