@@ -8,10 +8,11 @@ define([
 	"./views/HeaderPane",
 	"./views/TrafficPane",
 	"./views/ReportPane",
+	"./views/DumpedFilesPane",
 	"./views/TrafficView", //Deprecated, refactor to dojo
 	"./traffic",
 	"dojo/domReady!"
-], function(exports,query, BorderContainer, TabContainer, StackContainer, ContentPane, HeaderPane, TrafficPane, ReportPane, TrafficView, traffic) {
+], function(exports,query, BorderContainer, TabContainer, StackContainer, ContentPane, HeaderPane, TrafficPane, ReportPane, DumpedFilesPane, TrafficView, traffic) {
 	
 	//appLayout covers everything
 	var appLayout = new BorderContainer({
@@ -49,10 +50,14 @@ define([
 		liveSplitters: false,
 		gutters: false
 	});
+	
+	//Dumpfiles Browser Pane
+	var dumpedFilesPane = new DumpedFilesPane();
 
 	//populate main
 	main.addChild(trafficPane);
 	main.addChild(reportPane);
+	main.addChild(dumpedFilesPane);
 
 	appLayout.startup();
 	
@@ -65,7 +70,7 @@ define([
 		trafficPane.selectFlow($(this).data("flow-id"));
 	});
 	
-	
+	exports.mainContainer = main;
 	exports.showPane = function(index){
 		main.selectChild(main.getChildren()[index]);
 	};

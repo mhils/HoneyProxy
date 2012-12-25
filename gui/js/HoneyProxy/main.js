@@ -15,7 +15,6 @@ require({
  "HoneyProxy/util/requestAuthenticator",
  "HoneyProxy/tutorial",
  "HoneyProxy/search",
- "HoneyProxy/dirdump",
  "HoneyProxy/TableSorter",
  "HoneyProxy/popOut"
  ], function(when,on,topic,MainLayout,websocket,traffic,versionCheck) {
