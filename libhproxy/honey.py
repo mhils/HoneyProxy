@@ -6,6 +6,7 @@ class HoneyProxy():
     """
     honeyProxyMaster = None
     authKey = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(32))
+    apiAuthToken = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(32))
     config = {}
      
     @staticmethod
@@ -25,6 +26,10 @@ class HoneyProxy():
     @staticmethod
     def getAuthKey():
         return HoneyProxy.authKey
+
+    @staticmethod
+    def getApiAuthToken():
+        return HoneyProxy.apiAuthToken
         
     @staticmethod
     def setConfig(config):
