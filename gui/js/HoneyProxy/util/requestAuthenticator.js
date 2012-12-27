@@ -14,7 +14,8 @@ require(["dojo/request","dojo/request/notify","dojo/Deferred"],function(request,
 	
 	var def = new Deferred();
 	
-	request("/api/authtoken").then(function(token){
+	request("/api/token").then(function(data){
+		var token = data.token;
 		notify("send", function(req){
 			if(req.options.method !== "GET") {
 				console.log("send",req);

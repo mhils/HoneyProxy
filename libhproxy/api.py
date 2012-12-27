@@ -113,12 +113,18 @@ class FileSystemCRUDApi(Resource):
                 return f.read()
         elif self.isdir:
             ret = []
-            if request.args.get("walk",["false"])[0] == "true":
+            if request.args.get("recursive",["false"])[0] == "true":
                 for dirpath, dirnames, filenames in os.walk(self.path):
                     ret.append((dirpath[len(self.path):], dirnames, filenames))
             else:
+                files = []
+                dirs = []
                 for i in os.listdir(self.path):
-                    ret.append(i)
+                    if os.path.isfile(os.path.join(self.path,i)):
+                        files.append(i)
+                    else:
+                        dirs.append(i)
+                ret = ("", dirs, files)
             return json.dumps(ret)
         assert False
 

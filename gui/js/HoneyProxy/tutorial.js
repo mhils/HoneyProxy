@@ -13,7 +13,6 @@ define(["./config","./MainLayout","./traffic","dojo/when","dojo/domReady!"],func
 		$("#tutorial").hide();
 	});
 	MainLayout.mainContainer.watch("selectedChildWidget",function(name,oval,nval){
-		console.log(arguments);
 		if(alwaysHidden)
 			return;
 		$("#tutorial").toggle(nval == MainLayout.trafficPane);
