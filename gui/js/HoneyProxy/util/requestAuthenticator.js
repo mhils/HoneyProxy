@@ -14,14 +14,12 @@ require(["dojo/request","dojo/request/notify","dojo/Deferred"],function(request,
 	
 	var def = new Deferred();
 	
-	request("/api/token").then(function(data){
+	request("/api/token",{handleAs:"json"}).then(function(data){
 		var token = data.token;
 		notify("send", function(req){
 			if(req.options.method !== "GET") {
-				console.log("send",req);
-				console.warn(token);				
+				req.xhr.setRequestHeader("X-Request-Token",token);
 			}
-
 		});
 		def.resolve(true);
 	},function(){

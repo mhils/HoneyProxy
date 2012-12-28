@@ -19,7 +19,12 @@ class HoneyProxyApi(Resource):
 def requiresAuth(f):
     assert f.__name__ in ["render_POST","render_PUT","render_DELETE"]
     def auth_func(self, request, *args, **kwargs):
-        if "token" in request.args and request.args["token"][0] == HoneyProxy.getApiAuthToken():
+        token = None
+        if "token" in request.args:
+            token = request.args["token"] 
+        elif request.requestHeaders.hasHeader("X-Request-Token"):
+            token = request.requestHeaders.getRawHeaders("X-Request-Token",[None])[0]
+        if token == HoneyProxy.getApiAuthToken():
             return f(self, request, *args, **kwargs)
         else:
             return ForbiddenResource(message="Invalid response Token").render(request)
@@ -49,7 +54,7 @@ class FileSystemCRUDApi(Resource):
         self.path = path
     @staticmethod
     def clean(filename):
-        return re.sub(r'[^\w\.\-]','',filename).strip(".")
+        return re.sub(r'[^\w\.\- =]','',filename).strip(".") # the equal sign is used for read only files
     def getChild(self, name, request):
         name = FileSystemCRUDApi.clean(name)
         childPath = os.path.join(self.path,name)

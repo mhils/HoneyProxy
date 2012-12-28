@@ -1,5 +1,5 @@
-define([ "dojo/_base/declare", "./_DetailViewPane", "dojo/dom-construct",
-	"dojo/text!./templates/DetailsPane.ejs" ], function(declare, _DetailViewPane,
+define([ "lodash", "dojo/_base/declare", "./_DetailViewPane", "dojo/dom-construct",
+	"dojo/text!./templates/DetailsPane.ejs" ], function(_, declare, _DetailViewPane,
 	domConstruct, template) {
 	
 	return declare([ _DetailViewPane ], {
@@ -17,7 +17,6 @@ define([ "dojo/_base/declare", "./_DetailViewPane", "dojo/dom-construct",
 					function(formData) {
 						var fragment = document.createDocumentFragment();
 						for ( var i = 0; i < formData.length; i++) {
-							//FIXME: Replace underscore.js escaping.
 							fragment.appendChild(domConstruct.toDom("<tr><td>"
 								+ _.escape(decodeURIComponent(formData[i].name)) + "</td><td>"+
 								_.escape(decodeURIComponent(formData[i].value))+
