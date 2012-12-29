@@ -1,9 +1,13 @@
 require({
-	packages:[{
-        name:"HoneyProxy",
-        location:"../../HoneyProxy",
-        tlmSiblingOfDojo: false
-    }]
+	packages: [ {
+		name: "HoneyProxy",
+		location: "../../HoneyProxy",
+		tlmSiblingOfDojo: false
+	}, {
+		name: "ReportScripts",
+		location: "/api/fs/report_scripts",
+		tlmSiblingOfDojo: false
+	} ]
 },	
 ["dojo/when",
  "dojo/on",

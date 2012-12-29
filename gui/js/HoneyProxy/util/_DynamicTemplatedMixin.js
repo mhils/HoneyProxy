@@ -59,8 +59,8 @@ define(
 					this._beforeFillContent(); // hook for _WidgetsInTemplateMixin
 					this._fillContent(this.srcNodeRef);
 				},
-				_beforeFillContent: _TemplatedMixin.prototype._beforeFillContent
-					.bind(this),
+				_beforeFillContent: _TemplatedMixin.prototype._beforeFillContent,
+				_attachTemplateNodes: _TemplatedMixin.prototype._attachTemplateNodes,
 				_fillContent: _TemplatedMixin.prototype._fillContent.bind(this),
 				refresh: function() {
 					this._attachPoints = [];
