@@ -16,15 +16,19 @@ require({
  "HoneyProxy/websocket",
  "HoneyProxy/traffic",
  "HoneyProxy/util/versionCheck",
+ "HoneyProxy/util/sampleFlow",
  "HoneyProxy/util/requestAuthenticator",
  "HoneyProxy/tutorial",
  "HoneyProxy/search",
  "HoneyProxy/TableSorter",
  "HoneyProxy/popOut"
- ], function(when,on,topic,MainLayout,websocket,traffic,versionCheck) {
+ ], function(when,on,topic,MainLayout,websocket,traffic,versionCheck, sampleFlow) {
 	
 	//Debug
-	window.HoneyProxy = {traffic:traffic};
+	window.HoneyProxy = {
+		traffic:traffic,
+		sampleFlow: sampleFlow
+	};
 	
 	when(websocket.authenticated,function(){
 		traffic.fetch();
