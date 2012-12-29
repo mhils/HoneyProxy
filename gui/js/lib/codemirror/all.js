@@ -9,6 +9,7 @@ define(["require","dojo/Deferred","./codemirror"],function(require,Deferred){
 	         "./util/simple-hint",
 	         "./util/javascript-hint",
 	         "./util/matchbrackets",
+	         "./util/searchcursor",
 	         "./util/match-highlighter"],
 	         function(){
 		def.resolve(window.CodeMirror);

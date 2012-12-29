@@ -72,10 +72,10 @@ define([ "lodash",
 						"Alt-PageUp" : function(){ increaseSelectedOptionIndex(-1); }, 
 						"Ctrl-Space": "autocomplete",
 						"Shift-Ctrl-F": "autoformat"
-					},
-					onCursorActivity: function() {
-						self.codeMirror.matchHighlight("CodeMirror-matchhighlight");
 					}
+				});
+				self.codeMirror.on("cursorActivity", function() {
+					self.codeMirror.matchHighlight("CodeMirror-matchhighlight");
 				});
 				
 				//Editor Synchronization
@@ -104,10 +104,8 @@ define([ "lodash",
 				}
 								
 				function save(newfile){
-					if(isSaved()) {
-						self.statusNode.textContent = "saved.";
+					if(isSaved())
 						return (new Deferred()).resolve();
-					}
 					if(saveReq)
 						saveReq.cancel();
 					
@@ -170,10 +168,13 @@ define([ "lodash",
 				var saveTimeout;
 				self.codeMirror.on("change",function(){
 					window.clearTimeout(saveTimeout);
-					self.statusNode.textContent = "";
-					saveTimeout = window.setTimeout(function(){
-						save();
-					}, 300);
+					if(isSaved()){
+						self.statusNode.textContent = "saved.";
+					} else {
+						saveTimeout = window.setTimeout(function(){
+							save();
+						}, 300);
+					}
 				});
 				
 				on(self.scriptSelectionNode,"change",function(){

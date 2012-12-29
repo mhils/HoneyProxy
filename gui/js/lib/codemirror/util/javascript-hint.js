@@ -16,13 +16,7 @@
     return arr.indexOf(item) != -1;
   }
 
-  function scriptHint(editor, keywords, getToken, givenOptions) {
-	  
-	 var options = {}, defaults = CodeMirror.javascriptHint.defaults;
-	 for (var opt in defaults)
-	   if (defaults.hasOwnProperty(opt))
-	     options[opt] = (givenOptions && givenOptions.hasOwnProperty(opt) ? givenOptions : defaults)[opt];
-	  
+  function scriptHint(editor, keywords, getToken, options) {
     // Find the token at the cursor
     var cur = editor.getCursor(), token = getToken(editor, cur), tprop = token;
     // If it's not a 'word-style' token, ignore the token.
@@ -53,15 +47,15 @@
       if (!context) var context = [];
       context.push(tprop);
     }
-    return {list: getCompletions(token, context, keywords, givenOptions),
+    return {list: getCompletions(token, context, keywords, options),
             from: {line: cur.line, ch: token.start},
             to: {line: cur.line, ch: token.end}};
   }
 
-  CodeMirror.javascriptHint = function(editor, givenOptions) {
+  CodeMirror.javascriptHint = function(editor, options) {
     return scriptHint(editor, javascriptKeywords,
-                      function (e, cur) {return e.getTokenAt(cur);}, 
-                      givenOptions);
+                      function (e, cur) {return e.getTokenAt(cur);},
+                      options);
   };
 
   function getCoffeeScriptToken(editor, cur) {
@@ -82,8 +76,8 @@
     return token;
   }
 
-  CodeMirror.coffeescriptHint = function(editor, givenOptions) {
-    return scriptHint(editor, coffeescriptKeywords, getCoffeeScriptToken, givenOptions);
+  CodeMirror.coffeescriptHint = function(editor, options) {
+    return scriptHint(editor, coffeescriptKeywords, getCoffeeScriptToken, options);
   };
 
   var stringProps = ("charAt charCodeAt indexOf lastIndexOf substring substr slice trim trimLeft trimRight " +
@@ -99,22 +93,13 @@
   function getCompletions(token, context, keywords, options) {
     var found = [], start = token.string;
     function maybeAdd(str) {
-      if (str.indexOf("_") != 0 && str.indexOf(start) == 0 && !arrayContains(found, str)) found.push(str);
+      if (str.indexOf(start) == 0 && !arrayContains(found, str)) found.push(str);
     }
     function gatherCompletions(obj) {
       if (typeof obj == "string") forEach(stringProps, maybeAdd);
       else if (obj instanceof Array) forEach(arrayProps, maybeAdd);
       else if (obj instanceof Function) forEach(funcProps, maybeAdd);
-      for (var name in obj){
-    	  var toAdd;
-    	  /*if(typeof(obj[name]) == "function") {
-    		  toAdd = obj[name].toString()
-              toAdd = name + toAdd.substring(toAdd.indexOf("("),toAdd.indexOf(")")+1);
-    	  }
-    	  else*/
-    		  toAdd = name;	  
-    	  maybeAdd(toAdd);
-      }
+      for (var name in obj) maybeAdd(name);
     }
 
     if (context) {
@@ -122,15 +107,14 @@
       // find in the current environment.
       var obj = context.pop(), base;
       if (obj.type == "variable") {
-        if(options["additionalContext"])
-        	base = options["additionalContext"][obj.string];
+        if (options && options.additionalContext)
+          base = options.additionalContext[obj.string];
         base = base || window[obj.string];
-      }
-      else if (obj.type == "string")
+      } else if (obj.type == "string") {
         base = "";
-      else if (obj.type == "atom")
+      } else if (obj.type == "atom") {
         base = 1;
-      else if (obj.type == "function") {
+      } else if (obj.type == "function") {
         if (window.jQuery != null && (obj.string == '$' || obj.string == 'jQuery') &&
             (typeof window.jQuery == 'function'))
           base = window.jQuery();
@@ -150,8 +134,4 @@
     }
     return found;
   }
-  
-  CodeMirror.javascriptHint.defaults = {
-    additionalContext: undefined
-  };
 })();
