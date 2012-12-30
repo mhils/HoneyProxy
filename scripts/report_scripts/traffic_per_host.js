@@ -16,11 +16,11 @@ require([
   });
   
   var trafficPerHost = {};
-  traffic.each(function(t){
-    var host = t.request.host;
+  traffic.each(function(flow){
+    var host = flow.request.host;
     if(!(host in trafficPerHost))
       trafficPerHost[host] = {y:0,text:"",count:0};
-    trafficPerHost[host]["y"] += t.request.contentLength + t.response.contentLength;
+    trafficPerHost[host]["y"] += flow.request.contentLength + flow.response.contentLength;
     trafficPerHost[host]["count"] += 1;
   });
   var data = [];

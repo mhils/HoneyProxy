@@ -64,6 +64,7 @@ define([ "lodash",
 				self.codeMirror = CodeMirror.fromTextArea(self.reportCodeNode, {
 					lineNumbers: true,
 					mode: "javascript",
+					tabSize: 2,
 					matchBrackets: true,
 					extraKeys: {
 						"Enter": "newlineAndIndentContinueComment",
