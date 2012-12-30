@@ -40,7 +40,7 @@
           }
         } while (level > 0);
         tprop = getToken(editor, {line: cur.line, ch: tprop.start});
-	if (tprop.type == 'variable')
+	if (tprop.type.indexOf('variable') == 0)
 	  tprop.type = 'function';
 	else return; // no clue
       }
@@ -106,7 +106,7 @@
       // If this is a property, see if it belongs to some object we can
       // find in the current environment.
       var obj = context.pop(), base;
-      if (obj.type == "variable") {
+      if (obj.type.indexOf("variable") == 0) {
         if (options && options.additionalContext)
           base = options.additionalContext[obj.string];
         base = base || window[obj.string];
