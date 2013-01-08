@@ -76,6 +76,9 @@ def main():
 
     options = parser.parse_args()
     
+    if not os.path.isabs(options.confdir):
+        options.confdir = os.path.join(honeyproxy_dir,options.confdir)
+    
     dumpoptions = dump.Options(dumpdir=options.dumpdir,**mcmdline.get_common_options(options))
     
     #set up proxy server

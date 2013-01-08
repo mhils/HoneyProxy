@@ -35,14 +35,7 @@ def allow_overwrite(parser, option):
 
 def fix_options(parser):
     '''Fix mitmproxy proxy options - we don't want all features to be present in HoneyProxy'''
-    suppress_option(parser,"--confdir")
-    allow_overwrite(parser,"--confdir")
-    parser.add_argument(
-        "--confdir",
-        action="store", type = str, dest="confdir", default='./ca-cert',
-        help = "Configuration directory. (./ca-cert)"
-    )
-    
+
     parser.add_argument(
         "--dump-dir",
         action="store", type = str, dest="dumpdir", default=None,
