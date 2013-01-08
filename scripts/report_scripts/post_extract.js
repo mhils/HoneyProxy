@@ -3,27 +3,34 @@ require([
   "dojo/promise/all"
 ], function(domConstruct, all) {
   
-  //filter all requests for POST requests with request content
+  //filter all requests for POST requests with form data
   var requests = traffic.filter(function(flow){
     return flow.request.method === "POST" && flow.request.hasFormData;
   });
   
+  if(requests.length === 0)
+    return alert("No POST requests found!");
+  
   console.log("Matched requests: "+requests.length+" of "+traffic.length);
   
-  var data = {};			//Contains all POST data.
-  var promises = []; 	//getFormData() returns a [dojo] promise.
-  										//this array collects all promises to trigger the result
-  										//output as soon as they are ready.
+  var data = {};			//Collects all POST data.
   
-  //Iterate over all 
+  //getFormData() and getContent() are  async,
+  //they both return a dojo promise.
+  //This array collects all promises to trigger the result
+  //output as soon as they are ready.
+  //Promises are covered in dojos Deferred tutorial.
+  var promises = []; 	
+  
+  //Iterate over all matched requests
   _.each(requests,function(flow){
-    promises.push(
-      flow.request.getFormData().then(function(formData){
-        if(!(flow.request.fullPath in data))
-          data[flow.request.fullPath] = [];
-        data[flow.request.fullPath].push(formData);
-      })
-    );
+    var promise = 
+        flow.request.getFormData().then(function(formData){
+          if(!(flow.request.fullPath in data))
+            data[flow.request.fullPath] = [];
+          data[flow.request.fullPath].push(formData);
+        });
+    promises.push(promise);
   });
   
   all(promises).then(function(){

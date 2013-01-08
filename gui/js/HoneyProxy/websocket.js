@@ -34,7 +34,8 @@ define([ "./config", "dojo/json", "dojo/topic", "dojo/Deferred" ], function(
 		},
 		authenticated: new Deferred(),
 		init: function() {
-			this.ws = new WebSocket(config.get("ws"));
+			var wsUrl = "ws://" + window.location.hostname + ":" + config.get("ws-port");
+			this.ws = new WebSocket(wsUrl);
 			this.ws.onopen = (function() {
 				this.send({
 					action: "auth",

@@ -1,30 +1,29 @@
 require([
-  "dojo/dom-style",
+  "HoneyProxy/util/formatSize",
   "dojox/charting/Chart",
   "dojox/charting/themes/Claro",
   "dojox/charting/plot2d/Pie",
   "dojox/charting/action2d/Tooltip",
   "dojox/charting/action2d/MoveSlice",
-  "HoneyProxy/util/formatSize",
   "dojox/charting/plot2d/Markers",
   "dojox/charting/axis2d/Default",
-], function(domStyle, Chart, theme, Pie, Tooltip, MoveSlice,formatSize) {
+], function(formatSize, Chart, theme, Pie, Tooltip, MoveSlice) {
   
-  domStyle.set(outNode, {
-    width: "100%",
-    height: "100%"
-  });
-  
+  // hostname -> propObj
   var trafficPerHost = {};
+  
+  // Iterate over all flows and sum up content lengths
   traffic.each(function(flow){
     var host = flow.request.host;
     if(!(host in trafficPerHost))
       trafficPerHost[host] = {y:0,text:"",count:0};
-    trafficPerHost[host]["y"] += flow.request.contentLength + flow.response.contentLength;
+    var size = flow.request.contentLength + flow.response.contentLength;
+    trafficPerHost[host]["y"] += size;
     trafficPerHost[host]["count"] += 1;
   });
-  var data = [];
   
+  //create a Dojo Charting Array from the aggregated data.
+  var data = [];
   for (host in trafficPerHost){
     trafficPerHost[host]["tooltip"] = trafficPerHost[host]["count"] + " requests";
     trafficPerHost[host]["text"] = host + " ("+formatSize(trafficPerHost[host]["y"])+")";

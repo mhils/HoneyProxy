@@ -26,6 +26,8 @@ from autobahn.websocket import listenWS
 
 
 honeyproxy_dir = os.path.split(inspect.getfile( inspect.currentframe() ))[0]
+if honeyproxy_dir == "":
+    honeyproxy_dir = "."
 #Verify that submodules are in place
 if not os.path.isfile(os.path.join(honeyproxy_dir,"mitmproxy","mitmproxy")):
     print """
@@ -102,13 +104,13 @@ def main():
     #reactor.listenTCP(options.apiport, Site(websocketRes))
     
     #Config
-    wsURL = "ws://localhost:"+str(options.apiport)
+    wsPort = str(options.apiport)
     httpGui = "http://honey:"+HoneyProxy.getAuthKey()+"@localhost:"+str(options.guiport)+"/"
     guiURL = httpGui +"app/"
     HoneyProxy.setConfig({
         "proxy-addr":options.addr,
         "proxy-port":options.port,
-        "ws": wsURL,
+        "ws-port": wsPort,
         "auth": HoneyProxy.getAuthKey(),
         "dumpdir": True if options.dumpdir else False
     })
@@ -138,7 +140,8 @@ def main():
     print "HoneyProxy has been started!"
     print "Configuration Details (normal users: ignore):"
     print "GUI: "+guiURL
-    print "WebSocket API: "+wsURL
+    print "Proxy Address: %s:%s" % (options.addr, options.port)
+    print "WebSocket Port: "+wsPort
     print "Auth user: " + "honey"
     print "Auth key: "+ HoneyProxy.getAuthKey()
         

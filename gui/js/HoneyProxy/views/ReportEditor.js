@@ -35,6 +35,7 @@ define([ "lodash",
 							"flow": {
 								"request": sampleFlow.request,
 								"response": sampleFlow,
+								"id": sampleFlow.id,
 								"getSimilarFlows": sampleFlow.getSimilarFlows
 							},
 							"traffic": traffic,
@@ -47,6 +48,8 @@ define([ "lodash",
 						from: cm.getCursor(true),
 						to: cm.getCursor(false)
 					};
+					if(range.from.ch == range.to.ch && range.from.line == range.to.line)
+						range = {"from": {"ch": 0, "line": 0}, "to": {"ch": 0, "line": cm.lineCount()}};
 					cm.autoIndentRange(range.from, range.to);
 				};
 				

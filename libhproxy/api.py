@@ -202,7 +202,7 @@ class SearchApiResource(Resource):
                 (Usually this is only the case for performance reasons)
     """
     isLeaf = True
-
+    
     def render_GET(self, request):
         try:
             allFlows = HoneyProxy.getProxyMaster().getFlowCollection().getFlowsSerialized()
@@ -302,4 +302,6 @@ class SearchApiResource(Resource):
 
             return json.dumps(filteredFlows,separators=(',',':'),encoding='latin1')
         except Exception as e:
-            return ServerErrorResource(e).render(request)   
+            return ServerErrorResource(e).render(request)
+        
+    render_POST = render_GET
