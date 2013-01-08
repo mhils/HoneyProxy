@@ -26,8 +26,7 @@ from autobahn.websocket import listenWS
 
 
 honeyproxy_dir = os.path.split(inspect.getfile( inspect.currentframe() ))[0]
-if honeyproxy_dir == "":
-    honeyproxy_dir = "."
+
 #Verify that submodules are in place
 if not os.path.isfile(os.path.join(honeyproxy_dir,"mitmproxy","mitmproxy")):
     print """
@@ -48,8 +47,6 @@ def add_subfolder(name):
         sys.path.insert(0, subdir)
 add_subfolder("netlib")
 add_subfolder("mitmproxy")
-
-os.chdir(honeyproxy_dir) # normalize working directory to be HoneyProxy/
 
 from libmproxy import proxy as mproxy, cmdline as mcmdline, dump
 from libhproxy import proxy as hproxy, cmdline as hcmdline, version, content, api
@@ -94,7 +91,8 @@ def main():
             sys.exit(1)
 
     HoneyProxy.setAuthKey(options.apiauth)
-
+    if options.readonly:
+        HoneyProxy.apiAuthToken = None
     #set up HoneyProxy GUI
     guiSessionFactory = session.GuiSessionFactory("ws://localhost:"+str(options.apiport))
     
@@ -116,7 +114,7 @@ def main():
     })
     
     root = Resource()
-    root.putChild("app",File("./gui"))
+    root.putChild("app",File(os.path.join(honeyproxy_dir,"gui")))
     root.putChild("api",api.HoneyProxyApi())
     root.putChild("files", content.ContentAPIResource())
     if(options.dumpdir):

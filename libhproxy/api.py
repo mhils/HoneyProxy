@@ -19,7 +19,7 @@ class HoneyProxyApi(Resource):
 def requiresAuth(f):
     assert f.__name__ in ["render_POST","render_PUT","render_DELETE"]
     def auth_func(self, request, *args, **kwargs):
-        token = None
+        token = "invalid"
         if "token" in request.args:
             token = request.args["token"] 
         elif request.requestHeaders.hasHeader("X-Request-Token"):

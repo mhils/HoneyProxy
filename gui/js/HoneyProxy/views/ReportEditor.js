@@ -9,11 +9,12 @@ define([ "lodash",
          "dijit/Toolbar",
          "dijit/form/Button",
          "../traffic",
-         "../util/sampleFlow", 
+         "../util/sampleFlow",
+         "../util/requestAuthenticator", 
          "../util/_DynamicTemplatedWidget",
          "dijit/_WidgetsInTemplateMixin",
          "dojo/text!./templates/ReportEditor.ejs" ], function(_, declare, array, Deferred, domConstruct, on, request,
-	CodeMirrorPromise, Toolbar, Button, traffic, sampleFlow, _DynamicTemplatedWidget, _WidgetsInTemplateMixin, template) {
+	CodeMirrorPromise, Toolbar, Button, traffic, sampleFlow, requestAuthenticator, _DynamicTemplatedWidget, _WidgetsInTemplateMixin, template) {
 	
 	return declare([ _DynamicTemplatedWidget, _WidgetsInTemplateMixin ], {
 		templateString: template,
@@ -108,23 +109,37 @@ define([ "lodash",
 				}
 								
 				function save(newfile){
+					
 					if(isSaved())
 						return (new Deferred()).resolve();
 					if(saveReq)
 						saveReq.cancel();
 					
-					self.statusNode.textContent = "saving...";
-					currentFilename = currentFilename.replace(/[^ \w\.\-\/\\]/g,"");
-					var method = newfile ? request.post : request.put;
-					var code = self.getCode();
-					saveReq = method(API_PATH + currentFilename, 
-						{data:JSON.stringify({"content":code})});
-					saveReq.then(function(){
-							self.statusNode.textContent = "saved.";
-							lastState = code;
-							saveReq = null;
+					var def = new Deferred();
+					
+					requestAuthenticator.active.then(function(writable){
+						if(!writable){
+							self.statusNode.textContent = "read only mode: unsaved";
+							def.resolve(false);
+						}
+						else {
+							
+							self.statusNode.textContent = "saving...";
+							currentFilename = currentFilename.replace(/[^ \w\.\-\/\\]/g,"");
+							var method = newfile ? request.post : request.put;
+							var code = self.getCode();
+							saveReq = method(API_PATH + currentFilename, 
+								{data:JSON.stringify({"content":code})});
+							saveReq.then(function(){
+									self.statusNode.textContent = "saved.";
+									lastState = code;
+									saveReq = null;
+									def.resolve(arguments);
+							});
+							
+						}
 					});
-					return saveReq;
+					return def;
 				}
 				function newfile(filename){
 					if(filename in files)
@@ -175,6 +190,7 @@ define([ "lodash",
 					if(isSaved()){
 						self.statusNode.textContent = "saved.";
 					} else {
+						self.statusNode.textContent = "";
 						saveTimeout = window.setTimeout(function(){
 							save();
 						}, 300);

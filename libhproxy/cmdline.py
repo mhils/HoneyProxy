@@ -71,6 +71,12 @@ def fix_options(parser):
         action="store_true", dest="nogui",
         help="Don't open GUI in browser"
     )    
+    
+    parser.add_argument(
+        "--readonly",
+        action="store_true", dest="readonly",
+        help="Don't allow clients to modify files on disk (e.g. report scripts)"
+    )
 
     suppress_option(parser,"-e")
     suppress_option(parser,"-q")

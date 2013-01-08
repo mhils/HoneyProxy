@@ -28,7 +28,17 @@ require([
         flow.request.getFormData().then(function(formData){
           if(!(flow.request.fullPath in data))
             data[flow.request.fullPath] = [];
-          data[flow.request.fullPath].push(formData);
+          
+          var prettyData = {}
+          var double = false;
+          for(var i=0;i<formData.length;i++){
+            if (formData[i].name in prettyData){
+              double = true;
+              break;
+            }
+            prettyData[formData[i].name] = formData[i].value;
+          }
+          data[flow.request.fullPath].push(double ? formData : prettyData);
         });
     promises.push(promise);
   });

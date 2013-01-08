@@ -10,7 +10,7 @@
  * HoneyProxy has NO built-in protection against MITM attacks.
  * Run it on localhost for sensitive operations or tunnel appropriately.
  */
-require(["dojo/request","dojo/request/notify","dojo/Deferred"],function(request, notify, Deferred){
+define(["exports", "dojo/request", "dojo/request/notify", "dojo/Deferred"],function(exports, request, notify, Deferred){
 	
 	var def = new Deferred();
 	
@@ -21,10 +21,11 @@ require(["dojo/request","dojo/request/notify","dojo/Deferred"],function(request,
 				req.xhr.setRequestHeader("X-Request-Token",token);
 			}
 		});
-		def.resolve(true);
+		def.resolve(token === null ? false : true);
 	},function(){
 		def.reject(arguments);
 	});
 	
-	return {"active": def};
+	exports.active = def;
+	return exports;
 });
