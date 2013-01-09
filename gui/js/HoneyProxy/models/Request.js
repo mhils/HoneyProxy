@@ -59,7 +59,7 @@ define(["dojo/Deferred","../utilities","./sharedFlowProperties"],function(Deferr
 			var fullpath = this.scheme + "://" + this.hostFormatted + ":" + this.port + path.join("/");
 			var filename = path.pop();
 			this._flow.set("filename", filename==="" ? "/" : filename );
-			this._flow.set("fullpath", fullpath );		
+			this._flow.set("fullPath", fullpath );		
 		},
 		get filename() {
 			if(!this._flow.has("filename"))
@@ -67,9 +67,9 @@ define(["dojo/Deferred","../utilities","./sharedFlowProperties"],function(Deferr
 			return this._flow.get("filename");
 		},
 		get fullPath() {
-			if(!this._flow.has("fullpath"))
+			if(!this._flow.has("fullPath"))
 				this._processName();
-			return this._flow.get("fullpath");
+			return this._flow.get("fullPath");
 		},
 		get rawFirstLine() {
 			return [this.method,this.path,"HTTP/" + this.httpversion.join(".")]

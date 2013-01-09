@@ -11,8 +11,9 @@ define([
 	"./views/DumpedFilesPane",
 	"./views/TrafficView", //Deprecated, refactor to dojo
 	"./traffic",
+	"./config",
 	"dojo/domReady!"
-], function(exports,query, BorderContainer, TabContainer, StackContainer, ContentPane, HeaderPane, TrafficPane, ReportPane, DumpedFilesPane, TrafficView, traffic) {
+], function(exports,query, BorderContainer, TabContainer, StackContainer, ContentPane, HeaderPane, TrafficPane, ReportPane, DumpedFilesPane, TrafficView, traffic, config) {
 	
 	//appLayout covers everything
 	var appLayout = new BorderContainer({
@@ -51,13 +52,15 @@ define([
 		gutters: false
 	});
 	
-	//Dumpfiles Browser Pane
-	var dumpedFilesPane = new DumpedFilesPane();
-
 	//populate main
 	main.addChild(trafficPane);
 	main.addChild(reportPane);
-	main.addChild(dumpedFilesPane);
+	
+	if (config.get("dumpdir") === true) {
+		//Dumpfiles Browser Pane
+		var dumpedFilesPane = new DumpedFilesPane();
+		main.addChild(dumpedFilesPane);
+	}
 
 	appLayout.startup();
 	
