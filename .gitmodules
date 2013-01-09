@@ -1,9 +1,6 @@
 [submodule "mitmproxy"]
 	path = mitmproxy
 	url = git@github.com:mhils/mitmproxy.git
-[submodule "gui/js/lib/closure-library"]
-	path = gui/js/lib/closure-library
-	url = https://github.com/jarib/google-closure-library.git
 [submodule "netlib"]
 	path = netlib
 	url = git@github.com:mhils/netlib.git
