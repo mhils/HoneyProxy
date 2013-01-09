@@ -76,9 +76,6 @@ def main():
 
     options = parser.parse_args()
     
-    if not os.path.isabs(options.confdir):
-        options.confdir = os.path.join(honeyproxy_dir,options.confdir)
-    
     dumpoptions = dump.Options(dumpdir=options.dumpdir,**mcmdline.get_common_options(options))
     
     #set up proxy server
@@ -118,7 +115,7 @@ def main():
     
     root = Resource()
     root.putChild("app",File(os.path.join(honeyproxy_dir,"gui")))
-    root.putChild("api",api.HoneyProxyApi())
+    root.putChild("api",api.HoneyProxyApi(honeyproxy_dir))
     root.putChild("files", content.ContentAPIResource())
     if(options.dumpdir):
         root.putChild("dump", File(options.dumpdir))

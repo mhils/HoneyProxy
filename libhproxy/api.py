@@ -8,10 +8,10 @@ class HoneyProxyApi(Resource):
     """
         HoneyProxy JSON API.
     """
-    def __init__(self):
+    def __init__(self, honeyproxy_dir):
         Resource.__init__(self)
         self.putChild("config", ConfigApiResource())
-        self.putChild("fs", FileSystemCRUDApi("./scripts"))
+        self.putChild("fs", FileSystemCRUDApi(os.path.join(honeyproxy_dir,"./scripts")))
         self.putChild("flows", FlowsApiResource())
         self.putChild("search", SearchApiResource())
         self.putChild("token", TokenApiResource())  

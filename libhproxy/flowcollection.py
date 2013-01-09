@@ -134,7 +134,7 @@ class FlowCollection:
             try:
                 decoded = decoded.encode('utf-8')
             except:
-                print "Warning: Cannod encode request to utf8"
+                print "Warning: Cannot encode request to utf8"
             decoded_content[i] = decoded
         
         #calculate hashsums
