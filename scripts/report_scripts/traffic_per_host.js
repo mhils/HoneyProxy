@@ -1,3 +1,6 @@
+/*
+ * This report scripts displays shows a traffic per hostname pie chart.
+ */
 require([
   "HoneyProxy/util/formatSize",
   "dojox/charting/Chart",

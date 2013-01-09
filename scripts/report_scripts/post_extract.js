@@ -1,3 +1,6 @@
+/*
+ * This report script summarizes all POSTed form data.
+ */
 require([
   "dojo/dom-construct",
   "dojo/promise/all"
