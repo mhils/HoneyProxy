@@ -105,12 +105,15 @@ define([ "lodash",
 					
 				});
 				function isSaved(){
-					return lastState === self.getCode() || currentFilename === undefined || currentFilename == "=intro.js";
+					return lastState === self.getCode() || currentFilename === undefined;
+				}
+				function isReadOnly(){
+					return currentFilename.indexOf("=") === 0;
 				}
 								
 				function save(newfile){
 					
-					if(isSaved())
+					if(isSaved() || isReadOnly())
 						return (new Deferred()).resolve();
 					if(saveReq)
 						saveReq.cancel();
@@ -187,7 +190,10 @@ define([ "lodash",
 				var saveTimeout;
 				self.codeMirror.on("change",function(){
 					window.clearTimeout(saveTimeout);
-					if(isSaved()){
+					if(isReadOnly()){
+						self.statusNode.textContent = "read only";
+					}
+					else if(isSaved()){
 						self.statusNode.textContent = "saved.";
 					} else {
 						self.statusNode.textContent = "";
