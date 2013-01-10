@@ -24,6 +24,8 @@ from twisted.internet import reactor, task
 from twisted.web.resource import Resource
 from autobahn.websocket import listenWS
 
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 honeyproxy_dir = os.path.split(inspect.getfile( inspect.currentframe() ))[0]
 
