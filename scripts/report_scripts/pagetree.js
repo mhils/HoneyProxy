@@ -16,27 +16,30 @@ require([
   "dojo/request",
   "dojo/Deferred"
 ], function(domConstruct, all, request, Deferred) {
-
+  
   if(traffic.length === 0)
     return alert("No requests found!");
   
-  var attr = function(flow){ return flow.request.fullPath; }; //displayed text
+  var attrfunc = function(flow){ return flow.request.fullPath; }; //displayed text
   
   var i = 0,
-      div = domConstruct.create("div",{},outNode,"only");
-      tree = {},
-      item = {},
-      promises = {0:(new Deferred()).resolve()},
-      lastIds = [],
-      lastIdCount = 300;
-    
+      progressNode = domConstruct.create("div",{},outNode,"only"),
+      tree = {}, // Master treeObj. flow.request.fullPath -> treeObj
+      items = {}, // Contains all tree items. flow.id -> treeObj
+      lastIds = [], //keeps all flow ids of previous requests (up to lastIdCount)
+      lastIdCount = 300,
+      promises = []; //collects all request promises. See post_extract.js for more details on this pattern
+      
+  
   traffic.each(function(flow){
     var _i = ++i;
+    
+    //initialize treeObj for this flow
+    var item = items[flow.id] = {};
+    
+    //TODO: Enhance Search API with nested requests and do better filtering here.
     var value = flow.request.filename.length < 5 ? flow.request.host : flow.request.filename;
-    
-    var promise = new Deferred();
-    
-    request.post("/api/search/",{
+    var promise = request.post("/api/search/",{
       data : {
         idsOnly: true,
         "in": JSON.stringify(lastIds),
@@ -48,30 +51,29 @@ require([
         }])
       }
     }).then(function(result){
-      //console.debug(flow.id + " waiting...");
-      promises[_i-1].then(function(){
-     		//console.warn(flow.id + " executing...");
-        
-        //console.log(result);
-        result = JSON.parse(result);
-        if(result.length == 0) {
-          //console.log("Appending item "+flow.id+" as root");
-          item[flow.id] = tree[attr(flow)] = {};
+      
+      //console.log(result);
+      result = JSON.parse(result);
+      
+      var parent  = (result.length == 0) ? tree : items[result[0]];
+      var attr = attrfunc(flow);
+      
+      if(!(attr in parent)) {
+        parent[attr] = item;
+      } else {
+        console.log("Duplicate request: Copy over subreqs",attr,parent[attr],item);
+        for(var j in item) {
+          parent[attr][j] = item[j];
         }
-        else {
-          //console.log("Appending as child");
-          item[flow.id] = item[result[0]][attr(flow)] = {};
-        }
-        
-        div.textContent = Math.floor(10000*_i/traffic.length)/100+"%";
-        
-        promise.resolve(true);
-      });
+        items[flow.id] = parent[attr]; //replace own reference with the existing request so that new flows will end on the new one.
+      }
+      
+      progressNode.textContent = Math.floor(10000*_i/traffic.length)/100+"%";
       
     });
     
     //add promise to dictionary
-    promises[_i] = promise;
+    promises.push(promise);
     
     //insert flow id
     lastIds.push(flow.id);
@@ -83,5 +85,7 @@ require([
     var pre = domConstruct.create("pre",{},outNode,"only");
     pre.textContent = JSON.stringify(tree,null,"\t");    
   });
-    
+  
+  window.debug = {tree: tree, item: items};
+  
 });
