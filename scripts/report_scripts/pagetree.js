@@ -10,13 +10,15 @@
  * In other words: It's just guessing and might create wrong subtrees.
  * Consider that when analyzing your data.
  */
+window.thisrequire = require;
 require([ 
   "dojo/dom-construct",
   "dojo/promise/all",
   "dojo/request",
-  "dojo/Deferred"
-], function(domConstruct, all, request, Deferred) {
-  
+  "dojo/Deferred",
+  "dojo/on"
+], function(domConstruct, all, request, Deferred, on, flowJSON) {
+ 
   if(traffic.length === 0)
     return alert("No requests found!");
   
@@ -56,7 +58,7 @@ require([
       result = JSON.parse(result);
       
       var parent  = (result.length == 0) ? tree : items[result[0]];
-      var attr = attrfunc(flow);
+      var attr = "<span class=openDetail data-flow-id="+flow.id+">"+_.escape(attrfunc(flow))+"</span>";
       
       if(!(attr in parent)) {
         parent[attr] = item;
@@ -80,10 +82,17 @@ require([
     if(lastIds.length > lastIdCount)
       lastIds.shift();
   });
+  
+
+  
   //wait for all promises to be finished
   all(promises).then(function(){
     var pre = domConstruct.create("pre",{},outNode,"only");
-    pre.textContent = JSON.stringify(tree,null,"\t");    
+    pre.innerHTML = JSON.stringify(tree, undefined, "\t")
+    .replace(/: {},?/g,""); //remove empty elements. comment this line to generate valid JSON
+    on(pre, ".openDetail:click",function(){
+      detailView.show(traffic.get(parseInt(this.dataset.flowId)));
+    });
   });
   
   window.debug = {tree: tree, item: items};

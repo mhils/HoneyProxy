@@ -81,6 +81,8 @@ h3 {
 	);
 }
 
+@linkBlue: hsl(216, 100%, 39%);
+
 @headerHeight: 64px;
 header {
 	overflow: auto;
@@ -128,8 +130,12 @@ header img {
 	float: left;
 }
 
+.openDetail {
+	cursor: pointer;
+	color: @linkBlue;
+}
 
-#detail {
+.detailPane {
 	min-height: 200px;
 	height: 40%;
 }

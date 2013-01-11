@@ -40,6 +40,7 @@ define([ "lodash",
 								"getSimilarFlows": sampleFlow.getSimilarFlows
 							},
 							"traffic": traffic,
+							"detailView": self.detailViewObj,
 							"_": _
 						}
 					});
@@ -86,7 +87,7 @@ define([ "lodash",
 				//Editor Synchronization
 				var API_PATH = "/api/fs/report_scripts/";
 				
-				var saveReq, lastState, currentFilename, files = {};
+				var saveReq, lastState, files = {};
 				
 				
 				//Load all available scripts
@@ -105,10 +106,10 @@ define([ "lodash",
 					
 				});
 				function isSaved(){
-					return lastState === self.getCode() || currentFilename === undefined;
+					return lastState === self.getCode() || self.get("currentFilename") === undefined;
 				}
 				function isReadOnly(){
-					return currentFilename.indexOf("=") === 0;
+					return self.get("currentFilename").indexOf("=") === 0;
 				}
 								
 				function save(newfile){
@@ -128,10 +129,10 @@ define([ "lodash",
 						else {
 							
 							self.statusNode.textContent = "saving...";
-							currentFilename = currentFilename.replace(/[^ \w\.\-\/\\]/g,"");
+							self.set("currentFilename",self.get("currentFilename").replace(/[^ \w\.\-\/\\]/g,""));
 							var method = newfile ? request.post : request.put;
 							var code = self.getCode();
-							saveReq = method(API_PATH + currentFilename, 
+							saveReq = method(API_PATH + self.get("currentFilename"), 
 								{data:JSON.stringify({"content":code})});
 							saveReq.then(function(){
 									self.statusNode.textContent = "saved.";
@@ -149,14 +150,14 @@ define([ "lodash",
 						return load(filename);					
 					var option = domConstruct.create("option", {value: filename, selected: true}, self.scriptSelectionNode);
 					option.textContent = filename;
-					currentFilename = filename;
+					self.set("currentFilename",filename);
 					self.codeMirror.setValue("\n\n\n\n\n\n\n\n");
 					save(true);
 				}
 				function delfile(filename){
 					if(!(filename in files))
 						return;
-					if(filename == currentFilename)
+					if(filename == self.get("currentFilename"))
 						increaseSelectedOptionIndex(1);
 					domConstruct.destroy(files[filename]);
 					delete files[filename];
@@ -165,8 +166,8 @@ define([ "lodash",
 				function load(filename){
 					save().then(function(){
 						request.get(API_PATH+filename).then(function(script){
-							currentFilename = filename;
-							lastState = (currentFilename.indexOf("=") < 0 ? script : undefined);
+							self.set("currentFilename",filename);
+							lastState = (self.get("currentFilename").indexOf("=") < 0 ? script : undefined);
 							self.codeMirror.setValue(script);
 							self.statusNode.textContent = "";
 						});
@@ -181,9 +182,9 @@ define([ "lodash",
 				});
 				
 				on(self.deleteScriptButton,"click",function(){
-					var del = window.prompt("Do you really want to delete "+currentFilename+"?\nEnter DELETE to continue.");
+					var del = window.prompt("Do you really want to delete "+self.get("currentFilename")+"?\nEnter DELETE to continue.");
 					if(del === "DELETE")
-						delfile(currentFilename);
+						delfile(self.get("currentFilename"));
 				});
 				
 				

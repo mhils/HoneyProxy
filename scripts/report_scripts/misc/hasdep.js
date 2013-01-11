@@ -3,6 +3,7 @@
 for(k in require.modules) 
   k.indexOf("ReportScripts") === 0 && delete require.modules[k];
 
-require(["ReportScripts/misc/dep"], function(dep) {
+require(["require","./dep"], function(require,dep) {
+  window.thisrequire2 = require;
   outNode.textContent = dep+"!";
 });

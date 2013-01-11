@@ -4,8 +4,9 @@
  */
 require([
   "dojo/dom-construct",
-  "dojo/promise/all"
-], function(domConstruct, all) {
+  "dojo/promise/all",
+  "dojo/on"
+], function(domConstruct, all, on, flowJSON) {
   
   //filter all requests for POST requests with form data
   var requests = traffic.filter(function(flow){
@@ -20,14 +21,12 @@ require([
   
   //Handles incoming formdata and adds it to the data obj.
   function handleFormData(flow, formData) {
-    if(!(flow.request.fullPath in data))
-      data[flow.request.fullPath] = [];
     
     var prettyData = {};
     for(var i=0; i<formData.length; i++){
       
-      var name = formData[i].name;
-      var value = formData[i].value;
+      var name = _.escape(formData[i].name);
+      var value = _.escape(formData[i].value);
       
       //if two or more form elements share the same name, collect all values in an array
       if (name in prettyData){
@@ -40,7 +39,9 @@ require([
       }
       
     }
-    data[flow.request.fullPath].push(prettyData);
+    
+    var key = "<span class=openDetail data-flow-id="+parseInt(flow.id)+">"+_.escape(flow.request.fullPath)+"</span>";
+   	data[key] = prettyData;
   }
   
   //getFormData() and getContent() are  async,
@@ -59,7 +60,12 @@ require([
   //dojo/promise/all() gets fulfilled when all passed promises are fulfilled.
   all(promises).then(function(){
     var pre = domConstruct.create("pre",{},outNode,"only");
-    pre.innerText = JSON.stringify(data,null,"\t");    
+    //flowJSON formats flows
+    pre.innerHTML = JSON.stringify(data,undefined,"\t");
+    //Register event listener for flows and open detail view when clicked.
+    on(pre, ".openDetail:click",function(){
+      detailView.show(traffic.get(parseInt(this.dataset.flowId)));
+    });
   });
   
   

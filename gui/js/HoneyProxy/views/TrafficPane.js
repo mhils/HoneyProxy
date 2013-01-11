@@ -4,13 +4,12 @@
 define(["require",
         "dojo/_base/declare",
         "dijit/layout/BorderContainer", 
-        "dijit/layout/ContentPane",
         "./TrafficTable",
-        "./DetailPane",
+        "./_DetailViewMixin",
         "./TrafficSidebar"
-        ],function(require,declare,BorderContainer,ContentPane,TrafficTable,DetailPane,TrafficSidebar) {
+        ],function(require,declare,BorderContainer,TrafficTable,_DetailViewMixin,TrafficSidebar) {
 
-	return declare([BorderContainer], {
+	return declare([BorderContainer, _DetailViewMixin], {
 		design: "sidebar",
 		postCreate: function(){
 			this.inherited(arguments);
@@ -25,19 +24,7 @@ define(["require",
 				region: "right",
 				splitter: true
 			});
-			
-			//Somehow we need to wrap our DetailView in another ContentPane.
-			//TODO: investigate why this is necessary
-			this.detailViewWrapper = new ContentPane({
-				region: "bottom",
-				splitter: true,
-				style: "height: 300px"//FIXME: Should be in css for #detail. doesnt work currently because of the wrapping
-			});
-			this.detailView = new DetailPane({}, "detail");
-			this.detailViewWrapper.addChild(this.detailView);
 
-
-			
 			//populate trafficPane
 			this.addChild(trafficTable);
 			this.addChild(trafficSidebar);
@@ -61,7 +48,7 @@ define(["require",
 			}).bind(this));
 		},
 		toggleDetails: function(show){
-			if (this.isDetailVisible == show)
+			if (this.isDetailVisible && this.isDetailVisible == show)
 				return;
 			if(show)
 				this.addChild(this.detailViewWrapper);

@@ -16,15 +16,15 @@ define([
 
 		_.each(flows, function(flow) {
 			var li = domConstruct.create("li", {
+				'className':'openDetail',
 				'data-flow-id': flow.id
 			}, ul);
 			li.textContent = flow.response.contentLengthFormatted + " - " + flow.request.date;
 		});
 		
 		if(ul.children.length > 0){
-			on(ul,"li:click",function(e){
-				//TODO: Use dojo attr (flow-id vs flowId seems unreliable)
-				MainLayout.trafficPane.selectFlow(e.target.dataset.flowId);
+			on(ul,"li:click",function(){
+				MainLayout.trafficPane.selectFlow(this.dataset.flowId);
 			});
 		}
 		
