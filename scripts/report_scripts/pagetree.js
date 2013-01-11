@@ -17,7 +17,7 @@ require([
   "dojo/request",
   "dojo/Deferred",
   "dojo/on"
-], function(domConstruct, all, request, Deferred, on, flowJSON) {
+], function(domConstruct, all, request, Deferred, on) {
  
   if(traffic.length === 0)
     return alert("No requests found!");

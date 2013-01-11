@@ -6,7 +6,7 @@ require([
   "dojo/dom-construct",
   "dojo/promise/all",
   "dojo/on"
-], function(domConstruct, all, on, flowJSON) {
+], function(domConstruct, all, on) {
   
   //filter all requests for POST requests with form data
   var requests = traffic.filter(function(flow){
