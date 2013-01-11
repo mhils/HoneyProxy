@@ -79,6 +79,12 @@
 			</tbody>
 		<% } %>
  	
+ 		<% if(model.request.client_conn.address[0] !== "127.0.0.1") { %>
+	 		<tbody>
+	 			<tr><td class=title>Client Connection:</td><td><%- model.request.client_conn.address.join(":") %></td></tr>
+			</tbody>
+		<% } %>
+ 	
 	 	<% if(model.response.cert) { %>
 	 		<tbody>
 	 			<tr><td colspan=2 class=title>Server certificate:</td></tr>

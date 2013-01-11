@@ -3,6 +3,7 @@
 	<a href="<%- model.response.downloadUrl %>" title="Download" class="button button-topright button-download"></a>
 	<div class=content>
 		<h2 class=title><%- model.request.filename %></h2>
+		<div class=subtitle><%- model.request.queryString %></div>
 		<span data-dojo-attach-point='previewHTMLNode'></span>
 	</div>
 </div>

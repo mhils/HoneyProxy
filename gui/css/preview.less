@@ -1,6 +1,11 @@
 
+.subtitle {
+	
+}
 
+@premargin: 9px;
 pre.preview {
+	margin: @premargin 0;
 	white-space: pre-wrap;
 	overflow-wrap: break-word;
 	padding: 1em !important;
@@ -15,7 +20,7 @@ pre.preview {
 	background-color: white;
 	border-bottom-left-radius: 5px;
 	padding: 3px 5px;
-	margin: 1px;
+	margin: (@premargin + 1px) 1px;
 	cursor: pointer;
 	position: relative;
 	transition: all .1s linear;
