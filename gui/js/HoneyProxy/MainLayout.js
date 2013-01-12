@@ -64,6 +64,7 @@ define([
 
 	appLayout.startup();
 	
+	//TODO: When refactoring, replace with code that doesn't depend on domReady
 	var trafficView = new TrafficView({
 		collection: traffic,
 		el: $("#trafficTable .data tbody")[0]
