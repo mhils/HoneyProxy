@@ -6,9 +6,13 @@ require([
 ], function(domConstruct) {
   
   //you can get the flow id by hovering over the leftmost 10px of the traffic table.
-  var flow_id = 77;
+  var flow_id = 2;
   
   var flow = traffic.get(flow_id);
+  
+  if(!flow)
+    return alert("Flow not found!");
+  
   domConstruct.create("h2",{innerHTML:"Audit for "+_.escape(flow.request.fullPath)},outNode);
   domConstruct.create(
     "p",
@@ -67,7 +71,7 @@ require([
   } else {
     badHeader("X-Content-Security-Policy",". You should list all valid sources for scripts.");
   }
-  
+
   // X-Content-Type-Options
   var xCTO = flow.response.getHeader(/X-Content-Type-Options/i);
   var CT = flow.response.getHeader(/Content-Type/i);

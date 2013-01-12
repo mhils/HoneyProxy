@@ -58,9 +58,15 @@ require([
   }
   
   // Create the chart within it's "holding" node
-  var chart = new Chart(outNode,{
+  a = document.createElement("div");
+  a.style.width = "100%";
+  a.style.height = "100%";
+  outNode.appendChild(a); 
+  var chart = new Chart(a,{
     title: "Traffic per host"
   });
+  
+ 
   
   // Set the theme
   chart.setTheme(theme);
@@ -87,5 +93,6 @@ require([
   
   // Render the chart!
   chart.render();
+  chart.resize();
   
 });

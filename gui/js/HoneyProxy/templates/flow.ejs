@@ -12,7 +12,7 @@
 <td class=responsecode>
 	<%- response.code %></td>
 <td class=contenttype>
-	<%- response.contentType %></td>
+	<%- (response.contentType && response.contentType.split(";")[0]) || "" %></td>
 <td class=size>
 	<div class=hidden><%- /*table sorter */ response.contentLength %></div>
 	<div title="<%- response.contentLength %> Bytes">

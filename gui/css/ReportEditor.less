@@ -2,6 +2,21 @@
 	width: 50%;
 }
 
+/* 	CodeMirror Bugfix:
+	CM doesn't account for our border-box box model.
+	and jumps when you select text.
+	As a workaround, we remove the padding
+ */
+.reportEditor.sidebar {
+	padding-top: 0;
+	padding-bottom: 0;
+	&:after {
+		display: block;
+		content: "";
+		height: 20px;
+	}
+}
+
 .CodeMirror {
 	background-color: white;
 	height: auto;

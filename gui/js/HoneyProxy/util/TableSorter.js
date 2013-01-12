@@ -2,7 +2,7 @@
  * Sort the main traffic table
  */
 define([
-        "dojo/_base/declare","dojo/query","dojo/on","dojo/dom-class","dojo/_base/array","dojo/domReady!"],
+        "dojo/_base/declare","dojo/query","dojo/on","dojo/dom-class","dojo/_base/array"],
         function(declare, query, on, domClass, array){
 
 	var TableSorter = declare(null, {
