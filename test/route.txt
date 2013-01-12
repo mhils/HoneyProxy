@@ -1,0 +1,15 @@
+﻿HoneyProxy Machine (change port 3128 to your HoneyProxy port):
+
+iptables -A PREROUTING -t nat -i eth0 -p tcp -m multiport --dports 80,443 -j REDIRECT --to-port 3128
+
+dd-wrt:
+
+#!/bin/sh
+PROXY_IP=192.168.1.100
+TARGET_IP=192.168.1.110
+
+iptables -t mangle -A PREROUTING -j ACCEPT -p tcp -m multiport --dports 80,443 -s ! $TARGET_IP
+iptables -t mangle -A PREROUTING -j ACCEPT -p tcp -m multiport --dports 80,443 -s $PROXY_IP
+iptables -t mangle -A PREROUTING -j MARK --set-mark 3 -p tcp -m multiport --dports 80,443
+ip rule add fwmark 3 table 2 
+ip route add default via $PROXY_IP dev br0 table 2
