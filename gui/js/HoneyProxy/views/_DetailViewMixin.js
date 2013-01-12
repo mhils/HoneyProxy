@@ -1,8 +1,8 @@
-define([ "dojo/_base/declare", "dijit/layout/ContentPane", "./DetailPane", ],
-	function(declare, ContentPane, DetailPane) {
+define([ "dojo/_base/declare", "dojo/dom-construct", "dojo/on", "dijit/layout/ContentPane", "./DetailPane", ],
+	function(declare, domConstruct, on, ContentPane, DetailPane) {
 		return declare([], {
 			postCreate: function() {
-				
+				var self = this;
 				//Somehow we need to wrap our DetailView in another ContentPane.
 				//TODO: investigate why this is necessary
 				this.detailViewWrapper = new ContentPane({
@@ -12,6 +12,14 @@ define([ "dojo/_base/declare", "dijit/layout/ContentPane", "./DetailPane", ],
 				});
 				this.detailView = new DetailPane({});
 				this.detailViewWrapper.addChild(this.detailView);
+				
+				this.detailViewCloseButton = domConstruct.toDom('<span class="dijitInline dijitTabCloseButton dijitTabCloseIcon detailCloseButton" title="Close"></span>');
+				
+				domConstruct.place(this.detailViewCloseButton, this.detailView.tablist.tablistWrapper, "first");
+				on(this.detailViewCloseButton,"click",function(){
+					console.log("CloseEvent");
+					self.toggleDetails(false);
+				});
 				
 			},
 			toggleDetails: function(show) {

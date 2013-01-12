@@ -15,7 +15,7 @@ define(["require",
 			var flow = this;
 			
 			require(["../traffic"],(function(traffic){
-				flow.getSimilarFlows(3,function(ids){
+				flow.getSimilarFlows(3).then(function(ids){
 					
 					var flows = _.map(ids, function(i) {
 						return traffic.get(i);

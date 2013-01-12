@@ -10,7 +10,7 @@
  * One option is to bend the subclasses over to FlowView. getCategory() is clearly something that should
  * be in the model though.
  */
-define(["./Request","./Response","dojo/Deferred","dojo/dom-construct"],function(Request,Response,Deferred,domConstruct){
+define(["./Request","./Response","dojo/Deferred","dojo/dom-construct","dojo/request"],function(Request, Response, Deferred, domConstruct, dojoRequest){
 	
 	return Backbone.Model.extend({
 		/**
@@ -61,15 +61,17 @@ define(["./Request","./Response","dojo/Deferred","dojo/dom-construct"],function(
 				this.set("filterClasses",{});
 			return this.get("filterClasses");
 		},
-		getSimilarFlows: function(level,callback) {
-			$.getJSON("/api/search",{
-				idsOnly: true,
-				filter: JSON.stringify([{
-					"type":"similarTo",
-					"value":this.id+","+level,
-					"field":"any"
-				}])
-			}, callback);
+		getSimilarFlows: function(level) {
+			return dojoRequest.post("/api/search",{ 
+				handleAs: "json",
+				query:{
+					idsOnly: true,
+					filter: JSON.stringify([{
+						"type":"similarTo",
+						"value":this.id+","+level,
+						"field":"any"
+					}])
+			}});
 		},
 		/**
 		 * @return the Request proxy object

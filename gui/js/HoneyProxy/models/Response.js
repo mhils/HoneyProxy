@@ -17,14 +17,6 @@ define(["../utilities","./sharedFlowProperties"],function(utilities,sharedFlowPr
 		get cert() {
 			return this.data.cert;
 		},
-		get contentType() {
-			if(!this._flow.has("contentType"))
-			{
-				var contentType = utilities.getContentTypeFromHeaders(this.headers);
-				this._flow.set("contentType", contentType);
-			}
-			return this._flow.get("contentType");
-		},
 		get rawFirstLine() {
 			return ["HTTP/" + this.httpversion.join("."),this.code,this.msg]
 					.join(" ")+"\n";

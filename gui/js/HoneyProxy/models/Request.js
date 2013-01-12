@@ -36,7 +36,7 @@ define(["dojo/Deferred","../utilities","./sharedFlowProperties"],function(Deferr
 			if(!this.hasContent)
 				return false;
 			var requestContentType = this.getHeader(/Content-Type/i);
-			return !!requestContentType.match(/^application\/x-www-form-urlencoded\s*(;.*)?$/i);
+			return requestContentType && !!requestContentType.match(/^application\/x-www-form-urlencoded\s*(;.*)?$/i);
 		},
 		get hasPayload() {
 			return this.hasContent && (!this.hasFormData);

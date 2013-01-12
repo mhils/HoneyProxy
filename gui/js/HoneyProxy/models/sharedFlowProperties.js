@@ -16,6 +16,9 @@ define(["dojo/Deferred","dojo/request","../util/formatSize"],function(Deferred,r
 		get contentLength() {
 			return this.data.contentLength;
 		},
+		get contentType(){
+			return this.getHeader(/Content-Type/i);
+		},
 		get contentChecksums() {
 			return this.data.contentChecksums;
 		},
