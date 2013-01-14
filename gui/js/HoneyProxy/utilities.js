@@ -1,4 +1,4 @@
-define([], function() {
+define(["lodash"], function(_) {
 	return {
 		/**
 		 * Get the ContentType out of an array of headers (without charset).

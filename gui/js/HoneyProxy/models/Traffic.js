@@ -1,4 +1,4 @@
-define(["./Flow","../utilities","../flows/flowModels","dojo/Deferred"],function(Flow,utilities,flowModels,Deferred){
+define(["lodash","./Flow","../utilities","../flows/flowModels","dojo/Deferred"],function(_,Flow,utilities,flowModels,Deferred){
 	
 	/**
 	 * A modelFactory factory

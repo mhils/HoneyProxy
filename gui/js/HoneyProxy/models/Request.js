@@ -2,7 +2,7 @@
  * Proxy object for better access to Flows. Be aware that both Request and
  * Response objects are stateless!
  */
-define(["dojo/Deferred","../utilities","./sharedFlowProperties"],function(Deferred,utilities,sharedFlowProperties){
+define(["lodash","dojo/Deferred","../utilities","./sharedFlowProperties"],function(_,Deferred,utilities,sharedFlowProperties){
 	
 	var Request = function(flow){
 		this._flow = flow;

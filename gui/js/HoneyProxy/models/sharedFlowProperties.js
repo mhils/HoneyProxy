@@ -1,7 +1,7 @@
 /**
  * Contains shared methods of Request and Response objects. Stateless.
  */
-define(["dojo/Deferred","dojo/request","../util/formatSize"],function(Deferred,request,formatSize){
+define(["lodash","dojo/Deferred","dojo/request","../util/formatSize"],function(_,Deferred,request,formatSize){
 	
 	var sharedFlowProperties = {
 		get httpversion() {

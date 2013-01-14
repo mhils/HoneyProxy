@@ -1,7 +1,7 @@
 /**
  * View class for a Flow or one of its subclasses.
  */
-define(["dojo/text!../templates/flow.ejs"],function(flowTmpl){
+define(["lodash","dojo/text!../templates/flow.ejs"],function(_,flowTmpl){
 	var flowTemplate = _.template(flowTmpl);
 	
 	return Backbone.View.extend({

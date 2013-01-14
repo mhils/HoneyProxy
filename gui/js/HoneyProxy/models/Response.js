@@ -2,7 +2,7 @@
  * Proxy object for better access to Flows. 
  * Be aware that both Request and Response objects are stateless!
  */
-define(["../utilities","./sharedFlowProperties"],function(utilities,sharedFlowProperties){
+define(["lodash","../utilities","./sharedFlowProperties"],function(_, utilities, sharedFlowProperties){
 	
 	var Response = function(flow){
 		this._flow = flow;

@@ -1,6 +1,6 @@
 eclipse.preferences.version=1
 excluded=//*.ejs
-globals=$\: false, _\: false, Backbone\: false, require\: false, define\: false, console\: true, window\: false, document\: false, localStorage\: false, WebSocket\: false
+globals=$\: false, Backbone\: false, require\: false, define\: false, console\: true, window\: false, document\: false, localStorage\: false, WebSocket\: false
 included=gui/js/HoneyProxy//*
 options=es5\: true, laxbreak\:true, latedef\: true, newcap\: true, noarg\: true, noempty\:true, nonew\:true, undef\:true, unused\: true
 projectSpecificOptions=true

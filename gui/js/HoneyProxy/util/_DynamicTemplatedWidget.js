@@ -9,6 +9,7 @@ define([
 ],function(declare, _WidgetBase, _, _DynamicTemplatedMixin){
 	
 	return declare([_WidgetBase, _DynamicTemplatedMixin], {
-		templateCompileFunction: _.template
+		templateCompileFunction: _.template,
+		_ : _ //make lodash available for template files
 	});
 });

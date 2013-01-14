@@ -2,8 +2,8 @@
  * Provide popout functionality - this class is responsible for the popout
  * feature of the detail view.
  */
-define([ "require", "dojo/text!./templates/popout.ejs"],
-	function(require, tmpl) {
+define([ "require", "lodash", "dojo/text!./templates/popout.ejs"],
+	function(require, _, tmpl) {
 		
 		var template = _.template(tmpl);
 		

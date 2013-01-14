@@ -2,12 +2,13 @@
  * Flow subclass responsible for proper display of images
  */
 define(["require",
+        "lodash",
         "dojo/on",
         "dojo/query",
         "dojo/dom-construct",
         "dojo/Deferred",
         "../models/Flow",
-        "../util/flowlist"],function(require,on,query,domConstruct,Deferred,Flow,flowlist){
+        "../util/flowlist"],function(require,_,on,query,domConstruct,Deferred,Flow,flowlist){
 	
 	function preview(parentPreviewFunc){
 		return function(){
