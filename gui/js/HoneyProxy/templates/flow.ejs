@@ -21,7 +21,7 @@
 <td class=time>
 	<div class=hidden><%- /*table sorter */ request.timestamp %></div>
 	<div class=timestamp title="UNIX Timestamp: <%- request.timestamp %>">
-	<%- request.date.toLocaleTimeString() %>, <%- ("0"+request.date.getDay()).slice(-2)+"."+("0"+request.date.getMonth()).slice(-2) %>.<br>
+	<%- request.date.toLocaleTimeString() %>, <%- ("0"+request.date.getDate()).slice(-2)+"."+("0"+(request.date.getMonth()+1)).slice(-2) %>.<br>
 	</div>	
 	<div class=duration>
 	<%- Math.floor((response.timestamp - request.timestamp) * 1000) %>ms
