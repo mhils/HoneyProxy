@@ -56,7 +56,7 @@ define([
 	}, {
 		matches : function(data) {
 			if (data.responseCode)
-				return (301 <= data.responseCode && data.responseCode <= 303);
+				return (301 <= data.responseCode && data.responseCode <= 303) || data.responseCode == 307;
 			return false;
 		},
 		getCategory : function() {
