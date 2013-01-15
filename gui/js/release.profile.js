@@ -1,38 +1,21 @@
 var profile = {
-    basePath: "./",
+    basePath: ".",
     
-    
-    //mini: true,
+    cssOptimize: "comments",
+    mini: true,
     //optimize: "closure",
-    //layerOptimize: "closure",
+    layerOptimize: false,
     //stripConsole: "all",
+    selectorEngine: "acme",
     
-    releaseDir: "./release",
-    hasReport: true,
+    releaseDir: "../../dist/gui/js",
+    hasReport: false,
     action: "release",
-    packages:[
-        {
-            name: "dojo",
-            location: "./lib/dojo",
-            discard: true
-        },
-        {
-            name: "dijit",
-            location: "./lib/dijit"
-        },
-        {
-            name: "HoneyProxy",
-            location: "./HoneyProxy"
-        }
-    ],
-    
     layers: {
         "dojo/dojo": {
-            //customBase: true,
-            //boot: true,
-            include: [
-                "HoneyProxy/main"
-            ],
+            customBase: true,
+            boot: true,
+            include:["HoneyProxy/main"]
         },
     }
 };

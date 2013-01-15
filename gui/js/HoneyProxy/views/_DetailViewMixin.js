@@ -1,4 +1,4 @@
-define([ "dojo/_base/declare", "dojo/dom-construct", "dojo/on", "dijit/layout/ContentPane", "./DetailPane", ],
+define([ "dojo/_base/declare", "dojo/dom-construct", "dojo/on", "dijit/layout/ContentPane", "./DetailPane" ],
 	function(declare, domConstruct, on, ContentPane, DetailPane) {
 		return declare([], {
 			postCreate: function() {

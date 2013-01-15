@@ -76,7 +76,7 @@ define(["require",
 			//populate trafficPane
 			this.addChild(this.reportOutput);
 			this.addChild(this.reportEditor);
-		},
+		}
 		
 		
 	});

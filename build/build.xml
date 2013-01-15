@@ -28,6 +28,25 @@
     </copy>
   </target>
 	
+  <target name="web" depends="clean">
+    <mkdir dir="${dist}"/>
+	<copy todir="${dist}">
+      <fileset dir=".">
+      	<excludesfile name=".gitignore"/>
+      	<excludesfile name="build/ignore.txt"/>
+      	<excludesfile name="build/webignore.txt"/>
+      </fileset>
+	</copy>
+  	<exec dir="gui/js/lib/util/buildscripts" executable="cmd">
+  	    <arg value="/c"/>
+  	    <arg value="build.bat"/>
+  	    <arg value="--dojoConfig"/>
+  		<arg value="../../../dojoConfig.js"/>
+  		<arg value="--profile"/>
+  		<arg value="../../../release.profile.js"/>
+  	</exec>
+  </target>
+	
   <target name="pack" depends="build" description="put it into a zip file! :)">
     <zip destfile="${zipfile}"
          basedir="${dist}"

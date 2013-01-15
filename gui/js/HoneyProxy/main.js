@@ -1,17 +1,10 @@
-require({
-	packages: [ {
-		name: "HoneyProxy",
-		location: "../../HoneyProxy",
-		tlmSiblingOfDojo: false
-	}, {
-		name: "ReportScripts",
-		location: "/api/fs/report_scripts",
-		tlmSiblingOfDojo: false
-	} ]
-},	
+if(define && define.amd) //for the builder
+	define.amd.jQuery = true;
+require(
 ["dojo/when",
  "dojo/on",
  "dojo/topic", 
+ "jquery",
  "HoneyProxy/MainLayout",
  "HoneyProxy/websocket",
  "HoneyProxy/traffic",
@@ -21,7 +14,7 @@ require({
  "HoneyProxy/tutorial",
  "HoneyProxy/search",
  "HoneyProxy/popOut"
- ], function(when,on,topic,MainLayout,websocket,traffic,versionCheck, sampleFlow) {
+ ], function(when,on,topic,jquery,MainLayout,websocket,traffic,versionCheck, sampleFlow) {
 	
 	//Debug
 	window.HoneyProxy = {

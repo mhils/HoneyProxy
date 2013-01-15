@@ -5,7 +5,7 @@ define([ "lodash",
          "dojo/dom-construct", 
          "dojo/on", 
          "dojo/request", 
-         "codemirror/all",
+         "codemirror",
          "dijit/Toolbar",
          "dijit/form/Button",
          "../traffic",
@@ -14,7 +14,7 @@ define([ "lodash",
          "../util/_DynamicTemplatedWidget",
          "dijit/_WidgetsInTemplateMixin",
          "dojo/text!./templates/ReportEditor.ejs" ], function(_, declare, array, Deferred, domConstruct, on, request,
-	CodeMirrorPromise, Toolbar, Button, traffic, sampleFlow, requestAuthenticator, _DynamicTemplatedWidget, _WidgetsInTemplateMixin, template) {
+	CodeMirror, Toolbar, Button, traffic, sampleFlow, requestAuthenticator, _DynamicTemplatedWidget, _WidgetsInTemplateMixin, template) {
 	
 	return declare([ _DynamicTemplatedWidget, _WidgetsInTemplateMixin ], {
 		templateString: template,
@@ -27,7 +27,6 @@ define([ "lodash",
 			
 			var self = this;
 			
-			CodeMirrorPromise.then(function(CodeMirror) {
 				CodeMirror.commands.autocomplete = function(cm) {
 					CodeMirror.simpleHint(cm, CodeMirror.javascriptHint, {
 						completeSingle: false,
@@ -208,7 +207,6 @@ define([ "lodash",
 					load(this.options[this.selectedIndex].value);
 				});
 				load("=intro.js");
-			});
 			
 			this.startButton = new Button({
 				iconClass: "dijitIcon dijitIconFunction"

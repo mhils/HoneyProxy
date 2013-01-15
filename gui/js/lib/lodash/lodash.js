@@ -1,4 +1,4 @@
-define(["_lodash"], function(_) {
+define(["./_lodash"], function(_) {
 
 	_.noConflict();
 	
