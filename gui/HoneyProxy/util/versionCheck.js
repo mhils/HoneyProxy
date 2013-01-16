@@ -9,7 +9,7 @@ define(["dojo/request"],function(request){
 		}).then(function(data){
 			
 			var release = "stable";
-			var releaseId = 1; //change in /web/version.json, /gui/js/HoneyProxy/util/versionCheck.js and /libhproxy/version.py
+			var releaseId = 1; //change in /web/version.json, /gui/HoneyProxy/util/versionCheck.js and /libhproxy/version.py
 			
 			var currentReleaseId = data[release].releaseId;
 			

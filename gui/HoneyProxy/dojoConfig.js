@@ -2,7 +2,7 @@
 var dojoConfig = {
 	async: true,
 	basePath: "..",
-	baseUrl: "./js",
+	baseUrl: ".",
 	
 	packages: [ {
 		name: "HoneyProxy",

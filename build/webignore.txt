@@ -1,1 +1,2 @@
-gui/js/
+gui/HoneyProxy/
+gui/lib/

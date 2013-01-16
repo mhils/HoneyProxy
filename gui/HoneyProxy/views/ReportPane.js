@@ -13,6 +13,7 @@ define(["require",
 			this.inherited(arguments);
 			var self = this;
 			
+			//TODO: When refactoring, Move this lazy-loading into MainLayout and lazy-load the complete ReportPane
 			require(["dojo/dom-construct",
                "dojo/on",
                "dijit/layout/ContentPane",

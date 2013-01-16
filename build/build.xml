@@ -22,7 +22,7 @@
       </fileset>
 	</copy>
   	<!-- Workaround for the dojo build system -->
-  	<copy todir="${dist}/gui/js/lib/">
+  	<copy todir="${dist}/gui/lib/">
   	      <fileset dir="build/dojo/">
   	      </fileset>
     </copy>
@@ -37,13 +37,13 @@
       	<excludesfile name="build/webignore.txt"/>
       </fileset>
 	</copy>
-  	<exec dir="gui/js/lib/util/buildscripts" executable="cmd">
+  	<exec dir="gui/lib/util/buildscripts" executable="cmd">
   	    <arg value="/c"/>
   	    <arg value="build.bat"/>
   	    <arg value="--dojoConfig"/>
   		<arg value="../../../HoneyProxy/dojoConfig.js"/>
   		<arg value="--profile"/>
-  		<arg value="../../../../../build/release.profile.js"/>
+  		<arg value="../../../../build/release.profile.js"/>
   	</exec>
   </target>
 	

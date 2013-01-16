@@ -1,5 +1,5 @@
 var profile = {
-    basePath: "../gui/js",
+    basePath: "../gui",
     
     cssOptimize: "comments",
     mini: true,
@@ -8,7 +8,7 @@ var profile = {
     //stripConsole: "all",
     selectorEngine: "acme",
     
-    releaseDir: "../../dist/gui/js",
+    releaseDir: "../dist/gui",
     hasReport: false,
     action: "release",
     layers: {
