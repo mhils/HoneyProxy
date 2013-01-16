@@ -65,6 +65,7 @@ define([
 	appLayout.startup();
 	
 	//TODO: When refactoring, replace with code that doesn't depend on domReady
+	//TODO: When refactoring, remove all references to specific Views and make views lazy-load
 	var trafficView = new TrafficView({
 		collection: traffic,
 		el: $("#trafficTable .data tbody")[0]
