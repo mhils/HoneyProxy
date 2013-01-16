@@ -4,7 +4,7 @@ var profile = {
     cssOptimize: "comments",
     mini: true,
     //optimize: "closure",
-    layerOptimize: false,
+    layerOptimize: "closure",
     //stripConsole: "all",
     selectorEngine: "acme",
     

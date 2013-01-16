@@ -12,7 +12,7 @@ var dojoConfig = {
 		location: "/api/fs/report_scripts"
 	}, {
 		name: "jquery",
-		main: "jquery",
+		main: "jquery.min",
 		location: "./lib/jquery",
 		destLocation:"./lib/jquery"
 	}, {

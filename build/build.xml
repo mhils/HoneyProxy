@@ -45,6 +45,9 @@
   		<arg value="--profile"/>
   		<arg value="../../../../build/release.profile.js"/>
   	</exec>
+    <delete>
+      <fileset dir="dist/gui/lib" includes="**/*.uncompressed.js"/>
+    </delete>
   </target>
 	
   <target name="pack" description="put it into a zip file! :)">
