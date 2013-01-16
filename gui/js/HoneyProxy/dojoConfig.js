@@ -1,12 +1,9 @@
+/*jshint unused:false */
 var dojoConfig = {
 	async: true,
-	basePath: ".",
+	basePath: "..",
 	baseUrl: "./js",
-	/*aliases: [
-	          // [alias name, true name]
-	          ["lodash", "lodash/main"],
-	         // ["jquery", "jquery/jquery"],
-	      ],*/
+	
 	packages: [ {
 		name: "HoneyProxy",
 		location: "./HoneyProxy"
@@ -27,7 +24,7 @@ var dojoConfig = {
 		name: "lodash",
 		main: "lodash",
 		location: "./lib/lodash",
-	  destLocation:"./lib/lodash"
+		destLocation:"./lib/lodash"
 	},  {
 		name: "codemirror",
 		location: "./lib/codemirror",
@@ -40,6 +37,10 @@ var dojoConfig = {
     name: "dijit",
     location: "./lib/dijit",
     destLocation:"./lib/dijit"
+	}, {
+    name: "dojox",
+    location: "./lib/dojox",
+    destLocation:"./lib/dojox"
 	}, {
     name: "legacy",
     location: "./lib/legacy",

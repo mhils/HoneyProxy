@@ -4,7 +4,6 @@ require(
 ["dojo/when",
  "dojo/on",
  "dojo/topic", 
- "jquery",
  "HoneyProxy/MainLayout",
  "HoneyProxy/websocket",
  "HoneyProxy/traffic",
@@ -14,7 +13,7 @@ require(
  "HoneyProxy/tutorial",
  "HoneyProxy/search",
  "HoneyProxy/popOut"
- ], function(when,on,topic,jquery,MainLayout,websocket,traffic,versionCheck, sampleFlow) {
+ ], function(when,on,topic,MainLayout,websocket,traffic,versionCheck, sampleFlow) {
 	
 	//Debug
 	window.HoneyProxy = {

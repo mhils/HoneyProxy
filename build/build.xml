@@ -41,13 +41,13 @@
   	    <arg value="/c"/>
   	    <arg value="build.bat"/>
   	    <arg value="--dojoConfig"/>
-  		<arg value="../../../dojoConfig.js"/>
+  		<arg value="../../../HoneyProxy/dojoConfig.js"/>
   		<arg value="--profile"/>
-  		<arg value="../../../release.profile.js"/>
+  		<arg value="../../../../../build/release.profile.js"/>
   	</exec>
   </target>
 	
-  <target name="pack" depends="build" description="put it into a zip file! :)">
+  <target name="pack" description="put it into a zip file! :)">
     <zip destfile="${zipfile}"
          basedir="${dist}"
     />

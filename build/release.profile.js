@@ -1,5 +1,5 @@
 var profile = {
-    basePath: ".",
+    basePath: "../gui/js",
     
     cssOptimize: "comments",
     mini: true,
