@@ -14,6 +14,7 @@ define([ "./config", "dojo/json", "dojo/topic", "dojo/Deferred" ], function(
 			switch (e.msg) {
 			case "Authenticated.":
 				websocket.authenticated.resolve("authenticated");
+				console.debug("WebSocket connection authenticated.");
 				break;
 			case "read":
 				if (e.id in Backbone._syncrequests) {
@@ -30,7 +31,6 @@ define([ "./config", "dojo/json", "dojo/topic", "dojo/Deferred" ], function(
 				break;
 			}
 			
-			console.log(e);
 		},
 		authenticated: new Deferred(),
 		init: function() {
@@ -41,7 +41,7 @@ define([ "./config", "dojo/json", "dojo/topic", "dojo/Deferred" ], function(
 					action: "auth",
 					key: config.get("auth")
 				});
-				console.log("Connection established");
+				console.debug("WebSocket connection established.");
 			}).bind(this);
 			websocket.ws.onmessage = this.onmessage.bind(this);
 		}

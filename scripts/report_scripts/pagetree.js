@@ -10,7 +10,6 @@
  * In other words: It's just guessing and might create wrong subtrees.
  * Consider that when analyzing your data.
  */
-window.thisrequire = require;
 require([ 
   "dojo/dom-construct",
   "dojo/promise/all",
@@ -94,7 +93,5 @@ require([
       detailView.show(traffic.get(parseInt(this.dataset.flowId)));
     });
   });
-  
-  window.debug = {tree: tree, item: items};
-  
+    
 });
