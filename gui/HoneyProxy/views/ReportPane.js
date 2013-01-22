@@ -13,7 +13,12 @@ define(["require",
 			this.inherited(arguments);
 			var self = this;
 			
+			
+			
 			//TODO: When refactoring, Move this lazy-loading into MainLayout and lazy-load the complete ReportPane
+			if(!this.lazyLoaded) {
+				this.lazyLoaded = true;
+			
 			require(["dojo/dom-construct",
                "dojo/on",
                "dijit/layout/ContentPane",
@@ -33,7 +38,6 @@ define(["require",
 				};
 				
 				var reportOutput =  new ReportOutput({
-					id: "reportOutput",
 					region: "center",
 					splitter: true
 				});
@@ -52,15 +56,28 @@ define(["require",
 					
 					require(["../traffic"],function(traffic){
 						var code = reportEditor.getCode();
-						var outNode = reportOutput.outputNode;
-						var detailView = detailViewObj;
-						detailView.hide();
-						domConstruct.empty(outNode);
+						detailViewObj.hide();
+						domConstruct.empty(reportOutput.outputNode);
 						var _mid = require.module.mid;
 						require.module.mid = "ReportScripts/" + reportEditor.get("currentFilename");
 						try {
 							/*jshint evil:true */
-							eval(code);
+							
+							// https://developers.google.com/closure/compiler/docs/compilation_levels
+							// Compilation [...] always preserves the functionality of syntactically valid JavaScript, 
+							// provided that the code does not access local variables using string names (by using eval() statements, for example).
+							window._reportPaneExterns = {
+								outNode: reportOutput.outputNode,
+								traffic: traffic,
+								detailView: detailViewObj,
+								require: require,
+								_: _,
+								$: $
+							};
+							with(window._reportPaneExterns) {
+								eval(code);
+							}
+							delete window._reportPaneExterns;
 						} catch(e) {
 							//TODO: This is ugly.
 							outNode.innerHTML = "<pre>" + e.message + "\n\n"+e.stack.replace(/\(http.+?@localhost:8081/g,"") + "</pre>";
@@ -78,7 +95,7 @@ define(["require",
 				
 				self.reportEditor._onShow(); //TODO: little bit dirty. maybe replace with .watch("selected"). See how dojo 2.0 handles this
 			});
-			
+			}
 		},
 		postCreate: function(){
 			this.inherited(arguments);
