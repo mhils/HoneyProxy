@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import random, json
+from twisted.internet.protocol import Factory, Protocol
 from libhproxy.honey import HoneyProxy
-from autobahn.websocket import WebSocketServerFactory, WebSocketServerProtocol
 random = random.SystemRandom()
 
 """
@@ -11,16 +11,16 @@ random = random.SystemRandom()
 """
 
 #WebSocket GUI Session        
-class GuiSession(WebSocketServerProtocol):
+class GuiSession(Protocol):
     def __init__(self):
         self.authenticated = False
-    def onOpen(self):
+    def connectionMade(self):
         pass
         
     def connectionLost(self,reason):
         if self.authenticated:
             self.factory.clients.remove(self)
-    def onMessage(self, data, binary):
+    def dataReceived(self, data):
         try:
             data = json.loads(data)
         except ValueError:
@@ -65,9 +65,8 @@ class GuiSession(WebSocketServerProtocol):
         
 
 #WebSocket GUI Session Management
-class GuiSessionFactory(WebSocketServerFactory):
-    def __init__(self,url):
-        WebSocketServerFactory.__init__(self, url)
+class GuiSessionFactory(Factory):
+    def __init__(self):
         self.clients = set()
     
     def onNewFlow(self,flowSerialized):
@@ -76,12 +75,11 @@ class GuiSessionFactory(WebSocketServerFactory):
             
     def write(self,msg,client):
 
-        msg = self.prepareMessage(msg)
         if(client == None):
             for client in self.clients:
-                    client.sendPreparedMessage(msg)
+                    client.transport.write(msg)
         else:
-            client.sendPreparedMessage(msg)
+            client.transport.write(msg)
     def msg(self,msg,data={},client=None):
         data["msg"] = msg
         self.write(json.dumps(data,separators=(',',':'),encoding='latin1'),client=client)

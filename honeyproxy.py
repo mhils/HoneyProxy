@@ -22,7 +22,6 @@ from twisted.web.server import Site
 from twisted.web.static import File
 from twisted.internet import reactor, task
 from twisted.web.resource import Resource
-from autobahn.websocket import listenWS
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -54,6 +53,7 @@ from libmproxy import proxy as mproxy, cmdline as mcmdline, dump
 from libhproxy import proxy as hproxy, cmdline as hcmdline, version, content, api
 from libhproxy.honey import HoneyProxy
 from libhproxy.gui import session
+from libhproxy.websockets import WebSocketsResource
 
 def main():
     
@@ -96,12 +96,11 @@ def main():
     if options.readonly:
         HoneyProxy.apiAuthToken = None
     #set up HoneyProxy GUI
-    guiSessionFactory = session.GuiSessionFactory("ws://localhost:"+str(options.apiport))
+    guiSessionFactory = session.GuiSessionFactory()
     
     #WebSocket
-    listenWS(guiSessionFactory)
-    #websocketRes = WebSocketsResource(guiSessionFactory)
-    #reactor.listenTCP(options.apiport, Site(websocketRes))
+    websocketRes = WebSocketsResource(guiSessionFactory)
+    reactor.listenTCP(options.apiport, Site(websocketRes))
     
     #Config
     wsPort = str(options.apiport)
