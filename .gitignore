@@ -6,3 +6,4 @@ dump/
 build/dojo/
 web/build/
 build/ftp_config.json
+build/bdist.win32/

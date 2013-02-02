@@ -1,7 +1,12 @@
 import os.path, json, ftplib
 from datetime import date
+from argparse import ArgumentParser
 
-filename = "snapshot-%(date)s.zip" % {"date": date.today().strftime("%Y%m%d")}
+parser = ArgumentParser()
+parser.add_argument('--file', dest='filename', action='store', type=str)
+args = parser.parse_args()
+
+filename = "snapshot-%(date)s.zip" % {"date": date.today().strftime("%Y%m%d")} if not args.filename else args.filename
 filepath = os.path.abspath("../dist/"+filename)
 print "File Path: "+str(filepath)
 assert os.path.isfile(filepath)

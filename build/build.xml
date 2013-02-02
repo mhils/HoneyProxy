@@ -1,79 +1,121 @@
-<project name="HoneyProxy" default="build" basedir="../">
-  
-	
-  <taskdef resource="net/sf/antcontrib/antlib.xml">
-  	<classpath>
-  		<pathelement location="${basedir}/build/ant-contrib-1.0b3.jar"/>
-  	</classpath>
-  </taskdef>
-        	
-        	
-  <property name="dist"  location="dist"/>
-	
-  <tstamp/>
-  <property name="zipfile" value="${dist}/snapshot-${DSTAMP}.zip"/>
-	
-  <target name="build" depends="clean">
-    <mkdir dir="${dist}"/>
-	<copy todir="${dist}">
-      <fileset dir=".">
-      	<excludesfile name=".gitignore"/>
-      	<excludesfile name="build/ignore.txt"/>
-      </fileset>
-	</copy>
-  	<!-- Workaround for the dojo build system -->
-  	<copy todir="${dist}/gui/lib/">
-  	      <fileset dir="build/dojo/">
-  	      </fileset>
-    </copy>
-  </target>
-	
-  <target name="web" depends="clean">
-    <mkdir dir="${dist}"/>
-	<copy todir="${dist}">
-      <fileset dir=".">
-      	<excludesfile name=".gitignore"/>
-      	<excludesfile name="build/ignore.txt"/>
-      	<excludesfile name="build/webignore.txt"/>
-      </fileset>
-	</copy>
-  	<exec dir="gui/lib/util/buildscripts" executable="cmd">
-  	    <arg value="/c"/>
-  	    <arg value="build.bat"/>
-  	    <arg value="--dojoConfig"/>
-  		<arg value="../../../HoneyProxy/dojoConfig.js"/>
-  		<arg value="--profile"/>
-  		<arg value="../../../../build/release.profile.js"/>
-  	</exec>
-    <delete>
-      <fileset dir="dist/gui/lib" includes="**/*.uncompressed.js"/>
-    </delete>
-  </target>
-	
-  <target name="pack" description="put it into a zip file! :)">
-    <zip destfile="${zipfile}"
-         basedir="${dist}"
-    />
-  	<!-- <move file="${dist}/snapshot.zip" todir="dir/to/move/to"/> -->
-  </target>
-	
-  <target name="deploy-snapshot" description="deploy to github! :)">
-  	<if>
-  		<not><available file="${zipfile}"/></not>
-  		<then>
-  			<antcall target="pack" />
-  		</then>
-  	</if>
-  	<exec dir="build/" executable="python">
-  		<arg line='-u' />
-  		<arg line='deploy-snapshot.py' />
-  	</exec>
-  </target>	
-	
-	
+<project name="HoneyProxy" default="build-regular" basedir="../">
 
-  <target name="clean" description="clean up" >
-    <!-- Delete the ${dist} directory trees -->
-    <delete dir="${dist}"/>
-  </target>
+
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<pathelement location="${basedir}/build/ant-contrib-1.0b3.jar" />
+		</classpath>
+	</taskdef>
+
+	<property name="dist" location="dist" />
+
+	<tstamp />
+	<!-- <property name="zipfile" value="${dist}/snapshot-${DSTAMP}.zip"/> -->
+
+	<target name="build-regular" depends="clean,regular">
+		<mkdir dir="${dist}" />
+		<echo>Copying HoneyProxy...</echo>
+		<copy todir="${dist}">
+			<fileset dir=".">
+				<excludesfile name=".gitignore" />
+				<excludesfile name="build/ignore.txt" />
+			</fileset>
+		</copy>
+		<!-- Workaround for the dojo build system -->
+		<echo>Copying Dojo...</echo>
+		<copy todir="${dist}/gui/lib/">
+			<fileset dir="build/dojo/">
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="build-web" depends="clean,web">
+		<copy todir="${dist}">
+			<fileset dir=".">
+				<excludesfile name=".gitignore" />
+				<excludesfile name="build/ignore.txt" />
+				<excludesfile name="build/webignore.txt" />
+			</fileset>
+		</copy>
+		<exec dir="gui/lib/util/buildscripts" executable="cmd">
+			<arg value="/c" />
+			<arg value="build.bat" />
+			<arg value="--dojoConfig" />
+			<arg value="../../../HoneyProxy/dojoConfig.js" />
+			<arg value="--profile" />
+			<arg value="../../../../build/release.profile.js" />
+		</exec>
+		<delete>
+			<fileset dir="dist/gui/lib" includes="**/*.uncompressed.js" />
+		</delete>
+	</target>
+
+	<target name="build-exe" depends="clean,exe">
+		<echo>Copying GUI...</echo>
+		<copy todir="${dist}">
+			<fileset dir=".">
+				<include name="gui/"/>
+				<include name="scripts/"/>
+				<excludesfile name=".gitignore" />
+				<excludesfile name="build/ignore.txt" />
+			</fileset>
+		</copy>
+		<mkdir dir="${dist}/mitmproxy" />
+		<touch file="${dist}/mitmproxy/mitmproxy"/> <!-- Workaround for recursive-clone error message -->
+		<echo>Copying Dojo...</echo>
+		<copy todir="${dist}/gui/lib/">
+			<fileset dir="build/dojo/">
+			</fileset>
+		</copy>
+		<exec dir="./" executable="python">
+					<arg line='-u' />
+					<arg line='setup.py' />
+					<arg line="py2exe" />
+		</exec>
+	</target>
+
+	<target name="pack" description="put it into a zip file! :)" if="zipfile">
+		<zip destfile="${dist}/${zipfile}" basedir="${dist}" />
+	</target>
+
+	<target name="clean" description="clean up">
+		<!-- Delete the ${dist} directory trees -->
+		<delete dir="${dist}" />
+		<mkdir dir="${dist}" />
+	</target>
+
+	<target name="deploy" if="zipfile">
+		<echo>${dist}/${zipfile}</echo>
+		<if>
+			<not>
+				<available file="${dist}/${zipfile}" />
+			</not>
+			<then>
+				<antcall target="${buildtarget}" />
+				<antcall target="pack" />
+			</then>
+		</if>
+		<exec dir="build/" executable="python">
+			<arg line='-u' />
+			<arg line='deploy-snapshot.py' />
+			<arg line="--file ${zipfile}" />
+		</exec>
+	</target>
+
+	<target name="regular">
+		<echo>Create regular build...</echo>
+		<property name="zipfile" value="snapshot-${DSTAMP}.zip" />
+		<property name="buildtarget" value="build-regular" />
+	</target>
+	<target name="web">
+		<echo>Create web-optimized build...</echo>
+		<property name="zipfile" value="snapshot-${DSTAMP}-web.zip" />
+		<property name="buildtarget" value="build-web" />
+	</target>
+	<target name="exe">
+		<echo>Create windows executable build...</echo>
+		<property name="zipfile" value="snapshot-${DSTAMP}-win32.exe.zip" />
+		<property name="buildtarget" value="build-exe" />
+	</target>
+
 </project>

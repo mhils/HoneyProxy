@@ -17,19 +17,22 @@
 
 
 import sys, os, inspect
+from libhproxy import dirutils
 from argparse import ArgumentParser
 from twisted.web.server import Site 
 from twisted.web.static import File
 from twisted.internet import reactor, task
 from twisted.web.resource import Resource
 
+#make utf8 default
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-honeyproxy_dir = os.path.split(inspect.getfile( inspect.currentframe() ))[0]
+#use mitmproxy & netlib from ./
+dirutils.useOwnMitmproxy() 
 
 #Verify that submodules are in place
-if not os.path.isfile(os.path.join(honeyproxy_dir,"mitmproxy","mitmproxy")):
+if not os.path.isfile(os.path.join(dirutils.honeyproxy_dir,"mitmproxy","mitmproxy")):
     print """
 It looks like you did not initialize HoneyProxys git submodules.
 HoneyProxy won't work properly.
@@ -39,15 +42,6 @@ To fix this, run the following command in your HoneyProxy directory:
     """
     raw_input("Press any key to continue...")
     sys.exit(1)
-
-#ensure to load our own version of mitmproxy and netlib
-#http://stackoverflow.com/questions/279237/python-import-a-module-from-a-folder
-def add_subfolder(name):
-    subdir = os.path.realpath(os.path.abspath(os.path.join(honeyproxy_dir,name)))
-    if subdir not in sys.path:
-        sys.path.insert(0, subdir)
-add_subfolder("netlib")
-add_subfolder("mitmproxy")
 
 from libmproxy import proxy as mproxy, cmdline as mcmdline, dump
 from libhproxy import proxy as hproxy, cmdline as hcmdline, version, content, api
@@ -115,8 +109,8 @@ def main():
     })
     
     root = Resource()
-    root.putChild("app",File(os.path.join(honeyproxy_dir,"gui")))
-    root.putChild("api",api.HoneyProxyApi(honeyproxy_dir))
+    root.putChild("app",File(os.path.join(dirutils.honeyproxy_dir,"gui")))
+    root.putChild("api",api.HoneyProxyApi())
     root.putChild("files", content.ContentAPIResource())
     if(options.dumpdir):
         root.putChild("dump", File(options.dumpdir))

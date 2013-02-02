@@ -2,13 +2,14 @@ from twisted.web.resource import Resource, ForbiddenResource, NoResource, ErrorP
 from twisted.web import http
 from libhproxy.honey import HoneyProxy
 import re, json, os.path
+from dirutils import honeyproxy_dir
 from libhproxy.flowcollection import includeDecodedContent
 
 class HoneyProxyApi(Resource):
     """
         HoneyProxy JSON API.
     """
-    def __init__(self, honeyproxy_dir):
+    def __init__(self):
         Resource.__init__(self)
         self.putChild("config", ConfigApiResource())
         self.putChild("fs", FileSystemCRUDApi(os.path.join(honeyproxy_dir,"./scripts")))
