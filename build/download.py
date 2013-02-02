@@ -1,6 +1,6 @@
 import os, os.path, shutil, psutil
 from datetime import date
-filename = "snapshot-%(date)s.zip" % {"date": date.today().strftime("%Y%m%d")}
+filename = "snapshot-%(date)s-web.zip" % {"date": date.today().strftime("%Y%m%d")}
 
 print "Working directory: %s" % os.getcwd()
 
