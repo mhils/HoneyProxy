@@ -64,7 +64,7 @@ class HoneyProxyMaster(FlowMaster):
             try:
                 self.load_flows(freader)
             except flow.FlowReadError, v:
-                raise ProxyError(v)
+                print "Flow file corrupted. Stopped loading."
             
     def getFlowCollection(self):
         return self.flows
