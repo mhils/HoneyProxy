@@ -32,6 +32,7 @@ define(["require",
 		currentSelection: undefined,
 		/*
 		 * TODO: Refactor when refactoring table etc. Just glue currently
+		 * Also consider moving the second selectFlow function in ReportPane
 		 */
 		selectFlow: function(flowId){
 			require(["./../traffic","./../MainLayout"],(function(traffic,MainLayout){

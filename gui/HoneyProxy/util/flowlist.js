@@ -24,7 +24,7 @@ define([
 		
 		if(ul.children.length > 0){
 			on(ul,"li:click",function(){
-				MainLayout.trafficPane.selectFlow(this.dataset.flowId);
+				MainLayout.mainContainer.selectedChildWidget.selectFlow(this.dataset.flowId);
 			});
 		}
 		

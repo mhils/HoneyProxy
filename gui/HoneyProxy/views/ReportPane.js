@@ -97,6 +97,12 @@ define(["require",
 			});
 			}
 		},
+		selectFlow: function(flowId){
+			require(["./../traffic","./../MainLayout"],(function(traffic,MainLayout){
+				var model = traffic.get(flowId);
+				this.detailView.setModel(model);
+			}).bind(this));
+		},
 		postCreate: function(){
 			this.inherited(arguments);
 		}
