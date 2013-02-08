@@ -19,7 +19,7 @@ define([
 				'className':'openDetail',
 				'data-flow-id': flow.id
 			}, ul);
-			li.textContent = flow.response.contentLengthFormatted + " - " + flow.request.date;
+			li.textContent = flow.request.fullPath + " - " + flow.response.contentLengthFormatted;
 		});
 		
 		if(ul.children.length > 0){

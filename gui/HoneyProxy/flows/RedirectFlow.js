@@ -21,7 +21,7 @@ define([
 					var flows = [];
 					for(var i = flow.id + 1; i < Math.min(traffic.length,flow.id + 100); i++)  {
 						var nextFlow = traffic.get(i);
-						if ((flow.response.timestamp + 3) < nextFlow.request.timestamp)
+						if ((flow.response.timestamp_end + 2) < nextFlow.request.timestamp_start)
 							break;
 						if(location.indexOf(nextFlow.request.path) >= 0)
 							flows.push(nextFlow);

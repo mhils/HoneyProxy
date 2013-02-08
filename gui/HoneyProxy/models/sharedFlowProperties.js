@@ -77,14 +77,18 @@ define(["lodash","dojo/Deferred","dojo/request","../util/formatSize"],function(_
 		get headers() {
 			return this.data.headers;
 		},
-		get timestamp() {
-			return this.data.timestamp;
+		get timestamp_start() {
+			return this.data.timestamp_start;
 		},
-		get date() {
-			var attr = this._attr + "Date";
+		get timestamp_end() {
+			return this.data.timestamp_end;
+		},
+		//TODO: Add date_end
+		get date_start() {
+			var attr = this._attr + "Date_start";
 			if(!this._flow.has(attr)) {
 				this._flow.set(attr,
-						new Date(this.timestamp * 1000));
+						new Date(this.timestamp_start * 1000));
 			}
 			return this._flow.get(attr);
 		},

@@ -11,7 +11,8 @@ define(
 				"request": {
 					"contentChecksums": {},
 					"headers": [ [ "Host", "example.com" ] ],
-					"timestamp": 1234567890.123,
+					"timestamp_start": 1234567890.123,
+					"timestamp_end": 1234567890.123,
 					"contentLength": 0,
 					"method": "GET",
 					"client_conn": {
@@ -36,7 +37,8 @@ define(
 						}
 					},
 					"msg": "OK",
-					"timestamp": 1234567932.123,
+					"timestamp_start": 1234567890.123,
+					"timestamp_end": 1234567890.123,
 					"contentLength": 42,
 					"httpversion": [ 1, 1 ]
 				},

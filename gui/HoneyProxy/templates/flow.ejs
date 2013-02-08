@@ -19,11 +19,11 @@
 		<%- response.contentLengthFormatted %>
 	</div></td>
 <td class=time>
-	<div class=hidden><%- /*table sorter */ request.timestamp %></div>
-	<div class=timestamp title="UNIX Timestamp: <%- request.timestamp %>">
-	<%- request.date.toLocaleTimeString() %>, <%- ("0"+request.date.getDate()).slice(-2)+"."+("0"+(request.date.getMonth()+1)).slice(-2) %>.<br>
+	<div class=hidden><%- /*table sorter */ request.timestamp_start %></div>
+	<div class=timestamp title="UNIX Timestamp: <%- request.timestamp_start %>">
+	<%- request.date_start.toLocaleTimeString() %>, <%- ("0"+request.date_start.getDate()).slice(-2)+"."+("0"+(request.date_start.getMonth()+1)).slice(-2) %>.<br>
 	</div>	
 	<div class=duration>
-	<%- Math.floor((response.timestamp - request.timestamp) * 1000) %>ms
+	<%- Math.floor((response.timestamp_end - request.timestamp_start) * 1000) %>ms
 	</div>	
 	</td>
