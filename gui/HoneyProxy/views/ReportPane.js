@@ -77,10 +77,10 @@ define(["require",
 							with(window._reportPaneExterns) {
 								eval(code);
 							}
-							delete window._reportPaneExterns;
+							//delete window._reportPaneExterns;
 						} catch(e) {
 							//TODO: This is ugly.
-							outNode.innerHTML = "<pre>" + e.message + "\n\n"+e.stack.replace(/\(http.+?@localhost:8081/g,"") + "</pre>";
+							reportOutput.outputNode.innerHTML = "<pre>" + e.message + "\n\n"+e.stack.replace(/http.+?\/\/.+?\//g,"") + "</pre>";
 							console.log(e);
 							window.HoneyProxy.exception = e;
 						}

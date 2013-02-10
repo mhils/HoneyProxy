@@ -39,7 +39,7 @@ require([
     var item = items[flow.id] = {};
     
     //TODO: Enhance Search API with nested requests and do better filtering here.
-    var value = flow.request.filename.length < 5 ? flow.request.host : flow.request.filename;
+    var value = flow.request.filename.length < 6 ? flow.request.host : flow.request.filename;
     var promise = request.post("/api/search/",{
       data : {
         idsOnly: true,

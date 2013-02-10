@@ -23,6 +23,9 @@ require([
   // Iterate over all flows and sum up content lengths
   traffic.each(function(flow){
     var host = flow.request.host;
+    
+    //host = /google|gstatic/.test(host) ? "google" : "facebook";
+    
     if(!(host in trafficPerHost))
       trafficPerHost[host] = {y:0,text:"",count:0};
     var size = flow.request.contentLength + flow.response.contentLength;

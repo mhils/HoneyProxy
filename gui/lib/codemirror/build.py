@@ -1,12 +1,12 @@
 files = ["codemirror.js",
          "mode-javascript.js",
-         "util/continuecomment.js",
-         "util/formatting.js",
-         "util/simple-hint.js",
-         "util/javascript-hint.js",
-         "util/matchbrackets.js",
-         "util/searchcursor.js",
-         "util/match-highlighter.js"]
+         "addon/edit/continuecomment.js",
+         "addon/format/formatting.js",
+         "addon/hint/simple-hint.js",
+         "addon/hint/javascript-hint.js",
+         "addon/edit/matchbrackets.js",
+         "addon/search/searchcursor.js",
+         "addon/search/match-highlighter.js"]
 with open("codemirror.combined.js", "w") as out:
     out.write("// Combined build\n")
     out.write("// Files: %s\n\n" % " ".join(files))
