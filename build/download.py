@@ -1,6 +1,12 @@
 import os, os.path, shutil, psutil
 from datetime import date
-filename = "snapshot-%(date)s-web.zip" % {"date": date.today().strftime("%Y%m%d")}
+from argparse import ArgumentParser
+
+parser = ArgumentParser()
+parser.add_argument('--file', dest='filename', action='store', type=str)
+args = parser.parse_args()
+
+filename = "snapshot-%(date)s-web.zip" % {"date": date.today().strftime("%Y%m%d")} if not args.filename else args.filename
 
 print "Working directory: %s" % os.getcwd()
 

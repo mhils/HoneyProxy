@@ -36,8 +36,7 @@ Most command line parameters are documented in the [mitmproxy docs](http://mitmp
 * [Python](http://www.python.org) 2.7.x.
 * [pyOpenSSL](http://pypi.python.org/pypi/pyOpenSSL) 0.12 or newer.
 * [pyasn1](http://pypi.python.org/pypi/pyasn1) 0.1.2 or newer.
-* [Twisted](http://twistedmatrix.com/) 12.2.0 or newer.
-* [Autobahn](http://pypi.python.org/pypi/autobahn) 0.5.2 or newer.
+* [Twisted](http://twistedmatrix.com/) 12.3.0 or newer.
 
 ## Contributing
 ==========
