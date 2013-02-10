@@ -3,11 +3,12 @@
  */
 define([
 	"require",
+	"dojo/_base/url",
 	"dojo/Deferred",
 	"dojo/dom-construct",
 	"../models/Flow",
 	"../util/flowlist"
-],function(require, Deferred, domConstruct, Flow, flowlist){
+],function(require, url, Deferred, domConstruct, Flow, flowlist){
 	
 	function preview(parentPreviewFunc){
 		return function(){
@@ -17,13 +18,16 @@ define([
 			var location = flow.response.getHeader(/^Location$/i);
 
 			if(location) {
+				location = new url(location);
+				console.log(location);
 				require(["../traffic"],(function(traffic){
 					var flows = [];
 					for(var i = flow.id + 1; i < Math.min(traffic.length,flow.id + 100); i++)  {
 						var nextFlow = traffic.get(i);
 						if ((flow.response.timestamp_end + 2) < nextFlow.request.timestamp_start)
 							break;
-						if(location.indexOf(nextFlow.request.path) >= 0)
+						
+						if(location.path + (location.query ? "?"+location.query : "") === nextFlow.request.path && (!location.host || location.host === nextFlow.request.host))
 							flows.push(nextFlow);
 					}
 					window.redirectFlows = flows;
