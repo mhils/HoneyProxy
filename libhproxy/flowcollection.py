@@ -107,7 +107,9 @@ class FlowCollection:
             try:
                 ce = r.headers["content-encoding"]
                 if ce and ce[0] in encoding.ENCODINGS:
-                    decoded = encoding.decode(ce[0],r.content)
+                    decoded_ = encoding.decode(ce[0],decoded)
+                    if decoded_ != None: #If the decoding fails, encoding.decode returns None.
+                        decoded  = decoded_
             except:
                 print "Warning: Data cannot be decoded with given Content Encoding."
             
