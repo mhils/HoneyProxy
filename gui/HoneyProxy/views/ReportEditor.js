@@ -34,7 +34,7 @@ define([ "lodash",
 							//Only expose the important attributes of flow. Most attrs are confusing and for internal use only.
 							"flow": {
 								"request": sampleFlow.request,
-								"response": sampleFlow,
+								"response": sampleFlow.response,
 								"id": sampleFlow.id,
 								"getSimilarFlows": sampleFlow.getSimilarFlows
 							},
