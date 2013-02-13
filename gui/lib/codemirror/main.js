@@ -1,5 +1,5 @@
 /*
- * CodeMirror AMD wrapper. Returns a promise that gets fulfiled when codemirror and all plugins have been loaded.
+ * CodeMirror AMD wrapper
  */
 define(["./codemirror-combined"],function(){
 		return window.CodeMirror;

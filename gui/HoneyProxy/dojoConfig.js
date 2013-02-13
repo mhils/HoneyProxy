@@ -25,10 +25,14 @@ var dojoConfig = {
 		main: "lodash",
 		location: "./lib/lodash",
 		destLocation:"./lib/lodash"
-	},  {
+	}, {
 		name: "codemirror",
 		location: "./lib/codemirror",
 		destLocation:"./lib/codemirror"
+	}, {
+		name: "d3",
+		location: "./lib/d3",
+		destLocation:"./lib/d3"
 	}, {
     name: "dojo",
     location: "./lib/dojo",
