@@ -12,10 +12,9 @@ require([
   "dojox/charting/axis2d/Default",
 ], function(formatSize, Chart, theme, Scatter, Tooltip, Magnify, Highlight) {
   
-  var hosts = {};
-  var hostcount = 0;
-  var data = [];
-  
+  var hosts = {}; // hostname -> y plot value
+  var hostcount = 0; //number of known hosts
+  var data = [];  
   // Iterate over all flows and sum up content lengths
   traffic.each(function(flow){
     var host = flow.request.host;
@@ -29,7 +28,6 @@ require([
         text: flow.request.path,
         flow: flow
       });
-    
   });
   
   
@@ -57,12 +55,14 @@ require([
     labels.push({text:i,value:hosts[i]})
   }
   labels.push({text:"",value:hostcount});
-  
-  
+    
   //Add axes
   chart.addAxis("x", {
     fixUpper: "minor",
-    fixLower: "minor"
+    fixLower: "minor",
+    labelFunc: function(a){
+      return (new Date(a*1000)).toLocaleTimeString();
+    }
   });
   chart.addAxis("y", { labels: labels, vertical: true, min: -0.5, max: hostcount-0.5});
   
