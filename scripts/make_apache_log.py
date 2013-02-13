@@ -7,10 +7,10 @@ def response(context, flow):
     size = str(len(flow.response.content))
     if(size == "0"):
         size = "-"
-    logstr = ('%(addr)s - - [%(timestamp)s] "%(method)s %(path)s HTTP/%(httpver)s" %(code)i %(size)s "%(referer)s" "%(ua)s"' %
+    logstr = ('%(addr)s - - [%(timestamp)s] "%(method)s %(path)s HTTP/%(httpver)s" %(code)i %(size)s "%(referer)s" "%(ua)s"\n' %
         {
          'addr': flow.request.client_conn.address[0],
-         'timestamp': datetime.fromtimestamp(flow.request.timestamp).replace(tzinfo=pytz.utc).strftime('%d/%b/%Y:%H:%M:%S %z'),
+         'timestamp': datetime.fromtimestamp(flow.request.timestamp_start).replace(tzinfo=pytz.utc).strftime('%d/%b/%Y:%H:%M:%S %z'),
          'method': flow.request.method,
          'path': flow.request.path,
          'httpver': ".".join(str(i) for i in flow.request.httpversion),
