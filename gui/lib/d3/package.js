@@ -1,7 +1,7 @@
 /*jshint unused:false */
 var profile = (function() {
 	var copyOnly = function(filename,mid){
-		return (mid == "d3/d3");
+		return (mid == "d3/d3.v3.min");
 	};
 	var amd = function(filename,mid){
 		return (mid == "d3/main");
