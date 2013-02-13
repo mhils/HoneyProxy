@@ -114,9 +114,10 @@ def main():
     root.putChild("files", content.ContentAPIResource())
     if(options.dumpdir):
         root.putChild("dump", File(options.dumpdir))
-     
-    import libhproxy.auth as auth
-    root = auth.addBasicAuth(root,"HoneyProxy",honey=HoneyProxy.getAuthKey())
+    
+    if HoneyProxy.getAuthKey() != "NO_AUTH":
+        import libhproxy.auth as auth
+        root = auth.addBasicAuth(root,"HoneyProxy",honey=HoneyProxy.getAuthKey())
     
     reactor.listenTCP(options.guiport, Site(root))  
         

@@ -56,7 +56,7 @@ def fix_options(parser):
     parser.add_argument(
         "--api-auth",
         action="store", type = str, dest="apiauth", default=None,
-        help = "API auth key / shared secret"
+        help = "API auth key / shared secret. Use NO_AUTH to disable authentication"
     )
     
     parser.add_argument(
