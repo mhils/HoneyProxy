@@ -24,7 +24,10 @@ from zope.interface import implementer
 
 from twisted.protocols.policies import ProtocolWrapper, WrappingFactory
 from twisted.python import log
-from twisted.python.constants import NamedConstant, Names
+try:
+    from twisted.python.constants import NamedConstant, Names
+except:
+    from twistedfallback import NamedConstant, Names
 from twisted.web.resource import IResource
 from twisted.web.server import NOT_DONE_YET
 
