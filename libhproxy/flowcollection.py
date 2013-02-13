@@ -140,7 +140,7 @@ class FlowCollection:
             decoded_content[i] = decoded
         
         #calculate hashsums
-        algorithms = ["md5","sha256"]
+        algorithms = ["md5","sha1","sha256"]
         for i in ["request","response"]:
             
             flowRepr[i]["contentChecksums"] = {}
@@ -162,7 +162,7 @@ class FlowCollection:
             for item, data in parts.viewitems():
                 checksums = {}
                 for a in algorithms:
-                    checksums[a] = getattr(hashlib,a)(data).hexdigest()
+                    checksums[a] = getattr(hashlib,a)(data.encode("latin-1")).hexdigest()
                 flowRepr[i]["contentChecksums"][item] = checksums
         
         

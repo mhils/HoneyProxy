@@ -9,7 +9,7 @@
 				<td><%- item %></td>
 				<td><ul class=checksums>
 				<% for(var algo in r.contentChecksums[item]){ %>
-					<li><%- algo %>: <span class=value><%- r.contentChecksums[item][algo] %></span></li>
+					<li><%- algo %>: <span class=value><%- r.contentChecksums[item][algo] %></span><% if(algo=="sha256") { %> <a class=button target="_blank" href="https://www.virustotal.com/de/file/<%- r.contentChecksums[item][algo] %>/analysis/">[VT]</a><% } %></li>
 				<% } %>
 				</ul></td>
 			</tr>

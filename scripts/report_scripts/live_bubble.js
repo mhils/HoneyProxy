@@ -12,7 +12,7 @@ require(["d3"],function(d3){
       hosts = [],
       linkMapping = {},
       links = [],
-      maxSize = 0;81.166.122.254
+      maxSize = 0;
   
   
   function addHost(addr,message){
