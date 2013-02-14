@@ -148,7 +148,7 @@ class FlowCollection:
             parts = {"Checksum":decoded_content[i]}
             
             #Handle multipart checksums
-            if i == "request":        
+            if i == "request":
                 try:
                     headers = dict(map(str.lower, map(str,a)) for a in flow.request.headers) # odict -> (lowered) dict
                     fs = cgi.FieldStorage(StringIO.StringIO(decoded_content[i]),headers,environ={ 'REQUEST_METHOD':'POST' })
@@ -161,8 +161,13 @@ class FlowCollection:
             #TODO: Analyze request and split it up into parameters to match file upload
             for item, data in parts.viewitems():
                 checksums = {}
+                encoded = data 
+                try:
+                    encoded = data.encode("latin-1") # FIXME: I don't know why we need that currently, we need to investigate that.
+                except:
+                    pass
                 for a in algorithms:
-                    checksums[a] = getattr(hashlib,a)(data.encode("latin-1")).hexdigest()
+                    checksums[a] = getattr(hashlib,a)(encoded).hexdigest()
                 flowRepr[i]["contentChecksums"][item] = checksums
         
         

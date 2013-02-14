@@ -64,7 +64,12 @@ require([
       return (new Date(a*1000)).toLocaleTimeString();
     }
   });
-  chart.addAxis("y", { labels: labels, vertical: true, min: -0.5, max: hostcount-0.5});
+  chart.addAxis("y", { 
+    labels: labels, 
+    vertical: true, 
+    min: -0.5, max: hostcount-0.5,
+    dropLabels: false
+  });
   
   // Add the series of data
   chart.addSeries("default",data);
