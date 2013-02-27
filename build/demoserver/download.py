@@ -31,4 +31,6 @@ print "Unzip new snapshot..."
 os.system("unzip -q %s -d honeyproxy" % filename)
 print "Start HoneyProxy..."
 os.system("sh honey.sh")
+print "Delete snapshot zip archive..."
+os.remove(filename)
 print "done!"
