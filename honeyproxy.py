@@ -98,7 +98,8 @@ def main():
     
     #Config
     wsPort = str(options.apiport)
-    httpGui = "http://honey:"+HoneyProxy.getAuthKey()+"@localhost:"+str(options.guiport)+"/"
+    urlauth = "honey:"+HoneyProxy.getAuthKey()+"@" if HoneyProxy.getAuthKey() != "NO_AUTH" else ""
+    httpGui = "http://"+urlauth+"localhost:"+str(options.guiport)+"/"
     guiURL = httpGui +"app/"
     HoneyProxy.setConfig({
         "proxy-addr":options.addr,
@@ -136,8 +137,9 @@ def main():
     print "GUI: "+guiURL
     print "Proxy Address: %s:%s" % (options.addr, options.port)
     print "WebSocket Port: "+wsPort
-    print "Auth user: " + "honey"
-    print "Auth key: "+ HoneyProxy.getAuthKey()
+    if HoneyProxy.getAuthKey() != "NO_AUTH":
+        print "Auth user: " + "honey"
+        print "Auth key: "+ HoneyProxy.getAuthKey()
         
     #run!
     l = task.LoopingCall(p.tick)

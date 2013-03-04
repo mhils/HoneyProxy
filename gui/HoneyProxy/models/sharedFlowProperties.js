@@ -41,7 +41,7 @@ define(["lodash","dojo/Deferred","dojo/request","../util/formatSize"],function(_
 		},
 		getContent: function() {
 			if(this.contentLength > 1024 * 1024 * 1){
-				if(window.confirm("This request is pretty big and might cause performance issues ("+this.contentLengthFormatted+") if we load it. Press abort to continue anyway."))
+				if(!window.confirm("This request is pretty big and might cause performance issues ("+this.contentLengthFormatted+") if we load it. Press OK to continue anyway."))
 				{
 					return (new Deferred())
 						.resolve("--- big chunk of data ---");
