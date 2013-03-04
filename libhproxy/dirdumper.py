@@ -1,5 +1,7 @@
-import os
+import os, re
 from libmproxy import encoding
+from urllib2 import unquote 
+allowed_chars = re.compile("[^\\w\\-\\.\\\\\\/]")
 
 class DirDumper:
     """
@@ -19,7 +21,6 @@ class DirDumper:
         if(len(flow.response.content) == 0):
             return
         
-        #FIXME: What about content type charset?
         content = flow.response.content
         enc = flow.response.headers.get("content-encoding")
         if enc and enc[0] != "identity":
@@ -31,19 +32,20 @@ class DirDumper:
         host = flow.request.host
         if(flow.request.port != 80):
             host += "-"+str(flow.request.port)
-        path = flow.request.path.split("#")[0].split("?")[0].lstrip("/\\")
+        path = unquote(flow.request.path.split("#")[0].split("?")[0].lstrip("/\\"))
         if(path == ""):
             path = "__root__"
         
         #subdir is our relative path
         subdir = os.path.join(host,path)
+
+        #remove invalid characters
+        subdir = os.path.normpath(allowed_chars.sub('_', subdir))
         
         #forbid relative directory changes.
         subdir = "/".join(i.lstrip(".") for i in subdir.replace("\\","/").split("/"))
         subdir = "/".join(i[:20]+"[...]"+i[-20:] if (len(i) > 40) else i for i in subdir.split("/"))
         
-        #remove invalid characters
-        subdir = os.path.normpath("".join(i for i in subdir if i not in r':*?"<>|'))
         
         #cut off too long filenames
         MAX_DIR_LENGTH  = 150
@@ -96,7 +98,7 @@ class DirDumper:
         if(os.path.isdir(filename+ext)):
             os.rename(filename+ext, filename+ext+"[dir]")
         while(os.path.isfile(filename+str(appendix)+ext)):
-            with open(filename+str(appendix)+ext) as f:
+            with open(filename+str(appendix)+ext,"rb") as f:
                 s = f.read()
                 if(s == content):
                     return
