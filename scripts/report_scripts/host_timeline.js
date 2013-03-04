@@ -68,7 +68,9 @@ require([
     labels: labels, 
     vertical: true, 
     min: -0.5, max: hostcount-0.5,
-    dropLabels: false
+    dropLabels: false,
+    minorTickStep: 1,
+    majorTickStep: 1
   });
   
   // Add the series of data
