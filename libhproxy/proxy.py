@@ -73,7 +73,7 @@ class HoneyProxyMaster(FlowMaster):
         #see controller.Master.run()
         global should_exit
         should_exit = False
-        self.server.start_slave(controller.Slave, self.masterq)
+        self.server.start_slave(controller.Slave, controller.Channel(self.masterq))
         
     def tick(self):
         if not should_exit:
@@ -90,7 +90,7 @@ class HoneyProxyMaster(FlowMaster):
         flow = FlowMaster.handle_request(self, request)
         
         if flow:
-            request._ack()
+            request.reply()
             #print "request to "+request.host
             #self.sessionFactory.write(request.host)
             
@@ -100,7 +100,7 @@ class HoneyProxyMaster(FlowMaster):
         flow = FlowMaster.handle_response(self, response)
         
         if flow:
-            response._ack()
+            response.reply()
             flowId = self.flows.addFlow(flow)
             if self.o.wfile:
                 self.fwriter.add(flow)
