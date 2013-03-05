@@ -9,7 +9,8 @@
 		print("\n");
 		} %>
 	
-		<h2 class=title><%- model.request.filename %></h2>
+		<h2 class=title><%- model.request.fullPath %></h2>
+		<div class=subtitle><%- model.request.queryString %></div>
 		<pre class="raw raw-request"><%- 
 		model.request.method %> <%- model.request.path %> HTTP/<%- model.request.httpversion.join(".") %><%
 		print("\n");

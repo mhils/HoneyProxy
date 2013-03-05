@@ -30,7 +30,8 @@
 		<td><a class="button button-text button-download" href="<%- r.downloadUrl %>">Download (<%- r.contentLengthFormatted %>)</a></td>
 	<% } %>
 
-	<h2 class=title><%- model.request.filename %></h2>
+	<h2 class=title><%- model.request.fullPath %></h2>
+	<div class=subtitle><%- model.request.queryString %></div>
 	
 	<table class=headers>
 		<tbody>
