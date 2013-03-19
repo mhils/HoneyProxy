@@ -38,6 +38,8 @@ require(["d3"],function(d3){
   }
   
   traffic.each(function(flow){
+    if(flow.get("filterClasses")["filter-hide"] === true) 
+      return;
     var source = flow.request.client_conn.address[0];
     var target = flow.request.host;
     var linkName = source + "-" + target;

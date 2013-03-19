@@ -34,7 +34,6 @@ require([
   // Create the chart within it's "holding" node
   a = document.createElement("div");
   a.style.width = "100%";
-  a.style.height = "100%";
   outNode.appendChild(a); 
   var chart = new Chart(a,{
     title: "Requests over time"
@@ -55,7 +54,9 @@ require([
     labels.push({text:i,value:hosts[i]})
   }
   labels.push({text:"",value:hostcount});
-    
+  
+  a.style.height = labels.length*10+"px";
+  
   //Add axes
   chart.addAxis("x", {
     fixUpper: "minor",
