@@ -24,10 +24,6 @@ from twisted.web.static import File
 from twisted.internet import reactor, task
 from twisted.web.resource import Resource
 
-#make utf8 default
-reload(sys)
-sys.setdefaultencoding('utf8')
-
 #use mitmproxy & netlib from ./
 dirutils.useOwnMitmproxy() 
 
