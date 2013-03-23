@@ -95,6 +95,7 @@ class FlowCollection:
         
         #Save decoded content    
         decoded_content = {}
+        algorithms = ["md5","sha1","sha256"]
         for i in ["request","response"]:
             #strip content out of the flowRepr
             flowRepr[i]["contentLength"] = len(flowRepr[i]["content"])
@@ -112,6 +113,29 @@ class FlowCollection:
                         decoded  = decoded_
             except:
                 print "Warning: Data cannot be decoded with given Content Encoding."
+
+            #calculate hashsums
+            flowRepr[i]["contentChecksums"] = {}
+            parts = {"Checksum":decoded}
+            
+            #Handle multipart checksums
+            if i == "request":
+                try:
+                    headers = dict(map(str.lower, map(str,a)) for a in flow.request.headers) # odict -> (lowered) dict
+                    fs = cgi.FieldStorage(StringIO.StringIO(decoded),headers,environ={ 'REQUEST_METHOD':'POST' })
+                    parts = getParts(fs)
+                except Exception as e:
+                    import traceback
+                    traceback.print_exc()
+                    print "Warning: Cannot decode multipart"
+
+            for item, data in parts.viewitems():
+                checksums = {}
+                for a in algorithms:
+                    checksums[a] = getattr(hashlib,a)(data).hexdigest()
+                flowRepr[i]["contentChecksums"][item] = checksums
+
+
             
             #decode with http content-type encoding
             ct = r.headers["content-type"]
@@ -138,39 +162,7 @@ class FlowCollection:
             except:
                 print "Warning: Cannot encode request to utf8"
             decoded_content[i] = decoded
-        
-        #calculate hashsums
-        algorithms = ["md5","sha1","sha256"]
-        for i in ["request","response"]:
-            
-            flowRepr[i]["contentChecksums"] = {}
-            
-            parts = {"Checksum":decoded_content[i]}
-            
-            #Handle multipart checksums
-            if i == "request":
-                try:
-                    headers = dict(map(str.lower, map(str,a)) for a in flow.request.headers) # odict -> (lowered) dict
-                    fs = cgi.FieldStorage(StringIO.StringIO(decoded_content[i]),headers,environ={ 'REQUEST_METHOD':'POST' })
-                    parts = getParts(fs)
-                except Exception as e:
-                    import traceback
-                    traceback.print_exc()
-                    print "Warning: Cannot decode multipart"
-            
-            #TODO: Analyze request and split it up into parameters to match file upload
-            for item, data in parts.viewitems():
-                checksums = {}
-                encoded = data 
-                try:
-                    encoded = data.encode("latin-1") # FIXME: I don't know why we need that currently, we need to investigate that.
-                except:
-                    pass
-                for a in algorithms:
-                    checksums[a] = getattr(hashlib,a)(encoded).hexdigest()
-                flowRepr[i]["contentChecksums"][item] = checksums
-        
-        
+
         self._flows.append(flow)
         self._flows_serialized.append(flowRepr)
         self._decoded_contents.append(decoded_content)
