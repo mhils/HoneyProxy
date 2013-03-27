@@ -55,7 +55,7 @@ require([
   }
   labels.push({text:"",value:hostcount});
   
-  a.style.height = labels.length*10+"px";
+  a.style.height = (200+labels.length*10)+"px";
   
   //Add axes
   chart.addAxis("x", {
