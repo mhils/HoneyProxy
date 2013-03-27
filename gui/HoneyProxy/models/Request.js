@@ -7,6 +7,9 @@ define(["lodash","dojo/Deferred","../utilities","./sharedFlowProperties"],functi
 	var Request = function(flow){
 		this._flow = flow;
 	};
+  
+  var defaultPorts = {"http":80,"https":443};
+  
 	Request.prototype = {
 		get _attr() {
 			return "request";
@@ -59,7 +62,10 @@ define(["lodash","dojo/Deferred","../utilities","./sharedFlowProperties"],functi
 			var params = this.path.split("?");
 			var path = params.shift().split("/");
 			params.unshift("");
-			var fullpath = this.scheme + "://" + this.hostFormatted + ":" + this.port + path.join("/");
+			var fullpath = this.scheme + "://" + this.hostFormatted;
+      if(!(this.scheme in defaultPorts) || defaultPorts[this.scheme] !== this.port)
+        fullpath += ":" + this.port;
+      fullpath += path.join("/");
 			var filename = path.pop();
 			this._flow.set("filename", filename==="" ? "/" : filename );
 			this._flow.set("fullPath", fullpath );

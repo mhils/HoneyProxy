@@ -19,7 +19,8 @@ define([
 
 			if(location) {
 				location = new url(location);
-				console.log(location);
+        var path_with_query = location.path + (location.query ? "?"+location.query : "");
+				console.log(path_with_query);
 				require(["../traffic"],(function(traffic){
 					var flows = [];
 					for(var i = flow.id + 1; i < Math.min(traffic.length,flow.id + 100); i++)  {
@@ -27,7 +28,8 @@ define([
 						if ((flow.response.timestamp_end + 2) < nextFlow.request.timestamp_start)
 							break;
 						
-						if(location.path + (location.query ? "?"+location.query : "") === nextFlow.request.path && (!location.host || location.host === nextFlow.request.host))
+						if(path_with_query === nextFlow.request.path 
+              && (!location.host || location.host === nextFlow.request.hostFormatted || location.host === nextFlow.request.host))
 							flows.push(nextFlow);
 					}
 					window.redirectFlows = flows;
