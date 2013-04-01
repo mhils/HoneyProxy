@@ -1,7 +1,7 @@
-define([ "./RedirectFlow", "./NotModifiedFlow", "./ImageFlow", "./HtmlFlow",
-		"./XmlFlow", "./JsFlow", "./CssFlow", "./PrettyFlow", "./DocumentFlow" ],
-	function(NotModifiedFlow, ImageFlow, HtmlFlow, XmlFlow, JsFlow, CssFlow,
-		PrettyFlow, DocumentFlow) {
-		return [ NotModifiedFlow, ImageFlow, HtmlFlow, XmlFlow, JsFlow, CssFlow,
-				PrettyFlow, DocumentFlow ];
+define([ "./RedirectFlow", "./NotModifiedFlow", "./PEFlow", "./ImageFlow", "./HtmlFlow",
+		"./XmlFlow", "./JsFlow", "./CssFlow", "./PrettyFlow" ],
+	function(RedirectFlow, NotModifiedFlow, PEFlow, ImageFlow, HtmlFlow, XmlFlow, JsFlow, CssFlow,
+		PrettyFlow) {
+		return [ RedirectFlow, NotModifiedFlow, PEFlow, ImageFlow, HtmlFlow, XmlFlow, JsFlow, CssFlow,
+				PrettyFlow];
 	});

@@ -19,8 +19,8 @@ define([
 
 			if(location) {
 				location = new url(location);
-        var path_with_query = location.path + (location.query ? "?"+location.query : "");
-				console.log(path_with_query);
+				var path_with_query = location.path + (location.query ? "?"+location.query : "");
+				//console.log(path_with_query);
 				require(["../traffic"],(function(traffic){
 					var flows = [];
 					for(var i = flow.id + 1; i < Math.min(traffic.length,flow.id + 100); i++)  {

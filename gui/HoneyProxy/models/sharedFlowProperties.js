@@ -39,19 +39,36 @@ define(["lodash","dojo/Deferred","dojo/request","../util/formatSize"],function(_
 		get downloadUrl() {
 			return this.getContentURL("attachment");
 		},
-		getContent: function() {
-			if(this.contentLength > 1024 * 1024 * 1){
-				if(!window.confirm("This request is pretty big and might cause performance issues ("+this.contentLengthFormatted+") if we load it. Press OK to continue anyway."))
-				{
-					return (new Deferred())
-						.resolve("--- big chunk of data ---");
-				}
-			}
-			if(this.hasContent)
-				return request.get(this.viewUrl,{handleAs:"text"});
-			else
-				return (new Deferred())
-					.resolve("");
+		getContent: function(options) {
+		  var def = new Deferred();
+		  
+		  options = $.extend({
+		    responseType: "text",
+		    range: undefined,
+		    always: false,
+		  }, options);
+		  
+		  if(!this.hasContent){
+		    def.resolve("");
+		  }
+		  else if(!options.always && !options.range && this.contentLength > 1024 * 1024 * 1){
+		    if(!window.confirm("This request is pretty big and might cause performance issues ("+this.contentLengthFormatted+") if we load it. Press OK to continue anyway."))
+			  def.resolve("--- big chunk of data ---");
+		  } else {
+		    var xhr = new XMLHttpRequest();
+            xhr.open('GET', this.viewUrl, true);
+            xhr.responseType = options.responseType;
+            
+            if(options.range)
+              xhr.setRequestHeader("Range",options.range);
+            
+            xhr.onload = function(e) {
+              def.resolve(this.response,this);
+            };
+          
+            xhr.send();
+		  }
+		  return def;
 		},
 		get contentLengthFormatted() {
 			var attr = this._attr+"ContentLength";

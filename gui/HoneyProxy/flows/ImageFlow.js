@@ -13,7 +13,6 @@ define([
 		templateString: template,
 		postCreate: function(){
 			this.inherited(arguments);
-			//TODO: Replace jquery with dojo
 			$(this.imageNode).load((function(){
 				this.dimensionsNode.textContent = this.imageNode.naturalWidth + " \xd7 " + this.imageNode.naturalHeight;
 			}).bind(this));

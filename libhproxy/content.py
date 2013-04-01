@@ -1,12 +1,40 @@
-from twisted.web.resource import Resource  
+from twisted.web.resource import Resource
+from twisted.web.static import File
+from twisted.web import server
 from libhproxy.honey import HoneyProxy
+import StringIO, os
 #serve request content via HTTP
+
+class FakeFile(File):
+    def __init__(self, size):
+        self.size = size
+        self.encoding = None
+        self.type = None
+    def getsize(self):
+        return self.size
+
+def handleRangeRequest(fn):
+    def wrapped(self, request, *args, **kwargs):
+        data = fn(self, request, *args,**kwargs)
+        f = FakeFile(len(data))
+        if isinstance(data,str):
+            data = StringIO.StringIO(data)
+        data.seek(0, os.SEEK_END)
+        length = data.tell()
+        producer = f.makeProducer(request, data)
+        if request.method == 'HEAD':
+            return ''
+        producer.start()
+        return server.NOT_DONE_YET
+    return wrapped
+
 class ContentAPIResource(Resource):
     """
     Serve request and response content via HTTP.
     Todo: Move this into the api namespace and use parameters rather than path stuff.
     """
     isLeaf = True
+    @handleRangeRequest
     def render_GET(self, request):
         try:
             if(len(request.postpath) != 3):
@@ -39,7 +67,7 @@ class ContentAPIResource(Resource):
                 request.setHeader("Content-Disposition",cdisp.replace("attachment", "inline"))
             else:
                 request.setHeader("Content-Disposition",cdisp.replace("inline", "attachment"))
-        
+
             return obj.content
         except Exception as e:
             print e
