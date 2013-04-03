@@ -1,5 +1,5 @@
 /**
- * Flow subclass responsible for proper display of images
+ * Flow subclass responsible for proper display of PE files
  */
 define([
     "dojo/_base/declare",
@@ -25,32 +25,37 @@ define([
 		templateString: template,
 		postCreate: function(){
 			this.inherited(arguments);
+			/* First, get the DOS Header */
 			this.model.response.getContent({range:"bytes=0-63",responseType:"arraybuffer"}).then((function(dosHeader){
 			  var dosHeader = new DataView(dosHeader);
 			  var dosMagic = dosHeader.getUint16(0);
 			  var ntOffset = dosHeader.getUint16(60,true);
+			  //Verify that the correct DOS signature is in place
 			  var signatureValid = (dosMagic === 0x4d5a /* MZ */);
 			  if(signatureValid)
 			  {
-			    
-			    
+			    //get the PE header and the first part of the optional header
 			    var ntHeaderRange = "bytes="+ (ntOffset) +"-" + (ntOffset+0x77);
 			    this.model.response.getContent({range:ntHeaderRange ,responseType:"arraybuffer"}).then((function(_ntHeaders){
 			      var ntHeaders      = new DataView(_ntHeaders,0,4),
 			          peHeader       = new DataView(_ntHeaders,4,20),
 			          optionalHeader = new DataView(_ntHeaders,24);
-			          
+			      
+			      //Check if the file has a valid PE signature    
 			      var signatureValid = (ntHeaders.getUint32(0) === 0x50450000 // PE\0\0
 			                           && optionalHeader.getUint16(0) === 0x0b01);
 			          
 			      if(signatureValid){
+			        
+			        //Display machine type
 			        var machine = peHeader.getUint16(0,true);
 			        if(machine in MACHINES)
 			          machine = MACHINES[machine];
 			        else
 			          machine = "0x"+machine.toString(16);
 			        this.machineNode.innerHTML = machine;
-
+			        
+			        //Display section table
 			        var sectionTableStart = ntOffset + 0x18 + peHeader.getUint16(0x10,true);
 			        var sectionTableRange = "bytes=" + sectionTableStart  +"-" + (sectionTableStart+ (0x28*peHeader.getUint16(0x02,true)) -1);
 			        
@@ -79,7 +84,7 @@ define([
 			            }
 			            sections.push(section)
 			          }
-			          console.debug(sections);
+			          
 			          
 			          this.sectionsNode.innerHTML = '<pre style="margin:0">' + 
 			            sections.map(function(s){
@@ -91,7 +96,8 @@ define([
 			                + "\n\tPointerToRawData: "+s.raddr;
 			              }).join("\n") +
 			              "</pre>";
-			          
+			              
+			          //console.debug(sections);
 			          //int8 = new Uint8Array(_sectionTable)
 			          //console.log("\n"+Array.prototype.map.call(int8,function(x){return ("0"+x.toString(16)).substr(-2)}).join(" "));
 			        }).bind(this));
@@ -115,7 +121,8 @@ define([
 	}, {
 		matches : function(data) {
 			if (data.contentType)
-				return !!data.contentType.match(/application\/(octet-stream|x-msdownload|x-msdos-program|exe|x-exe|dos-exe|x-winexe|msdos-windows)/i);
+				if(!!data.contentType.match(/application\/(x-msdownload|x-msdos-program|exe|x-exe|dos-exe|x-winexe|msdos-windows)/i))
+				  return true;
 			else if (data.path)
 				return !!data.path.match(/\.(exe|dll|sys|drv|com)$/i);
 			return false;

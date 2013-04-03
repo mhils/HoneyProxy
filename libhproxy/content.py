@@ -16,12 +16,16 @@ class FakeFile(File):
 def handleRangeRequest(fn):
     def wrapped(self, request, *args, **kwargs):
         data = fn(self, request, *args,**kwargs)
-        f = FakeFile(len(data))
+        
         if isinstance(data,str):
+            length = len(data)
             data = StringIO.StringIO(data)
-        data.seek(0, os.SEEK_END)
-        length = data.tell()
-        data.seek(0)
+        else:
+            pos = data.tell()
+            data.seek(0, os.SEEK_END)
+            length = data.tell()
+            data.seek(pos)
+        f = FakeFile(length)
         producer = f.makeProducer(request, data)
         if request.method == 'HEAD':
             return ''
