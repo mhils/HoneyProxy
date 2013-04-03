@@ -21,6 +21,7 @@ def handleRangeRequest(fn):
             data = StringIO.StringIO(data)
         data.seek(0, os.SEEK_END)
         length = data.tell()
+        data.seek(0)
         producer = f.makeProducer(request, data)
         if request.method == 'HEAD':
             return ''
