@@ -14,7 +14,7 @@ define([ "./watch-property" ], function(watchProperty) {
 	
 	function recursiveWatch(obj, keys, callback) {
 		
-		if (keys.length === 0 || !obj || !(keys[0] in obj)) {
+		if (!obj) {
 			return {
 				unwatch: function() {}
 			};
@@ -22,6 +22,10 @@ define([ "./watch-property" ], function(watchProperty) {
 		
 		console.debug("recursiveWatch(", obj, keys, callback, ")");
 		
+		if(keys.length === 0  || !(keys[0] in obj)){
+	      return watchProperty(obj, undefined, callback);
+		}
+
 		var subhandle = recursiveWatch(get(obj, keys[0]), keys.slice(1), callback);
 		var handle = watchProperty(obj, keys[0], function(name, oldValue, value) {
 			console.debug("recursiveWatch handle(", obj, keys, callback, ")");
@@ -46,5 +50,42 @@ define([ "./watch-property" ], function(watchProperty) {
 			}
 		};
 	}
+	/*
+	recursiveWatch.computed = function(func){
+          deps  = Array.prototype.slice.call(arguments,1),
+          value,
+          watchers;
+      var proxy = function(){
+        if(!value)
+          value = func.call(this);
+        return value;
+      };
+      proxy.watch = function(prop, callback){
+        if(!callback) {
+          callback = prop;
+          prop = undefined;
+        }
+          
+        if(!watchers) {
+          watchers = {};
+          var handler = function(){
+            var oldVal = value;
+            value = func.call(this);
+            for(var w in watchers){
+              w(undefined, oldVal, value);
+            }
+          };
+          deps.forEach(function(dep){
+            recursiveWatch(self,dep,handler);
+          });
+        }
+        watchers[callback] = true;
+        return { unwatch: function(){
+          delete watchers[callback];
+        }};
+      };
+      return proxy;
+    };
+    */
 	return recursiveWatch;
 });

@@ -1,5 +1,5 @@
 /**
- * Little subclass with default settings for _DynamicTemplatedMixin
+ * Reactive templating for Dojo
  */
 define([
     "dojo/_base/declare",
@@ -28,10 +28,12 @@ define([
 	};
 	
 	return declare([_WidgetBase], {
-	  bindings: default_bindings,
+	  _bindings: default_bindings,
 	  update_binding: function(type, node, keys, newValue, oldValue, handle){
 	  	  console.debug("update_binding", arguments);
-    	  if(type in this.bindings){
+    	  if(type in this._bindings){
+    	  	this._bindings[type].apply(this,Array.prototype.slice.call(arguments,1));
+    	  } else if(this.bindings && type in this.bindings){
     	  	this.bindings[type].apply(this,Array.prototype.slice.call(arguments,1));
     	  } else {
     	    node[type] = newValue;

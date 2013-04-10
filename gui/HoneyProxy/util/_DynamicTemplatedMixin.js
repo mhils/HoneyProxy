@@ -13,7 +13,7 @@ define(
 				//		A string that represents the widget template.
 				//		Use in conjunction with dojo.cache() to load from a file.
 				templateString: null,
-				/*=====
+				
 				// _attachPoints: [private] String[]
 				//		List of widget attribute names associated with data-dojo-attach-point=... in the
 				//		template, ex: ["containerNode", "labelNode"]
@@ -23,7 +23,6 @@ define(
 				//		List of connections associated with data-dojo-attach-event=... in the
 				//		template
 				_attachEvents: [],
-				=====*/
 				templateCompileFunction: function(tmpl) {
 					return function() {
 						return tmpl;
@@ -51,9 +50,7 @@ define(
 				buildRendering: function() {
 					this.domNode = domConstruct.create(this.nodeTag ? this.nodeTag
 						: "div");
-					
-					this.inherited(arguments);
-					
+										
 					this.refresh();
 					
 					this._beforeFillContent(); // hook for _WidgetsInTemplateMixin
