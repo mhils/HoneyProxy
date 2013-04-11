@@ -1,27 +1,25 @@
 /**
- * Proxy object for better access to Flows. 
- * Be aware that both Request and Response objects are stateless!
+ * Proxy object for better access to Flows. Be aware that both Request and
+ * Response objects are stateless!
  */
-define(["dojo/_base/declare","../utilities","./sharedFlowProperties","../util/safeMixin-es5"],function(declare, utilities, sharedFlowProperties){
-  
-  var Response = function(flow){
-    this._flow = flow;
-  };
-  Response.prototype = {
-    get _attr() {
-      return "response";
-    },
-    get code() {
-      return this.data.code;
-    },
-    get cert() {
-      return this.data.cert;
-    },
-    get rawFirstLine() {
-      return ["HTTP/" + this.httpversion.join("."),this.code,this.msg]
+
+define(["./FlowPropertyDecorator", "./sharedFlowProperties"], function(FlowPropertyDecorator, sharedFlowProperties) {
+  "use strict";
+
+  var responseDecorator = new FlowPropertyDecorator("response");
+
+  responseDecorator.addProperties(sharedFlowProperties);
+
+  responseDecorator.addProperties({
+    rawFirstLine: {
+      func: function(){
+        return ["HTTP/" + this.httpversion.join("."),this.code,this.msg]
           .join(" ")+"\n";
+      },
+      deps: ["httpversion","code","msg"]
     }
-  };
-  declare.safeMixin(Response.prototype,sharedFlowProperties);
-  return Response;
+  });
+  
+  return responseDecorator;
+
 });

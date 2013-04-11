@@ -76,15 +76,15 @@ class FlowCollection:
         #In transparent mode, we are unsure about the actual host, but we want to show it in the GUI.
         #Firstly, we get the Host from the request headers.
         #As this might be faked, we go on and check whether the request IP matches one of the DNS entries belonging to the headerHost
-        if(True or FlowCollection.regex_isip.match(flowRepr["request"]["host"])):
+        if(FlowCollection.regex_isip.match(flowRepr["request"]["host"])):
             try:
                 headerHost = flow.request.headers["Host"]
                 if(headerHost):
                     headerHost = headerHost[0]
                     info = socket.getaddrinfo(flowRepr["request"]["host"], flowRepr["request"]["port"],0,0,socket.SOL_TCP)
                     for i in info:
-                        if(i[4][0] == flowRepr["request"]["host"] and i[4][1] == flowRepr["request"]["port"]):
-                            flowRepr["request"]["hostFormatted"] = headerHost
+                        if i[4][0] == flowRepr["request"]["host"]:
+                            flowRepr["request"]["host_guess"] = headerHost
                             break
             except socket.gaierror:
                 pass

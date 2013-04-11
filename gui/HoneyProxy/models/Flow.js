@@ -1,23 +1,21 @@
-define(["dojo/_base/declare","dojo/Stateful","./Request","../util/safeMixin-es5"],function(declare, Stateful, requestDecorator){
-  var Flow = declare([],{
+define(["dojo/_base/declare","dojo/Stateful","./Request","./Response","../util/Observer","../util/safeMixin-es5"],function(declare, Stateful, requestDecorator, responseDecorator, Observer){
+  var Flow = declare([Stateful],{
     constructor: function(json){
+      declare.safeMixin(this, Observer.polyfillMixin);
+      
       this.request = {};
       this.response = {};
-      declare.safeMixin(this, json);
-      requestDecorator.decorate(this.request);
-      //declare.safeMixin(this.request, requestMixin)
-      /*
-      this.request = {};
-      this.response = {};
-      declare.safeMixin(this, json);
-      declare.safeMixin(this.request, requestHelper);
-      */
-      /*this.data = json;
-      this.request = Request(json.request);*/
       this.filters = new Stateful();
-      //declare.safeMixin(this.data,json);
+      declare.safeMixin(this, json);
+      
+      requestDecorator.decorate(this);
+      responseDecorator.decorate(this);
     }
   });
+  //FIXME: Remove debug
+  window.requestDecorator  = requestDecorator;
+  window.responseDecorator = responseDecorator;
+  window.declare = declare;
   window.Flow = Flow;
   return Flow;
 });
