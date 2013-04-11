@@ -15,7 +15,7 @@ define([ "./Observer" ], function(Observer) {
 			};
 		}
 		
-		console.debug("recursiveWatch(", obj, keys, callback, ")");
+		//console.debug("recursiveWatch(", obj, keys, callback, ")");
 		
 		if(keys.length === 0  || !(keys[0] in obj)){
 	      return Observer.observeProperty(obj, undefined, callback);
@@ -23,7 +23,7 @@ define([ "./Observer" ], function(Observer) {
 
 		var subhandle = recursiveWatch(obj[keys[0]], keys.slice(1), callback);
 		var handle = Observer.observeProperty(obj, keys[0], function(name, oldValue, value) {
-			console.debug("recursiveWatch handle(", obj, keys, callback, ")");
+			//console.debug("recursiveWatch handle(", obj, keys, callback, ")");
 			//Reroute subhandle to the new stuff
 			subhandle.remove();
 			subhandle = recursiveWatch(value, keys.slice(1), callback);

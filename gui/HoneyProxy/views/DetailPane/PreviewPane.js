@@ -16,8 +16,7 @@ define([ "dojo/_base/declare", "./_DetailViewPane", "dojo/dom-construct",
 			
 			var previewPane = this;
 			
-			var previewFunc = model.response.hasContent ? model.getPreview
-				.bind(model) : model.getPreviewEmpty.bind(model);
+			var previewFunc = model.getPreview.bind(model);
 			
 			var deferred = new Deferred();
 			

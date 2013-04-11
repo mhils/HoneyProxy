@@ -71,9 +71,9 @@ define([ "lodash", "./traffic" ], function(_, traffic) {
 		console.debug("Search performed:", arguments);
 		function handleFlow(flow) {
 			if ((flow.get("id") == matched[0]) ^ negate) {
-				flow.addFilterClass(filterClass);
+				flow.filters.set(filterClass,true);
 			} else {
-				flow.removeFilterClass(filterClass);
+				flow.filters.set(filterClass,false);
 			}
 			if (flow.get("id") == matched[0])
 				matched.shift();
