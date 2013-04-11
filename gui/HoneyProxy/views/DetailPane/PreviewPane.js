@@ -16,6 +16,8 @@ define([ "dojo/_base/declare", "./_DetailViewPane", "dojo/dom-construct",
 			
 			var previewPane = this;
 			
+			this.set("previewHTML",model.View({model: model}));
+			/*
 			var previewFunc = model.getPreview.bind(model);
 			
 			var deferred = new Deferred();
@@ -25,12 +27,12 @@ define([ "dojo/_base/declare", "./_DetailViewPane", "dojo/dom-construct",
 				deferred.resolve(true);
 			});
 			this.set("previewRequest", previewRequest);
-			return deferred;
+			return deferred;*/
 		},
 		
 		previewHTML: undefined,
 		_setPreviewHTMLAttr: function(previewHTML) {
-			domConstruct.place(previewHTML, this.previewHTMLNode, "only");
+			domConstruct.place(previewHTML.domNode, this.previewHTMLNode, "only");
 			this._set("previewHTML", previewHTML);
 		}
 	});

@@ -53,13 +53,21 @@ define(["dojo/Deferred", "../utilities", "./FlowPropertyDecorator", "./sharedFlo
 
     filename: {
       func: function() {
-        return this.path.split("?", 1)[0].split("/").pop();
+        var path = this.path.split("?", 1)[0]; 
+        var lastSlashIndex = path.lastIndexOf("/");
+        var lastSegmentContainsDot = (path.indexOf(".",lastSlashIndex) >= 0);
+        if(lastSegmentContainsDot) {
+          return path.substr(lastSlashIndex+1);
+        } else {
+          return path;
+        }
       },
       deps: ["path"]
     },
     queryString: {
       func: function() {
-        return this.path.replace(/^.+?\?/, "");
+        var begin = this.path.indexOf("?");
+        return begin >= 0 ? this.path.substr(begin) : "";
       },
       deps: ["path"]
     },

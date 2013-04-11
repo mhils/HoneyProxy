@@ -66,8 +66,28 @@ define([
 	
 	//TODO: When refactoring, replace with code that doesn't depend on domReady
 	//TODO: When refactoring, remove all references to specific Views and make views lazy-load
+	var fixme = traffic.query();
+	fixme.on = function(type, callback, context){
+	  switch(type){
+	    case "add":
+	      return fixme.observe(function(object, removedFrom, insertedInto){
+	        if(insertedInto !== -1)
+	          callback.call(context, object,fixme,{index: insertedInto});
+	      });
+	    case "remove":
+	      return fixme.observe(function(object, removedFrom, insertedInto){
+	        if(removedFrom !== -1)
+	          callback.call(context, object);
+	      });
+	    case "reset":
+	      break;
+	    default:
+	      throw "unimplemented";
+	  }
+	  return fixme.observe();
+	};
 	var trafficView = new TrafficView({
-		collection: traffic,
+		collection: fixme,
 		el: $("#trafficTable .data tbody")[0]
 	});
 

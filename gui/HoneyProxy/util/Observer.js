@@ -14,7 +14,8 @@ define([],function(){
       for(var watched_prop in this._watchCallbacks) {
         var callbacks = this._watchCallbacks[watched_prop];
         callbacks.forEach(function(callback){
-          callback(watched_prop, undefined, self[watched_prop]);
+          var prop_name = watched_prop.replace(/^_/,"");
+          callback(prop_name , undefined, self[prop_name]);
         });
       }
     }

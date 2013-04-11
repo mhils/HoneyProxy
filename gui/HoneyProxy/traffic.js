@@ -1,6 +1,6 @@
-define(["./models/Traffic"],function(Traffic){
+define(["./flow/FlowStore","dojo/store/Observable"],function(FlowStore, Observable){
 	
-	var traffic = new Traffic();
+	var flowStore = new Observable(new FlowStore());
 
-	return traffic;
+	return flowStore;
 });

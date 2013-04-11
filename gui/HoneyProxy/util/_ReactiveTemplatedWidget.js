@@ -12,7 +12,7 @@ define([
 	
     var default_bindings = {
       "replaceNode": function(node, keys, newValue, oldValue, handle){
-      	console.warn(this,arguments);
+      	console.debug(this,arguments);
       	if(!newValue)
       		newValue = domConstruct.create("div");
       	var self = this;
@@ -27,14 +27,28 @@ define([
       }
 	};
 	
-	return declare([_WidgetBase], {
+	var _ReactiveTemplatedWidget = declare([_WidgetBase], {
 	  _bindings: default_bindings,
+	  get_binding: function(type){
+	    if(this.bindings && (type in this.bindings)){
+	      return this.bindings[type];
+    	} else if(type in this._bindings){
+    	  return this._bindings[type];
+    	}
+	  },
+	  get_keys: function(type, keystr){
+	    var keys = keystr.trim().split(".");
+	    var binding = this.get_binding(type);
+	    if(binding && binding.key){
+	      keys = binding.key(keys);
+    	}
+	    return keys;
+	  },
 	  update_binding: function(type, node, keys, newValue, oldValue, handle){
-	  	  console.debug("update_binding", arguments);
-    	  if(type in this._bindings){
-    	  	this._bindings[type].apply(this,Array.prototype.slice.call(arguments,1));
-    	  } else if(this.bindings && type in this.bindings){
-    	  	this.bindings[type].apply(this,Array.prototype.slice.call(arguments,1));
+	  	  // console.debug("update_binding", arguments);
+	  	  var binding = this.get_binding(type);
+    	  if(binding){
+    	  	binding.apply(this,Array.prototype.slice.call(arguments,1));
     	  } else {
     	    node[type] = newValue;
     	  }
@@ -42,13 +56,15 @@ define([
 		buildRendering: function(){
 			var self = this;
 			
-			if(!this.constructor._template) {
+			var proto = Object.getPrototypeOf(this);
+			
+			if(!proto.constructor._template) {
 			  console.debug("Compiling template...",this);
-			  this.constructor._template = _.template(this.constructor.template.trim());
+			  proto.constructor._template = _.template(proto.constructor.template.trim());
 			}
 				
 						
-			var html = this.constructor._template(this);
+			var html = proto.constructor._template(this);
 		    	
 			this.domNode = domConstruct.toDom(html);
 						
@@ -66,19 +82,19 @@ define([
 		  	
 		  	  
 		  	nodes_to_bind.forEach(function(node){
-		  	  console.debug("Binding...",node);
+		  	  // console.debug("Binding...",node);
 		  	  var node_bindings = node.dataset.bind.split(",");
 		  	  node_bindings.forEach(function(binding){
 		  	    binding = binding.split(":");
 		  	    var type = binding[0].trim(),
-		  	        keys  = binding.slice(1).join(":").trim().split(".");
+		  	        keys = self.get_keys( type, binding.slice(1).join(":") ) 
 		  	    
-		  	    var value=self, k = keys.slice();
+		  	    var value=self.model, k = keys.slice();
 		  	    while(k.length >= 1)
-		  	      value = value.get ? value.get(k.shift()) : value[k.shift()];
+		  	      value = value[k.shift()];
 		  	    
 		  	    
-		  	    var handle = recursiveWatch(self, keys, function(changed_subtree_name, oldValue, newValue){
+		  	    var handle = recursiveWatch(self.model, keys, function(changed_subtree_name, oldValue, newValue){
 		  	      self.update_binding(type, node, keys, newValue, oldValue, handle );
 		  	    });
 		  	    
@@ -87,4 +103,5 @@ define([
 		  	})			
 		}
 	});
+	return _ReactiveTemplatedWidget;
 });

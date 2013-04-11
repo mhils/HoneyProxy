@@ -2,12 +2,13 @@
  * A sample flow - used for autocompletion in the reporteditor
  */
 define(
-	[ "../models/Flow" ],
+	[ "../flow/Flow" ],
 	function(Flow) {
 		return new Flow(
 			{
 				"id": 1,
 				"version": [ 0, 9 ],
+				"view": true, //TODO
 				"request": {
 					"contentChecksums": {},
 					"headers": [ [ "Host", "example.com" ] ],

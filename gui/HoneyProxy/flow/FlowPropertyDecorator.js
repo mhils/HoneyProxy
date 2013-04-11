@@ -51,7 +51,7 @@ define(["dojo/_base/declare","../util/recursive-watch"],function(declare, recurs
                 val = flow;
             while(dep.length > 0){
               val = val[dep.shift()];
-              if(!val){
+              if(val === undefined){
                 return Object.defineProperty(obj,property_name,{
                   value: undefined,
                   configurable: true

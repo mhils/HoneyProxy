@@ -4,7 +4,7 @@ define(["dojo/_base/declare","./Flow"],function(declare, Flow){
 		constructor: function(args){
 			declare.safeMixin(this,args);
 			this.defaultView = this.defaultView || this.views[0];
-		}
+		},
 		createFlow: function(json){
 			//console.debug("createFlow",json);
 			
@@ -19,11 +19,11 @@ define(["dojo/_base/declare","./Flow"],function(declare, Flow){
 			
 			//console.debug("View Class: ",View);
 			
-			flow.view = View(flow);
+			flow.View = View;
 			
 			return flow;
 		}
 	});
 	
-	return FlowViewFactory;
+	return FlowFactory;
 });

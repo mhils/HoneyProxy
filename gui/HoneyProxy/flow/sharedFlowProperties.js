@@ -70,9 +70,14 @@ define(["lodash","dojo/Deferred","../util/formatSize"],function(_,Deferred,forma
               };
             
               xhr.send();
+              
+              def.then(undefined,function(){
+                xhr.abort();
+              });
         }
         return def;
-      }
+      },
+      deps: ["contentLength"]
     },
     contentLengthFormatted: {
       func: function(){

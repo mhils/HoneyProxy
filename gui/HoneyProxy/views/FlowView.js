@@ -27,7 +27,7 @@ define(["lodash","dojo/text!../templates/flow.ejs"],function(_,flowTmpl){
       this.$el.addClass(categories.join(" "));
       this.$el.data("flow-id",this.model.id);
       this.$el.addClass("request-scheme-"+this.model.request.scheme);
-      for(var cls in this.model.getFilterClasses()){
+      for(var cls in this.model.filters){
         this.$el.addClass(cls);
       }
       

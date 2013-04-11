@@ -1,3 +1,6 @@
+/* FIXME: Replace with flowStore.query() */
+
+
 /**
  * HoneyProxy search & highlight feature. Parses search strings, and handles
  * search requests.
