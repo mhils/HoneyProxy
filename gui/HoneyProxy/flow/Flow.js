@@ -1,4 +1,4 @@
-define(["dojo/_base/declare","dojo/Stateful","./Request","./Response","../util/Observer","../util/safeMixin-es5"],function(declare, Stateful, requestDecorator, responseDecorator, Observer){
+define(["dojo/_base/declare","dojo/Stateful","./Request","./Response","../util/Observer"],function(declare, Stateful, requestDecorator, responseDecorator, Observer){
   var Flow = declare([Stateful],{
     constructor: function(json){
       declare.safeMixin(this, Observer.polyfillMixin);
