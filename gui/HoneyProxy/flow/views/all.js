@@ -1,4 +1,4 @@
-define(["./BasicContentView","./CssView" ],
-  function(BasicContentView,    CssView) {
-  return [ BasicContentView,    CssView];
+define(["./BasicContentView","./CssView","./ImageView" ],
+  function(BasicContentView,    CssView,    ImageView) {
+  return [ BasicContentView,    CssView,    ImageView];
 });

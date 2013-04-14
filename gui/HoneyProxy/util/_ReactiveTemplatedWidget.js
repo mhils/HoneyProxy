@@ -7,8 +7,9 @@ define([
     "dojo/query",
     "dijit/_WidgetBase",
     "lodash",
-    "./recursive-watch"
-],function(declare, domConstruct, query, _WidgetBase, _, recursiveWatch){
+    "./recursive-watch",
+    "./Observer"
+],function(declare, domConstruct, query, _WidgetBase, _, recursiveWatch, Observer){
 	
     var default_bindings = {
       "replaceNode": function(node, keys, newValue, oldValue, handle){
@@ -27,7 +28,7 @@ define([
       }
 	};
 	
-	var _ReactiveTemplatedWidget = declare([_WidgetBase], {
+	var _ReactiveTemplatedWidget = declare([_WidgetBase,Observer.polyfillMixin], {
 	  _bindings: default_bindings,
 	  get_binding: function(type){
 	    if(this.bindings && (type in this.bindings)){
@@ -48,7 +49,7 @@ define([
 	  	  // console.debug("update_binding", arguments);
 	  	  var binding = this.get_binding(type);
     	  if(binding){
-    	  	binding.apply(this,Array.prototype.slice.call(arguments,1));
+    	  	binding.apply(this,Array.prototype.slice.call(arguments));
     	  } else {
     	    node[type] = newValue;
     	  }
@@ -89,13 +90,17 @@ define([
 		  	    var type = binding[0].trim(),
 		  	        keys = self.get_keys( type, binding.slice(1).join(":") ) 
 		  	    
-		  	    var value=self.model, k = keys.slice();
+		  	    var operateOnView = keys[0] == "view";
+		  	    var model = operateOnView ? self : self.model,
+		  	        keys  = operateOnView ? keys.slice(1) : keys;
+		  	        
+		  	    var value = model, 
+		  	        k = keys.slice();
 		  	    while(k.length >= 1)
 		  	      value = value[k.shift()];
 		  	    
-		  	    
-		  	    var handle = recursiveWatch(self.model, keys, function(changed_subtree_name, oldValue, newValue){
-		  	      self.update_binding(type, node, keys, newValue, oldValue, handle );
+		  	    var handle = recursiveWatch(model, keys, function(change){
+		  	      self.update_binding(type, node, keys, change.object[change.name], change.oldValue, handle );
 		  	    });
 		  	    
 		  	    self.update_binding(type, node, keys, value, undefined, handle);

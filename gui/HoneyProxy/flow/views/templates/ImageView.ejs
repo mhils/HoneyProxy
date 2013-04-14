@@ -1,0 +1,10 @@
+<div class=preview-image>
+	<img class="preview preview-image" alt="preview" data-bind="src: response.viewUrl, load: onImageLoad"/>
+	<dl>
+		<dt>Dimensions</dt> <dd><span data-bind="innerText: view.imageWidth"></span> × <span data-bind="innerText: view.imageHeight"></span></dd>
+		<dt>File size</dt>  <dd data-bind="innerText: response.contentLengthFormatted"></dd>
+		<dt>Mime</dt>       <dd data-bind="innerText: response.contentType"></dd>
+	</dl>
+</div>
+
+

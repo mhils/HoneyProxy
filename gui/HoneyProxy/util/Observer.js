@@ -3,12 +3,12 @@
  * The module is designed to be replaced by Object.observe as soon as the harmony spec is finalized.
  * 
  */
-define([],function(){
+define(["dojo/_base/declare"],function(declare){
   "use strict";
   
   var Observer = {};
   
-  Observer.polyfillMixin = {
+  Observer.polyfillMixin = declare([],{
     refresh: function(){
       var self = this;
       for(var watched_prop in this._watchCallbacks) {
@@ -19,7 +19,7 @@ define([],function(){
         });
       }
     }
-  };
+  });
   
   var unobservable = {
     remove: function(){}

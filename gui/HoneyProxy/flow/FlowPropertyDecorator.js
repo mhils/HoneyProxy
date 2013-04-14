@@ -35,6 +35,8 @@ define(["dojo/_base/declare","../util/recursive-watch"],function(declare, recurs
     decorate: function(flow){
       var self = this;
       var obj = flow[this.attr];
+      
+      //FIXME: This assignment should be reactive as well.
       Object.defineProperties(obj, {
         _flow: { value: flow },
         _attr: { value: this.attr }

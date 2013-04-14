@@ -7,7 +7,6 @@ require(
  "HoneyProxy/MainLayout",
  "HoneyProxy/websocket",
  "HoneyProxy/flow/FlowFactory",
- "HoneyProxy/flow/views/all",
  "HoneyProxy/traffic",
  "HoneyProxy/util/versionCheck",
  "HoneyProxy/util/sampleFlow",
@@ -15,7 +14,7 @@ require(
  "HoneyProxy/tutorial",
  "HoneyProxy/search",
  "HoneyProxy/popOut"
- ], function(when,on,topic,MainLayout,websocket,FlowFactory, allViews, flowStore, versionCheck, sampleFlow) {
+ ], function(when,on,topic,MainLayout,websocket, FlowFactory, flowStore, versionCheck, sampleFlow) {
 	
 	//Debug
 	window.HoneyProxy = {
@@ -27,12 +26,11 @@ require(
 		flowStore.fetch();
 	});
 	
-	var flowFactory = new FlowFactory({views: allViews});
+	
 	topic.subscribe("HoneyProxy/newFlow",function(flowData){
-	  var flow = flowFactory.createFlow(flowData);
+	  var flow = FlowFactory.createFlow(flowData);
 	  flowStore.add(flow);
 	});
 	
-	window.flowFactory = flowFactory;
 	window.setTimeout(versionCheck,3000);
 });

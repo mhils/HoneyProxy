@@ -18,7 +18,7 @@ define([ "./Observer" ], function(Observer) {
 		//console.debug("recursiveWatch(", obj, keys, callback, ")");
 		
 		if(keys.length === 0  || !(keys[0] in obj)){
-	      return Observer.observeProperty(obj, undefined, callback);
+	      return Observer.observeProperty(obj, keys[0], callback);
 		}
 
 		var subhandle = recursiveWatch(obj[keys[0]], keys.slice(1), callback);

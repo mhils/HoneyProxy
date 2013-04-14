@@ -1,29 +1,25 @@
-define(["dojo/_base/declare","./Flow"],function(declare, Flow){
+define(["dojo/_base/declare","lodash","./views/all"],function(declare, _, allViews){
 	
-	FlowFactory = declare(null, {
+	var FlowFactory = declare(null, {
 		constructor: function(args){
 			declare.safeMixin(this,args);
 			this.defaultView = this.defaultView || this.views[0];
 		},
-		createFlow: function(json){
-			//console.debug("createFlow",json);
-			
-			var flow = new Flow(json);
-			
-			//console.debug(flow);
-			
-			var View = _.find(this.views,function(v){
-				return v.matches(json);
-			});
-			View = View || this.defaultView;
-			
-			//console.debug("View Class: ",View);
-			
-			flow.View = View;
-			
-			return flow;
+		createFlow: function(flowData){
+		  
+		  var flow = new Flow(flowData);
+		  
+		  var View = _.find(this.views,function(v){
+		    return v.matches(flow);
+		  });
+		  
+		  View = View || this.defaultView;
+		  
+		  flow.View = View.bind(undefined,{model: flow});
+		  
+		  return flow;
 		}
 	});
 	
-	return FlowFactory;
+	return new FlowFactory({views: allViews});
 });
