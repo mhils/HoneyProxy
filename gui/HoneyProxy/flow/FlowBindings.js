@@ -53,7 +53,7 @@ define(["dojo/dom-construct", "dojo/on", "highlight"], function (domConstruct, o
     func.key = function(keys){
       keys.push("contentLength");
       return keys;
-    }
+    };
     return func;
   };
   

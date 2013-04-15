@@ -1,16 +1,15 @@
-define(["./AbstractView",
-        "dojo/text!./templates/BasicContentView.ejs"], 
-        function(AbstractView, template) {
+define(["./BinaryView"], 
+         function(BinaryView) {
            
-  var FlashView = AbstractView.createSubclass([]);
+  var FlashView = BinaryView.createSubclass([]);
   
-  FlashView.className = "flow-flash";
-  FlashView.template  = template;
-  FlashView.matches   = function(data) {
-    if (data.contentType) {
-      return !!data.contentType.match(/css/i);
-    } else if (data.path) {
-      return !!data.path.match(/\.css$/i);
+  FlashView.className = "flow-flash " + BinaryView.className;
+  FlashView.resourceName = "Adobe Flash file"
+  FlashView.matches = function(flow) {
+    if (flow.response.contentType && !!flow.response.contentType.match(/flash/i)) {
+      return true;
+    } else if (flow.request.filename) {
+      return !!flow.request.filename.match(/\.swf$/i);
     }
     return false;
   };

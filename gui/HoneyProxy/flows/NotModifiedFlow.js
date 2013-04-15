@@ -51,7 +51,7 @@ define(["require",
 	}, {
 		matches : function(data) {
 			if (data.responseCode)
-				return (data.responseCode == 304);
+				return (data.responseCode === 304);
 			return false;
 		},
 		getCategory : function() {

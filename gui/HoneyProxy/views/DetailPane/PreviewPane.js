@@ -7,7 +7,7 @@ define([ "dojo/_base/declare", "dojo/dom-construct", "./_DetailViewPane",
 		loadContent: function() {
 			
 			var model = this.get("model");
-			var view = model.View();
+			var view = model.View({model: model});
 			
 			domConstruct.place(view.domNode, this.previewNode, "only");
 		}

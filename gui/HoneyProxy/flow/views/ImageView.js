@@ -19,8 +19,8 @@ define([ "dojo/_base/declare","./AbstractView",
   ImageView.matches = function (flow) {
     if (flow.response.contentType && !!flow.response.contentType.match(/image/i))
       return true;
-    else if (flow.request.path)
-      return !!flow.request.path.match(/\.(gif|png|jpg|jpeg)$/i);
+    else if (flow.request.filename)
+      return !!flow.request.filename.match(/\.(gif|png|jpg|jpeg)$/i);
     return false;
   };
 

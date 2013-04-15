@@ -4,11 +4,11 @@ define(["./BasicContentView"],
   var HtmlView = BasicContentView.createSubclass([]);
   
   HtmlView.className = "flow-html " + BasicContentView.className;
-  HtmlView.matches = function(data) {
-    if (data.contentType && !!data.contentType.match(/html/i))
+  HtmlView.matches = function(flow) {
+    if (flow.response.contentType && !!flow.response.contentType.match(/html/i))
       return true;
-    else if (data.path)
-      return !!data.path.match(/html$/i);
+    else if (flow.request.filename)
+      return !!flow.request.filename.match(/html$/i);
     return false;
   };
 

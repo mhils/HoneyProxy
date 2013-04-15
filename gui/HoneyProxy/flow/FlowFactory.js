@@ -3,7 +3,7 @@ define(["dojo/_base/declare","lodash","./views/all"],function(declare, _, allVie
 	var FlowFactory = declare(null, {
 		constructor: function(args){
 			declare.safeMixin(this,args);
-			this.defaultView = this.defaultView || this.views[0];
+			this.defaultView = this.defaultView || this.views[this.views.length-1];
 		},
 		createFlow: function(flowData){
 		  
@@ -15,7 +15,7 @@ define(["dojo/_base/declare","lodash","./views/all"],function(declare, _, allVie
 		  
 		  View = View || this.defaultView;
 		  
-		  flow.View = View.bind(undefined,{model: flow});
+		  flow.View = View;
 		  
 		  return flow;
 		}

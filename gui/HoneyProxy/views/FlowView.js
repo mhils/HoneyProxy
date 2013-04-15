@@ -11,20 +11,8 @@ define(["lodash","dojo/text!../templates/flow.ejs"],function(_,flowTmpl){
         return this;
       var html = flowTemplate(this.model);
       this.$el.html(html);
-      
-      //iterate through all parent classes to get their categories and add them as classes
-      var superCls = this.model;
-      var categories = [];
-      while(superCls !== undefined){
-        if(superCls.constructor.hasOwnProperty("getCategory"))
-        {
-          var cat = "category-"+superCls.constructor.getCategory();
-          if(categories.length === 0 || (cat != categories[categories.length -1] && cat != "category-none"))
-            categories.push(cat);
-        }
-        superCls = superCls.constructor.__super__;
-      }
-      this.$el.addClass(categories.join(" "));
+
+      this.$el.addClass(this.model.View.className);
       this.$el.data("flow-id",this.model.id);
       this.$el.addClass("request-scheme-"+this.model.request.scheme);
       for(var cls in this.model.filters){
