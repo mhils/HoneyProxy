@@ -98,13 +98,7 @@ define(["dojo/_base/declare", "./BinaryView",
   
   PEView.className = "flow-pe " + BinaryView.className;
   PEView.template = template;
-  PEView.matches = function (flow) {
-    if (flow.response.contentType && !!flow.response.contentType.match(/(x-msdownload|exe|msdos)/i))
-      return true;
-    else if (flow.request.filename)
-      return !!flow.request.filename.match(/\.(exe|dll|sys|drv|com)$/i);
-    return false;
-  };
+  PEView.matches = PEView.simpleMatcher(/(x-msdownload|exe|msdos)/i, /\.(exe|dll|sys|drv|com)$/i);
 
   return PEView;
 });

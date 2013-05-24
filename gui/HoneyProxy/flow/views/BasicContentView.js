@@ -11,12 +11,7 @@ define(["./AbstractView",
   
   BasicContentView.className = "flow-text";
   BasicContentView.template = template;
-  BasicContentView.matches = function (flow) {
-    if(flow.response.contentType && !!flow.response.contentType.match(/application|text/i)) {
-      return true;
-    }
-    return false;
-  };
+  BasicContentView.matches = BasicContentView.simpleMatcher(/application|text/i);
 
   return BasicContentView;
 });

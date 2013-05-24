@@ -16,13 +16,7 @@ define([ "dojo/_base/declare","./AbstractView",
   
   ImageView.className = "flow-image";
   ImageView.template = template;
-  ImageView.matches = function (flow) {
-    if (flow.response.contentType && !!flow.response.contentType.match(/image/i))
-      return true;
-    else if (flow.request.filename)
-      return !!flow.request.filename.match(/\.(gif|png|jpg|jpeg)$/i);
-    return false;
-  };
+  ImageView.matches = ImageView.simpleMatcher(/image/i, /\.(gif|png|jpg|jpeg)$/i);
 
   return ImageView;
 });

@@ -5,11 +5,7 @@ define(["./BinaryView"],
   
   GoogleSafebrowsingView.className = "flow-googlesafebrowsing " + BinaryView.className;
   GoogleSafebrowsingView.resourceName = "Google Safe Browsing Service";
-  GoogleSafebrowsingView.matches = function(flow) {
-    if (flow.response.contentType && !!flow.response.contentType.match(/google\.safebrowsing/i))
-      return true;
-    return false;
-  };
-
+  GoogleSafebrowsingView.matches = GoogleSafebrowsingView.simpleMatcher(/google\.safebrowsing/i);
+  
   return GoogleSafebrowsingView;
 });
