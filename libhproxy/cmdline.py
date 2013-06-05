@@ -1,4 +1,4 @@
-import argparse
+import argparse, shlex
 """
 see mitmproxy/libmproxy/cmdline
 we remove all unwanted parameters and add everything we need for HoneyProxy
@@ -16,7 +16,7 @@ def suppress_option(parser, options):
 def convert_arg_line_to_args(self, arg_line):
     if arg_line.lstrip().startswith("#"):
         return
-    for arg in arg_line.split():
+    for arg in shlex.split(arg_line):
         if not arg.strip():
             continue
         yield arg
