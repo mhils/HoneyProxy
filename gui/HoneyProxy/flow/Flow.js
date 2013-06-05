@@ -11,10 +11,6 @@ define(["dojo/_base/declare","dojo/Stateful","./Request","./Response","../util/O
       responseDecorator.decorate(this);
     }
   });
-  //FIXME: Remove debug
-  window.requestDecorator  = requestDecorator;
-  window.responseDecorator = responseDecorator;
-  window.declare = declare;
-  window.Flow = Flow;
+
   return Flow;
 });

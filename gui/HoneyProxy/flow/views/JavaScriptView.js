@@ -1,5 +1,5 @@
-define(["dojo/_base/declare", "dojo/_base/lang", "./BasicContentView", "../FlowBindings"], 
-         function(declare, lang, BasicContentView, FlowBindings) {
+define(["dojo/_base/declare", "dojo/_base/lang", "./BasicContentView", "../simpleMatcher", "../FlowBindings"], 
+         function(declare, lang, BasicContentView, simpleMatcher, FlowBindings) {
   
   var jsBindings = lang.mixin({}, FlowBindings);
   jsBindings.displayContent = FlowBindings._displayContent(function(content){
@@ -16,7 +16,7 @@ define(["dojo/_base/declare", "dojo/_base/lang", "./BasicContentView", "../FlowB
   });
   
   JavaScriptView.className = "flow-javascript " + BasicContentView.className;
-  JavaScriptView.matches = BasicContentView.simpleMatcher(/(javascript|json)/i, /(\.js|\.json)$/i);
+  JavaScriptView.matches = simpleMatcher(/(javascript|json)/i, /(\.js|\.json)$/i);
 
   return JavaScriptView;
 });

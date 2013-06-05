@@ -60,25 +60,5 @@ define(["dojo/dom-construct", "dojo/on", "highlight"], function (domConstruct, o
   //no transform by default
   bindings.displayContent = bindings._displayContent();
   
-  
-  var eventListenerBinding = function(type, node, keys, newValue, oldValue, handle){
-    var self = this;
-    var func = this;
-    while(keys.length) {
-      func = func[keys.shift()];
-    }
-    
-    //TODO: Maybe use dojo/on?
-    node.addEventListener(type,function(){
-      func.apply(self,Array.prototype.slice.call(arguments)); //TODO: Maybe call with different args?
-    });
-    handle.remove();
-    
-  };
-  
-  ["click","load"].forEach(function(event){
-    bindings[event] = eventListenerBinding;
-  });
-  
   return bindings;
 });

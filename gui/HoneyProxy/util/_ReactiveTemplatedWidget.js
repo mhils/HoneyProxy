@@ -28,6 +28,27 @@ define([
       }
   };
   
+  var eventListenerBinding = function(type, node, keys, newValue, oldValue, handle){
+    var self = this;
+    var func = this;
+    
+    
+    while(keys.length) {
+      //We're dealing with the DOM here -> only bind to the highest level.
+      func = func[keys.shift()];
+    }
+    
+    node.addEventListener(type,function(){
+      func.apply(self,Array.prototype.slice.call(arguments)); //TODO: Maybe call with different args?
+    });
+    handle.remove();
+    
+  };
+  
+  ["click","load"].forEach(function(event){
+    default_bindings[event] = eventListenerBinding;
+  });
+  
   var _ReactiveTemplatedWidget = declare([_WidgetBase,Observer.polyfillMixin], {
     _bindings: default_bindings,
     get_binding: function(type){

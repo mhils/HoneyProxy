@@ -14,16 +14,5 @@ define(["dojo/_base/declare", "../../util/_ReactiveTemplatedWidget", "../FlowBin
     //function that returns whether true if the view should be used to display the flow, false otherwise.
   };
   
-  //Simple matching function generator
-  AbstractView.simpleMatcher = function(contentType, filename){
-    return function(flow) {
-      if (contentType && flow.response.contentType && !!flow.response.contentType.match(contentType))
-        return true;
-      else if (filename && flow.request.filename && !!flow.request.filename.match(filename))
-        return true;
-      return false;
-    };
-  };
-
   return AbstractView;
 });

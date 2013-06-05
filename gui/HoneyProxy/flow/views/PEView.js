@@ -3,9 +3,9 @@
  * loading file content into a pre tag. Most other flow classes inherit from
  * this.
  */
-define(["dojo/_base/declare", "./BinaryView", 
+define(["dojo/_base/declare", "lodash", "./BinaryView", "../simpleMatcher",
         "dojo/text!./templates/PEView.ejs"],
-        function(declare, BinaryView, template) {
+        function(declare, _, BinaryView, simpleMatcher, template) {
            
   var PEView = declare([BinaryView],{
     postCreate: function(){
@@ -73,7 +73,7 @@ define(["dojo/_base/declare", "./BinaryView",
                 
                 this.sections = '<pre style="margin:0">' + 
                   sections.map(function(s){
-                    return s.name 
+                    return _.escape(s.name) 
                       + "\n\tFlags: "+s.flags + "("+s.characteristics.join(" ")+")"
                       + "\n\tVirtualSize: "+s.vsize
                       + "\n\tVirtualAddress: "+s.vaddr
@@ -98,7 +98,7 @@ define(["dojo/_base/declare", "./BinaryView",
   
   PEView.className = "flow-pe " + BinaryView.className;
   PEView.template = template;
-  PEView.matches = PEView.simpleMatcher(/(x-msdownload|exe|msdos)/i, /\.(exe|dll|sys|drv|com)$/i);
+  PEView.matches = simpleMatcher(/(x-msdownload|exe|msdos)/i, /\.(exe|dll|sys|drv|com)$/i);
 
   return PEView;
 });

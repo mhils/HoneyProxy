@@ -16,7 +16,7 @@ define(["dojo/_base/declare","../util/recursive-watch"],function(declare, recurs
         return prop.value;
       };
       
-      var property = { func: func, deps: prop.deps ? prop.deps.slice() : [], deps_required: [] }
+      var property = { func: func, deps: prop.deps ? prop.deps.slice() : [], deps_required: [] };
 
       for(var i=0;property.deps && i<property.deps.length;i++) {
         

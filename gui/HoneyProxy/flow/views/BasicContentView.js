@@ -3,15 +3,16 @@
  * loading file content into a pre tag. Most other flow classes inherit from
  * this.
  */
-define(["./AbstractView", 
+define(["./AbstractView",
+        "../simpleMatcher",
          "dojo/text!./templates/BasicContentView.ejs"], 
-         function(AbstractView, template) {
+         function(AbstractView, simpleMatcher, template) {
            
   var BasicContentView = AbstractView.createSubclass([]);
   
   BasicContentView.className = "flow-text";
   BasicContentView.template = template;
-  BasicContentView.matches = BasicContentView.simpleMatcher(/application|text/i);
+  BasicContentView.matches = simpleMatcher(/application|text/i);
 
   return BasicContentView;
 });

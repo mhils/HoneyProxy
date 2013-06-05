@@ -1,4 +1,4 @@
-define(["dojo/_base/declare","lodash","./views/all"],function(declare, _, allViews){
+define(["dojo/_base/declare","lodash","./Flow","./views/all"],function(declare, _, Flow, allViews){
 	
 	var FlowFactory = declare(null, {
 		constructor: function(args){

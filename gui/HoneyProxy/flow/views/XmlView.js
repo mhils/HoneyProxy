@@ -1,10 +1,10 @@
-define(["./BasicContentView"], 
-         function(BasicContentView) {
+define(["./BasicContentView", "../simpleMatcher"], 
+         function(BasicContentView, simpleMatcher) {
            
   var XmlView = BasicContentView.createSubclass([]);
   
   XmlView.className = "flow-xml " + BasicContentView.className;
-  XmlView.matches = XmlView.simpleMatcher(/xml/i, /\.xml$/i);
+  XmlView.matches = simpleMatcher(/xml/i, /\.xml$/i);
 
   return XmlView;
 });
