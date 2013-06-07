@@ -3,6 +3,8 @@
  */
 define(["lodash","dojo/Deferred","../util/formatSize"],function(_,Deferred,formatSize){
   
+
+  //Move into FlowUtils as it requires the flow id
   function contentUrl(data,action){
     return ("/files"+
             "/"+data._flow.id+

@@ -7,12 +7,14 @@
 define([ "./Observer" ], function(Observer) {
 	"use strict";
 	
+	var remove_nop = {
+				remove: function() {}
+	};
+
 	function recursiveWatch(obj, keys, callback) {
 		
 		if (!obj) {
-			return {
-				remove: function() {}
-			};
+			return remove_nop;
 		}
 		
 		//console.debug("recursiveWatch(", obj, keys, callback, ")");
