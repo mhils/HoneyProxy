@@ -69,7 +69,8 @@ define(
 						function(n, p) {
 							return n.getAttribute(p);
 						});
-				}
+				},
+				_processTemplateNode: _TemplatedMixin.prototype._processTemplateNode
 			});
 		
 		//{templateFunc: {templateString: compiledFunction}}
