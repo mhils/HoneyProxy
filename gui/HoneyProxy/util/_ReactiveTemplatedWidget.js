@@ -7,128 +7,147 @@ define([
     "dojo/query",
     "dijit/_WidgetBase",
     "lodash",
-    "./recursive-watch",
     "./Observer"
-],function(declare, domConstruct, query, _WidgetBase, _, recursiveWatch, Observer){
+], function(declare, domConstruct, query, _WidgetBase, _, Observer) {
 
   var default_bindings = {
-    "replaceNode": function(type, node, value){
-        if(!value)
-          value = domConstruct.create("div");
-        domConstruct.place(value,node,"only");
-        node.dataset.suppressBind = true;
-      }
+    "replaceNode": function(type, node, value) {
+      if (!value)
+        value = domConstruct.create("div");
+      domConstruct.place(value, node, "only");
+      node.dataset.suppressBind = true;
+    }
   };
-  
-  var eventListenerBinding = function(type, node, func){
-    node.addEventListener(type,func.bind(this));    
+
+  var eventListenerBinding = function(type, node, func) {
+    node.addEventListener(type, func.bind(this));
   };
-  
-  ["click","load"].forEach(function(event){
+
+  ["click", "load"].forEach(function(event) {
     default_bindings[event] = eventListenerBinding;
   });
-  
-  var _ReactiveTemplatedWidget = declare([_WidgetBase,Observer.polyfillMixin], {
+
+  var _ReactiveTemplatedWidget = declare([_WidgetBase,Observer.ObservablePolyfillMixin], {
     _bindings: default_bindings,
-    context : {},
-    constructor: function(){
+    constructor: function() {
+      this.context = this.context || {};
       this.context.view = this;
-      this.inherited(arguments);
+      this.updateBindings = this.updateBindings.bind(this);
+      Observer.observe(this, function(records){
+        if(records.name === "model" || records.name === "context")
+          this.updateBindings();
+      });
     },
-    get_binding: function(type){
-      if(this.bindings && (type in this.bindings)){
+    getBinding: function(type) {
+      if (this.bindings && (type in this.bindings)) {
         return this.bindings[type];
-      } else if(type in this._bindings){
+      } else if (type in this._bindings) {
         return this._bindings[type];
       }
     },
-    update_binding: function(type, node, value){
-        // console.debug("update_binding", arguments);
-        var binding = this.get_binding(type);
-        if(binding){
-          binding.apply(this,Array.prototype.slice.call(arguments));
-        } else {
-          node[type] = value;
-        }
+    updateBinding: function(type, node, value) {
+      // console.debug("update_binding", arguments);
+      var binding = this.getBinding(type);
+      if (binding) {
+        binding.apply(this, Array.prototype.slice.call(arguments));
+      } else {
+        node[type] = value;
+      }
     },
     /**
      *  Compiles the Widget Template and converts it into a DOM Node.
      *  Returns the DOM Node.
      */
-    _buildDom: function(){
-      //Firstly, we search the (dojo-declare) prototype chain for a prototype holding a template.
-      //We use the underscore templating micro engine (~ http://ejohn.org/blog/javascript-micro-templating/)
+    _buildDom: function() {
 
-      var tmplObj = Object.getPrototypeOf(this).constructor;
-      
-      while(tmplObj && !tmplObj.template) {
-        tmplObj = tmplObj.superclass.constructor;
-      }
-      if(!tmplObj)
-        throw "No template specified.";
-      
-      //If the template hasn't been compiled yet, do so.
-      if(!tmplObj._template) {
-        console.debug("Compiling template...",tmplObj);
-        tmplObj._template = _.template(tmplObj.template.trim());
-      }
-     
-      var html = tmplObj._template(this);
       //convert template string into DOM
-      var domNode = domConstruct.toDom(html);
-            
+      var domNode = domConstruct.toDom(this.templateString);
+
       //If we have multiple nodes, toDom returns a  #document-fragment.
       //Wrap it in a <div>, if necessary.
-      if(domNode.nodeType === 11){
+      if (domNode.nodeType === 11) {
         var _domNode = domConstruct.create("div");
         _domNode.appendChild(domNode);
         domNode = _domNode;
       }
       return domNode;
     },
-    _eval: function(expr){
+    _eval: function(expr) {
       /*jshint evil:true, withstmt:true*/
-      with (this.context) {
-        with (this.model) {
-          return eval(expr);
+      with({
+        model: this.model
+      }) {
+        with(this.context) {
+          with(this.model) {
+            return eval(expr);
+          }
         }
       }
     },
-    _updateBinding: function(node,binding){
-      var splitPosType  = binding.indexOf(":");
-      var type          = binding.substr(0,splitPosType).trim();
-      var property_expr = binding.substr(splitPosType+1).trim();
+    _parseBinding: function(binding) {
+      var splitPosType = binding.indexOf(":");
+      var type = binding.substr(0, splitPosType).trim();
+      var property_expr = binding.substr(splitPosType + 1).trim();
 
       property_expr = decodeURIComponent(property_expr); //decode encoded ";"s
 
-      var value = this._eval(property_expr);
-
-      this.update_binding(type, node, value);
+      return [type, property_expr];
     },
-    buildRendering: function(){
+    updateBindings: function() {
+      var self = this;
+
+      if(this.observedModel && this.model !== this.observedModel){
+        console.log("unobserve old model");
+        Observer.unobserve(this.observedModel,this.updateBindings);
+      }
+      if(this.model && this.model !== this.observedModel){
+        console.log("observe new model");
+        Observer.observe(this.model,this.updateBindings);
+        this.observedModel = this.model;
+      }
+      if(!this.model) {
+        return;
+      }
+
+      var handleBinding = function(node, binding) {
+        var value = this._eval(binding[1]);
+        this.updateBinding(binding[0], node, value);
+      };
+
+      this.node_bindings.forEach(function(binding_info){
+        var node = binding_info[0];
+        var bindings = binding_info[1];
+        bindings.forEach(handleBinding.bind(self,node));
+      })
+    },
+    buildRendering: function() {
       var self = this;
 
       this.domNode = this._buildDom();
+      this.node_bindings = [];
 
-      var nodes_to_bind = query("[data-bind]",this.domNode);
-      if(this.domNode.dataset.bind) //query doesn't include the root node, check manually.
+      var nodes_to_bind = query("[data-bind]", this.domNode);
+      if (this.domNode.dataset.bind) //query doesn't include the root node, check manually.
         nodes_to_bind.push(this.domNode);
-      
-      nodes_to_bind.forEach(function(node){
+
+      nodes_to_bind.forEach(function(node) {
 
         var parentNode = node;
-        while(parentNode !== self.domNode){
+        while (parentNode !== self.domNode) {
           parentNode = parentNode.parentNode;
-          if(parentNode.dataset.suppressBind){
+          if (parentNode.dataset.suppressBind) {
             return;
           }
         }
 
-        var node_bindings = node.dataset.bind.split(";");
-        node_bindings.forEach(self._updateBinding.bind(self,node));
+        var raw_bindings = node.dataset.bind.split(";");
+        var bindings = raw_bindings.map(self._parseBinding.bind(self));
+        self.node_bindings.push([node,bindings]);
       });
 
-      this.inherited(arguments); 
+      this.updateBindings();
+
+      this.inherited(arguments);
     }
   });
   return _ReactiveTemplatedWidget;
