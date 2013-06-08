@@ -1,7 +1,7 @@
 <div>
 	<div title="Pop out" class="button button-topright button-popout"></div>
 	<div class=content>
-	
+		<h2 class="title" data-bind="textContent: RequestUtils.getFullPath(request)">TITLE</h2>
 		<% function headers(r){
 			for(var i=0;i<r.headers.length;i++){
 				print(_.escape(r.headers[i][0]+": "+r.headers[i][1])+"\n");
@@ -9,17 +9,17 @@
 		print("\n");
 		} %>
 	
-		<h2 class=title><%- model.request.fullPath %></h2>
-		<div class=subtitle><%- model.request.queryString %></div>
+		<h2 class=title><%- request.fullPath %></h2>
+		<div class=subtitle><%- request.queryString %></div>
 		<pre class="raw raw-request"><%- 
-		model.request.method %> <%- model.request.path %> HTTP/<%- model.request.httpversion.join(".") %><%
+		request.method %> <%- request.path %> HTTP/<%- request.httpversion.join(".") %><%
 		print("\n");
-		headers(model.request);
+		headers(request);
 		%><span data-dojo-attach-point='requestContentNode'></span></pre>
 		<pre class="raw raw-response">HTTP/<%- 
-		model.response.httpversion.join(".") %> <%- model.response.code %> <%- model.response.msg %><%
+		response.httpversion.join(".") %> <%- response.code %> <%- response.msg %><%
 		print("\n");
-		headers(model.response);
+		headers(response);
 		%><span data-dojo-attach-point='responseContentNode'></span></pre>
 	</div>
 

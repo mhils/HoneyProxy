@@ -11,11 +11,11 @@ define([ "dojo/_base/declare","./AbstractView", "../simpleMatcher",
       this.imageWidth  = e.target.naturalWidth;
       this.imageHeight =  e.target.naturalHeight;
       this.refresh();
-    }
+    },
+    templateString: template
   });
   
   ImageView.className = "flow-image";
-  ImageView.template = template;
   ImageView.matches = simpleMatcher(/image/i, /\.(gif|png|jpg|jpeg)$/i);
 
   return ImageView;

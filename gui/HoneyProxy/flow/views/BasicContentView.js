@@ -8,10 +8,11 @@ define(["./AbstractView",
          "dojo/text!./templates/BasicContentView.ejs"], 
          function(AbstractView, simpleMatcher, template) {
            
-  var BasicContentView = AbstractView.createSubclass([]);
+  var BasicContentView = AbstractView.createSubclass([],{
+  	templateString: template
+  });
   
   BasicContentView.className = "flow-text";
-  BasicContentView.template = template;
   BasicContentView.matches = simpleMatcher(/application|text/i);
 
   return BasicContentView;

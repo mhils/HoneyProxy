@@ -1,4 +1,4 @@
-define(["lodash", "dojo/_base/declare", "dojo/_base/lang", "dojo/Deferred", "../util/formatSize"], function(_, declare, lang, Deferred, formatSize) {
+define(["lodash", "dojo/_base/lang", "dojo/Deferred", "../util/formatSize"], function(_, lang, Deferred, formatSize) {
   //Utility functions that are shared by RequestUtils and ResponseUtil
 
   //TODO: ES6: Implement a caching proxy. Remove custom caching in getHeader
@@ -11,7 +11,7 @@ define(["lodash", "dojo/_base/declare", "dojo/_base/lang", "dojo/Deferred", "../
   };
 
 
-  var MessageUtils = declare([], {
+  var MessageUtils = {
     getContentType: function(message) {
       return MessageUtils.getHeader(message, /Content-Type/i);
     },
@@ -104,7 +104,7 @@ define(["lodash", "dojo/_base/declare", "dojo/_base/lang", "dojo/Deferred", "../
           .join(" ")+"\n";
         }
     }
-  });
+  };
 
   return MessageUtils;
 });

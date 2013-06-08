@@ -1,12 +1,14 @@
 /**
  * View class for a Flow or one of its subclasses.
  */
-define(["lodash","dojo/text!../templates/flow.ejs"],function(_,flowTmpl){
-  var flowTemplate = _.template(flowTmpl);
+define(["lodash","../util/Observer","dojo/text!../templates/flow.ejs"],function(_,Observer,template){
+  var flowTemplate = _.template(template);
   
   return Backbone.View.extend({
     tagName: "tr",
     render: function() {
+      var self = this;
+      
       if(this.model === undefined)
         return this;
       var html = flowTemplate(this.model);
@@ -20,13 +22,13 @@ define(["lodash","dojo/text!../templates/flow.ejs"],function(_,flowTmpl){
       }
       
       this.$filterEl = this.$el.find(".filters");
-      this.model.filters.watch((function(cls, oldValue, newValue){
-        if(newValue === true){
-          this.onFilterClassAdd(cls);
-        } else {
-          this.onFilterClassRemove(cls);
+      Observer.observe(this.model.filters,function(record){
+        if(record.type === "new") {
+          self.onFilterClassAdd(record.name);
+        }else if(record.type === "deleted") {
+          self.onFilterClassRemove(record.name);
         }
-      }).bind(this));
+      });
       
       return this;
     },

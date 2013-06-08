@@ -1,4 +1,4 @@
-define(["dojo/_base/declare", "lodash", "dojo/Stateful", "./views/all"], function(declare, _, Stateful, allViews) {
+define(["dojo/_base/declare", "lodash", "../util/Observer", "./views/all"], function(declare, _, Observer, allViews) {
 
 	var FlowFactory = declare(null, {
 		constructor: function(args) {
@@ -8,10 +8,15 @@ define(["dojo/_base/declare", "lodash", "dojo/Stateful", "./views/all"], functio
 		createFlow: function(flow) {
 
 			Object.defineProperty(flow, "filters", {
-				value: new Stateful(),
+				value: new Observer.ObservablePolyfillMixin(),
 				configurable: false,
 				enumerable: false
 			});
+
+			//Apply polyfill observer
+			Observer.ObservablePolyfillMixin._meta.ctor.call(flow);
+			flow.notify = Observer.ObservablePolyfillMixin.prototype.notify;
+
 			["request", "response"].forEach(function(x) {
 				Object.defineProperties(flow[x],{
 					_flow: {

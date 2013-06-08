@@ -1,6 +1,6 @@
 <div>
 <div title="Pop out" class="button button-topright button-popout"></div>
-<div title="Filter for similar requests" data-search="similarTo:<%- model.id %>,3" class="button button-topright button-similar searchlink"></div>
+<div title="Filter for similar requests" data-bind='data-search: "similarTo:"+id+",3"' class="button button-topright button-similar searchlink"></div>
 <div class=content>
 
 	<% function printChecksums(r){ %>
@@ -30,25 +30,25 @@
 		<td><a class="button button-text button-download" href="<%- r.downloadUrl %>">Download (<%- r.contentLengthFormatted %>)</a></td>
 	<% } %>
 
-	<h2 class=title><%- model.request.fullPath %></h2>
-	<div class=subtitle><%- model.request.queryString %></div>
+	<h2 class=title data-bind="textContent: RequestUtils.getFullPath(request)"></h2>
+	<div class=subtitle data-bind="textContent: RequestUtils.getQueryString(request)"></div>
 	
 	<table class=headers>
 		<tbody>
-			<tr><td class=title>Request URL:</td><td><%- model.request.fullPath %></td></tr>
-			<tr><td class=title>Request Method:</td><td><%- model.request.method %></td></tr>
-			<tr><td class=title>Status Code:</td><td><%- model.response.code %></td></tr>
+			<tr><td class=title>Request URL:</td><td data-bind="textContent: RequestUtils.getFullPath(request)"></td></tr>
+			<tr><td class=title>Request Method:</td><td data-bind="textContent: request.method"></td></tr>
+			<tr><td class=title>Status Code:</td><td data-bind="textContent: response.code"></td></tr>
 			<tr><td>&nbsp;</td><td></td></tr>
 		</tbody>
 
 
 		<tbody>
-			<% printHeaders("Request Headers:",model.request) %>
+			<%- "FIXME" /*printHeaders("Request Headers:",model.request)*/ %>
 		</tbody>
 		
 
 		
-		<% if(model.request.hasContent) { %>
+		<% /* if(model.request.hasContent) { %>
 			<tbody>
 				<tr>
 					<td class=title>Request Data:</td>
@@ -93,7 +93,7 @@
 					<pre class="raw raw-cert"><%- model.response.cert %></pre>
 				</td></tr>
 			</tbody>
-		<% } %>
+		<% } */ %>
 	</table>
 </div>
 </div>

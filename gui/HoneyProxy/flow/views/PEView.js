@@ -8,6 +8,7 @@ define(["dojo/_base/declare", "lodash", "./BinaryView", "../simpleMatcher",
         function(declare, _, BinaryView, simpleMatcher, template) {
            
   var PEView = declare([BinaryView],{
+    templateString: template,
     postCreate: function(){
       this.inherited(arguments);
       /* First, get the DOS Header */
@@ -97,7 +98,6 @@ define(["dojo/_base/declare", "lodash", "./BinaryView", "../simpleMatcher",
   });
   
   PEView.className = "flow-pe " + BinaryView.className;
-  PEView.template = template;
   PEView.matches = simpleMatcher(/(x-msdownload|exe|msdos)/i, /\.(exe|dll|sys|drv|com)$/i);
 
   return PEView;
