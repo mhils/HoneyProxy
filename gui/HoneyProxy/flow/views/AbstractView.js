@@ -1,11 +1,16 @@
 /**
  * Flow View Interface. All views should implement this.
  */
-define(["dojo/_base/declare", "../../util/_ReactiveTemplatedWidget", "../FlowBindings"], 
-         function(declare, _ReactiveTemplatedWidget, flowBindings) {
+define(["dojo/_base/declare", "../../util/_ReactiveTemplatedWidget", "../FlowBindings","../MessageUtils","../RequestUtils","../ResponseUtils"], 
+         function(declare, _ReactiveTemplatedWidget, flowBindings, FlowUtils, RequestUtils, ResponseUtils) {
            
   var AbstractView = declare([_ReactiveTemplatedWidget], {
-    bindings: flowBindings
+    bindings: flowBindings,
+    context: {
+      MessageUtils: MessageUtils,
+      RequestUtils: RequestUtils,
+      ResponseUtils: ResponseUtils
+    }
   });
   
   AbstractView.className = undefined;// a list of classes following the pattern flow-flowType

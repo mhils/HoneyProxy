@@ -1,4 +1,4 @@
-define(["dojo/dom-construct", "dojo/on", "highlight"], function (domConstruct, on, hljs) {
+define(["dojo/dom-construct", "dojo/on", "highlight","./MessageUtils"], function (domConstruct, on, hljs, MessageUtils) {
   var bindings = {};
   
   var askPretty  = 1024 * 15,
@@ -7,11 +7,10 @@ define(["dojo/dom-construct", "dojo/on", "highlight"], function (domConstruct, o
   // displayContent factory function.
   // This allows us to specify a transform on the content before it gets handled.
   bindings._displayContent = function(contentTransform){
-    var func = function (type, node, keys, newValue, oldValue, handle) {
-      var data = this.model[keys[0]];
+    return function (type, node, message) {
 
-      if(handle && handle.loading) {
-        handle.loading.cancel("outdated");
+      if(node._contentLoading) {
+        node._contentLoading.cancel("outdated");
       }
 
       node.classList.remove("preview-empty");
@@ -19,8 +18,8 @@ define(["dojo/dom-construct", "dojo/on", "highlight"], function (domConstruct, o
       node.classList.remove("preview-loading");
 
       function load() {
-        handle.loading = data.getContent().then(function (content) {
-          delete handle.loading;
+        node._contentLoading = MessageUtils.getContent(message).then(function (content) {
+          delete node._contentLoading;
           content = contentTransform ? contentTransform(content) : content;
           node.textContent = content;
           node.classList.remove("preview-loading");
@@ -29,19 +28,20 @@ define(["dojo/dom-construct", "dojo/on", "highlight"], function (domConstruct, o
           function prettify() {
             hljs.highlightBlock(node);
           }
-          prettify();
-          if(data.contentLength < autoPretty) {
-            //prettify();
-          } else if(data.contentLength < askPretty) {
 
+          var contentLength = MessageUtils.getContentLength(message);
+          if(contentLength < autoPretty) {
+            prettify();
+          } else if(contentLength < askPretty) {
+            //FIXME
           }
         });
       }
 
-      if(data.hasContent) {
+      if(MessageUtils.hasContent(message)) {
         node.classList.add("preview-loading");
-        if(data.hasLargeContent) {
-          var button = domConstruct.place("<button>Load Content (" + data.contentLengthFormatted + ")</button>", node, "only");
+        if(MessageUtils.hasLargeContent(message)) {
+          var button = domConstruct.place("<button>Load Content (" + MessageUtils.getContentLengthFormatted(message) + ")</button>", node, "only");
           on(button, "click", load);
         } else {
           load();
@@ -50,11 +50,6 @@ define(["dojo/dom-construct", "dojo/on", "highlight"], function (domConstruct, o
         node.classList.add("preview-empty");
       }
     };
-    func.key = function(keys){
-      keys.push("contentLength");
-      return keys;
-    };
-    return func;
   };
   
   //no transform by default
