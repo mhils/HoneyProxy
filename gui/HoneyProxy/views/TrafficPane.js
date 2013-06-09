@@ -16,16 +16,22 @@ define(["require",
 		postCreate: function() {
 			this.inherited(arguments);
 
+			
+
+			this.grid = new TrafficGrid({store: flowStore});
+
+
 			this.gridPane = new ContentPane({
 				region: "center",
-				splitter: true
+				splitter: true,
+				content: this.grid
 			});
-
-			this.grid = new TrafficGrid({store: flowStore}, this.gridPane.domNode);
 
 			this.grid.on("dgrid-select", this.onSelect.bind(this));
 
-			this.grid.startup();
+			//this.grid.startup();
+
+			window.grid = this.grid;
 
 			var trafficSidebar = new TrafficSidebar({
 				region: "right",
