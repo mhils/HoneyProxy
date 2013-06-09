@@ -1,4 +1,5 @@
 define(["dojo/_base/declare",
+		"dojo/aspect",
 		"dgrid/OnDemandGrid",
 		"dgrid/Keyboard",
 		"dgrid/Selection",
@@ -8,13 +9,25 @@ define(["dojo/_base/declare",
 		"../flow/RequestUtils",
 		"../flow/ResponseUtils",
 		"dojo/text!./templates/tutorial.html"
-], function(declare, OnDemandGrid, Keyboard, Selection, ColumnResizer, ColumnHider, DijitRegistry, RequestUtils, ResponseUtils, tutorial) {
+], function(declare, aspect, OnDemandGrid, Keyboard, Selection, ColumnResizer, ColumnHider, DijitRegistry, RequestUtils, ResponseUtils, tutorial) {
 
 	return declare([OnDemandGrid, Keyboard, Selection, ColumnResizer, ColumnHider, DijitRegistry], {
+		constructor: function(){
+			aspect.after(this, "renderRow", function(row, args) {
+				var flow = args[0];
+				row.className += " "+flow.View.className;
+				return row;
+			});
+		},
 		columns: [{
 				label: "id",
 				field: "id",
 				hidden: true
+			}, {
+				label: "Icon",
+				className: "field-icon",
+				get: function() {return "";},
+				renderHeaderCell: function(node){ node.textContent = ""; }
 			}, {
 				label: "Request Path",
 				renderCell: function(flow, value, node) {
@@ -61,7 +74,7 @@ define(["dojo/_base/declare",
 					node.innerHTML = (
 						'<div class="timestamp" title="UNIX Timestamp: ' + flow.request.timestamp_start + '">' + 
 							date.toLocaleTimeString() + ', ' + ("0"+date.getDate()).slice(-2) + '.' + ("0"+(date.getMonth()+1)).slice(-2) +
-						'.</div><div class="duration">' + Math.floor((flow.response.timestamp_end - flow.request.timestamp_start) * 1000) + 'ms</div>');
+						'.</div><small class="duration">' + Math.floor((flow.response.timestamp_end - flow.request.timestamp_start) * 1000) + 'ms</small>');
 				}
 			}
 		],

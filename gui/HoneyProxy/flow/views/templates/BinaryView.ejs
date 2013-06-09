@@ -1,7 +1,7 @@
 <div>
 <h2 data-bind="textContent: view.constructor.resourceName"></h2>
 <dl>
-  <dt>File size</dt><dd data-bind="textContent: response.contentLengthFormatted"></dd>
-  <dt>Mime</dt><dd data-bind="textContent: response.contentType"></dd>
+  <dt>File size</dt><dd data-bind="textContent: ResponseUtils.getContentLengthFormatted(response)"></dd>
+  <dt>Mime</dt><dd data-bind="textContent: ResponseUtils.getContentType(response)"></dd>
 </dl>
 </div>

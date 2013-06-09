@@ -8,9 +8,8 @@ define([ "dojo/_base/declare","./AbstractView", "../simpleMatcher",
    
   var ImageView = declare([AbstractView], {
    onImageLoad: function(e){
-      this.imageWidth  = e.target.naturalWidth;
-      this.imageHeight =  e.target.naturalHeight;
-      this.refresh();
+      this.imageWidth.textContent = e.target.naturalWidth;
+      this.imageHeight.textContent = e.target.naturalHeight;
     },
     templateString: template
   });

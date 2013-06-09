@@ -1,18 +1,18 @@
-define(["dojo/dom-construct", "dojo/on", "lodash", "highlight","./MessageUtils"], function (domConstruct, on, _, hljs, MessageUtils) {
+define(["dojo/dom-construct", "dojo/on", "lodash", "highlight", "./MessageUtils"], function(domConstruct, on, _, hljs, MessageUtils) {
   var bindings = {};
-  
-  var askPretty  = 1024 * 15,
-      autoPretty = 1024 * 300;
-  
-  bindings.headerTable = function(type, node, message){
+
+  var askPretty = 1024 * 15,
+    autoPretty = 1024 * 300;
+
+  bindings.headerTable = function(type, node, message) {
 
     var content = '<tr><td class="title" colspan=2>R' + message._attr.substr(1) + ' Headers:</td></tr> ';
     var headers = message.headers;
-    for(var i=0;i<headers.length;i++) {
+    for (var i = 0; i < headers.length; i++) {
       content += (
-        '<tr class="request-headers">'+
-          '<td class="header-name">' + _.escape(headers[i][0]) + '</td>' +
-          '<td class="header-value">' + _.escape(headers[i][1]) + '</td>' +
+        '<tr class="request-headers">' +
+        '<td class="header-name">' + _.escape(headers[i][0]) + '</td>' +
+        '<td class="header-value">' + _.escape(headers[i][1]) + '</td>' +
         '</tr>');
     }
     node.innerHTML = content;
@@ -20,10 +20,10 @@ define(["dojo/dom-construct", "dojo/on", "lodash", "highlight","./MessageUtils"]
 
   // displayContent factory function.
   // This allows us to specify a transform on the content before it gets handled.
-  bindings._displayContent = function(contentTransform){
-    return function (type, node, message) {
+  bindings._displayContent = function(contentTransform, nodeTransform) {
+    return function(type, node, message) {
 
-      if(node._contentLoading) {
+      if (node._contentLoading) {
         node._contentLoading.cancel("outdated");
       }
 
@@ -32,28 +32,23 @@ define(["dojo/dom-construct", "dojo/on", "lodash", "highlight","./MessageUtils"]
       node.classList.remove("preview-loading");
 
       function load() {
-        node._contentLoading = MessageUtils.getContent(message).then(function (content) {
+        node._contentLoading = MessageUtils.getContent(message).then(function(content) {
           delete node._contentLoading;
           content = contentTransform ? contentTransform(content) : content;
           node.textContent = content;
           node.classList.remove("preview-loading");
           node.classList.add("preview-active");
 
-          function prettify() {
-            hljs.highlightBlock(node);
+          if (nodeTransform) {
+            nodeTransform(message, node);
           }
 
-          if(message.contentLength < autoPretty) {
-            prettify();
-          } else if(message.contentLength < askPretty) {
-            //FIXME
-          }
         });
       }
 
-      if(MessageUtils.hasContent(message)) {
+      if (MessageUtils.hasContent(message)) {
         node.classList.add("preview-loading");
-        if(MessageUtils.hasLargeContent(message)) {
+        if (MessageUtils.hasLargeContent(message)) {
           var button = domConstruct.place("<button>Load Content (" + MessageUtils.getContentLengthFormatted(message) + ")</button>", node, "only");
           on(button, "click", load);
         } else {
@@ -64,9 +59,21 @@ define(["dojo/dom-construct", "dojo/on", "lodash", "highlight","./MessageUtils"]
       }
     };
   };
-  
+
+  bindings._prettifyNodeTransform = function(message, node) {
+    function prettify() {
+      hljs.highlightBlock(node);
+    }
+
+    if (message.contentLength < autoPretty) {
+      prettify();
+    } else if (message.contentLength < askPretty) {
+      //FIXME
+    }
+  };
+
   //no transform by default
-  bindings.displayContent = bindings._displayContent();
-  
+  bindings.displayContent = bindings._displayContent(undefined, bindings._prettifyNodeTransform);
+
   return bindings;
 });
