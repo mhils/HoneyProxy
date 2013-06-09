@@ -2,60 +2,47 @@
  * Main traffic view. Shows traffic table, search and details
  */
 define(["require",
-        "dojo/_base/declare",
-        "dijit/layout/BorderContainer", 
-        "./TrafficTable",
-        "./_DetailViewMixin",
-        "./TrafficSidebar"
-        ],function(require,declare,BorderContainer,TrafficTable,_DetailViewMixin,TrafficSidebar) {
+		"dojo/_base/declare",
+		"dijit/layout/BorderContainer",
+		"dijit/layout/ContentPane",
+		"./TrafficGrid",
+		"./_DetailViewMixin",
+		"./TrafficSidebar",
+		"HoneyProxy/traffic"
+], function(require, declare, BorderContainer, ContentPane, TrafficGrid, _DetailViewMixin, TrafficSidebar, flowStore) {
 
 	return declare([BorderContainer, _DetailViewMixin], {
 		design: "sidebar",
-		postCreate: function(){
+		postCreate: function() {
 			this.inherited(arguments);
-			
-			var trafficTable = new TrafficTable({
-				id: "trafficPane",
+
+			this.gridPane = new ContentPane({
 				region: "center",
 				splitter: true
 			});
-			
+
+			this.grid = new TrafficGrid({store: flowStore}, this.gridPane.domNode);
+
+			this.grid.on("dgrid-select", this.onSelect.bind(this));
+
+			this.grid.startup();
+
 			var trafficSidebar = new TrafficSidebar({
 				region: "right",
 				splitter: true
 			});
 
 			//populate trafficPane
-			this.addChild(trafficTable);
+			this.addChild(this.gridPane);
 			this.addChild(trafficSidebar);
 		},
-		currentSelection: undefined,
-		/*
-		 * TODO: Refactor when refactoring table etc. Just glue currently
-		 * Also consider moving the second selectFlow function in ReportPane
-		 */
-		selectFlow: function(flowId){
-			require(["./../traffic","./../MainLayout"],(function(traffic,MainLayout){
-				var model = traffic.get(flowId);
-				var modelView = MainLayout.trafficView.children[model.cid].$el;
-				this.detailView.setModel(model);
-
-				this.toggleDetails(true);
-				modelView.addClass("selected");
-				if (this.currentSelection) {
-					this.currentSelection.removeClass("selected");
-				}
-				this.currentSelection = modelView;
-			}).bind(this));
-		},
-		toggleDetails: function(show){
-			if (this.isDetailVisible && this.isDetailVisible == show)
-				return;
-			if(show)
-				this.addChild(this.detailViewWrapper);
-			else
-				this.removeChild(this.detailViewWrapper);
-			this.isDetailVisible = show;
+		onSelect: function(event) {
+			var flow = event.rows[0].data;
+			if(flow) {
+				if(event.parentType !== "cellfocusin")
+					this.toggleDetails(true);
+				this.detailView.setModel(flow);
+			}
 		}
 	});
 });

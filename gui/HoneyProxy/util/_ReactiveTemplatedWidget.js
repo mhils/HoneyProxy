@@ -15,6 +15,11 @@ define([
         value = domConstruct.create("div");
       domConstruct.place(value, node, "only");
       node.dataset.suppressBind = true;
+    },
+    "bind": function(type, node, value) {
+      var obj = value[0];
+      var prop = value[1];
+      obj[prop] = node;
     }
   };
 
@@ -89,7 +94,7 @@ define([
         model: this.model
       }) {
         with(this.context) {
-          with(this.model) {
+          with(this.model || {}) {
             return eval(expr);
           }
         }
@@ -108,15 +113,15 @@ define([
       var self = this;
 
       if(this.observedModel && this.model !== this.observedModel){
-        console.log("unobserve old model");
+        //console.log("unobserve old model");
         Observer.unobserve(this.observedModel,this.updateBindings);
       }
       if(this.model && this.model !== this.observedModel){
-        console.log("observe new model");
+        //console.log("observe new model");
         Observer.observe(this.model,this.updateBindings);
         this.observedModel = this.model;
       }
-      if(!this.model) {
+      if(this.requiresModel && !this.model){
         return;
       }
 

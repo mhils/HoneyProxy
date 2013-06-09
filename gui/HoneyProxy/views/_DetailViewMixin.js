@@ -23,7 +23,7 @@ define([ "dojo/_base/declare", "dojo/dom-construct", "dojo/on", "dijit/layout/Co
 				
 			},
 			toggleDetails: function(show) {
-				if (this.isDetailVisible && this.isDetailVisible == show)
+				if (this.isDetailVisible && this.isDetailVisible === show)
 					return;
 				if (show)
 					this.addChild(this.detailViewWrapper);

@@ -7,6 +7,11 @@ define(["dojo/_base/declare", "../../util/_ReactiveTemplatedWidget", "../../flow
 			RequestUtils: RequestUtils,
 			ResponseUtils: ResponseUtils
 		},
+		requiresModel: true, //FIXME: Temporary workaround. 
+		/*
+		Problem: _ReactiveTemplatedWidget cannot compile the detailviews if no model is set
+		Solution: Lazy-initialize Detailviews. Remove workaround here and in _ReactiveTemplatedWidget as well.
+		*/
 		bindings: flowBindings
 	});
 
