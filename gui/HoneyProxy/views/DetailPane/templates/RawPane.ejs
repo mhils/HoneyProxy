@@ -1,26 +1,15 @@
 <div>
 	<div title="Pop out" class="button button-topright button-popout"></div>
 	<div class=content>
-		<h2 class="title" data-bind="textContent: RequestUtils.getFullPath(request)">TITLE</h2>
-		<% function headers(r){
-			for(var i=0;i<r.headers.length;i++){
-				print(_.escape(r.headers[i][0]+": "+r.headers[i][1])+"\n");
-			}
-		print("\n");
-		} %>
-	
-		<h2 class=title><%- request.fullPath %></h2>
-		<div class=subtitle><%- request.queryString %></div>
-		<pre class="raw raw-request"><%- 
-		request.method %> <%- request.path %> HTTP/<%- request.httpversion.join(".") %><%
-		print("\n");
-		headers(request);
-		%><span data-dojo-attach-point='requestContentNode'></span></pre>
-		<pre class="raw raw-response">HTTP/<%- 
-		response.httpversion.join(".") %> <%- response.code %> <%- response.msg %><%
-		print("\n");
-		headers(response);
-		%><span data-dojo-attach-point='responseContentNode'></span></pre>
+		<h2 class="title" data-bind="textContent: RequestUtils.getFullPath(request)"></h2>
+		<div class="subtitle" data-bind="textContent: RequestUtils.getQueryString(request)"></div>
+		<pre class="raw raw-request"><!--
+		--><span data-bind="textContent: RequestUtils.getRawFirstLine(request)"></span><!--
+		--><span data-bind="textContent: RequestUtils.getRawHeaders(request)"></span><!--
+		--><span data-bind="displayContent: request"></span></pre>
+		<pre class="raw raw-response"><!--
+		--><span data-bind="textContent: ResponseUtils.getRawFirstLine(response)"></span><!--
+		--><span data-bind="textContent: ResponseUtils.getRawHeaders(response)"></span><!--
+		--><span data-bind="displayContent: response"></span></pre>
 	</div>
-
 </div>

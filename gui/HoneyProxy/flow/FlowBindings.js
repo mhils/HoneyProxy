@@ -29,10 +29,9 @@ define(["dojo/dom-construct", "dojo/on", "highlight","./MessageUtils"], function
             hljs.highlightBlock(node);
           }
 
-          var contentLength = MessageUtils.getContentLength(message);
-          if(contentLength < autoPretty) {
+          if(message.contentLength < autoPretty) {
             prettify();
-          } else if(contentLength < askPretty) {
+          } else if(message.contentLength < askPretty) {
             //FIXME
           }
         });

@@ -86,8 +86,8 @@ define(["lodash", "dojo/_base/lang", "dojo/Deferred", "../util/formatSize"], fun
       }
       return message._headerLookups[regex];
     },
-    getRawHeader: function(message) {
-      var rawHeader = MessageUtils.getRawFirstLine(message);
+    getRawHeaders: function(message) {
+      var rawHeader = "";
       var headers = message.headers;
       for (var i = 0; i < headers.length; i++) {
         rawHeader += headers[i][0] + ": " + headers[i][1] + "\n";
@@ -97,10 +97,10 @@ define(["lodash", "dojo/_base/lang", "dojo/Deferred", "../util/formatSize"], fun
     },
     getRawFirstLine: function(message) {
       if(message._attr === "request"){
-        return [this.method, this.path, "HTTP/" + this.httpversion.join(".")]
+        return [message.method, message.path, "HTTP/" + message.httpversion.join(".")]
           .join(" ") + "\n";
         } else {
-          return ["HTTP/" + this.httpversion.join("."),this.code,this.msg]
+          return ["HTTP/" + message.httpversion.join("."),message.code,message.msg]
           .join(" ")+"\n";
         }
     }

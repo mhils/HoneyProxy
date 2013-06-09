@@ -41,7 +41,7 @@ define(["dojo/_base/lang", "dojo/Deferred", "./MessageUtils", "../utilities"], f
 	};
 	RequestUtils.getQueryString = function(request) {
 		var begin = request.path.indexOf("?");
-		return begin >= 0 ? this.path.substr(begin) : "";
+		return begin >= 0 ? request.path.substr(begin) : "";
 	};
 	RequestUtils.getFullPath = function(request) {
 		var fullpath = request.scheme + "://" + RequestUtils.getHostFormatted(request);

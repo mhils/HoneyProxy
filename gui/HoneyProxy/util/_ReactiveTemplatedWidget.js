@@ -6,9 +6,8 @@ define([
     "dojo/dom-construct",
     "dojo/query",
     "dijit/_WidgetBase",
-    "lodash",
     "./Observer"
-], function(declare, domConstruct, query, _WidgetBase, _, Observer) {
+], function(declare, domConstruct, query, _WidgetBase, Observer) {
 
   var default_bindings = {
     "replaceNode": function(type, node, value) {
@@ -118,7 +117,7 @@ define([
         var node = binding_info[0];
         var bindings = binding_info[1];
         bindings.forEach(handleBinding.bind(self,node));
-      })
+      });
     },
     buildRendering: function() {
       var self = this;
