@@ -46,6 +46,18 @@ var dojoConfig = {
     location: "./lib/dojox",
     destLocation:"./lib/dojox"
 	}, {
+	name: "dgrid",
+    location: "./lib/dgrid",
+    destLocation:"./lib/dgrid"
+	}, {
+    name: "xstyle",
+    location: "./lib/xstyle",
+    destLocation:"./lib/xstyle"
+	}, {
+    name: "put-selector",
+    location: "./lib/put-selector",
+    destLocation:"./lib/put-selector"
+	}, {
     name: "legacy",
     location: "./lib/legacy",
     destLocation:"./lib/legacy"

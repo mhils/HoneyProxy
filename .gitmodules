@@ -16,3 +16,12 @@
 [submodule "gui/lib/util"]
 	path = gui/lib/util
 	url = https://github.com/dojo/util.git
+[submodule "gui/lib/xstyle"]
+	path = gui/lib/xstyle
+	url = https://github.com/kriszyp/xstyle.git
+[submodule "gui/lib/put-selector"]
+	path = gui/lib/put-selector
+	url = https://github.com/kriszyp/put-selector.git
+[submodule "gui/lib/dgrid"]
+	path = gui/lib/dgrid
+	url = https://github.com/SitePen/dgrid.git
