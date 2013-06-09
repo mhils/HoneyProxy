@@ -17,8 +17,8 @@ define([ "lodash", "dojo/_base/declare", "./_DetailViewPane", "dojo/dom-construc
 					function(formData) {
 						var fragment = document.createDocumentFragment();
 						for ( var i = 0; i < formData.length; i++) {
-							fragment.appendChild(domConstruct.toDom("<tr><td>"
-								+ _.escape(decodeURIComponent(formData[i].name)) + "</td><td>"+
+							fragment.appendChild(domConstruct.toDom("<tr><td>" +
+								_.escape(decodeURIComponent(formData[i].name)) + "</td><td>"+
 								_.escape(decodeURIComponent(formData[i].value))+
 								"</td></tr>"));
 						}

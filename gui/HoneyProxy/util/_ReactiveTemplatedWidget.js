@@ -18,6 +18,18 @@ define([
     }
   };
 
+  var hide = function(type, node, value) {
+    if(value){
+      node.classList.add("hide");
+    } else {
+      node.classList.remove("hide");
+    }
+  };
+  default_bindings.hide = hide;
+  default_bindings.show = function(type, node, value){
+    hide(type,node,!value);
+  };
+
   var eventListenerBinding = function(type, node, func) {
     node.addEventListener(type, func.bind(this));
   };

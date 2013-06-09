@@ -1,6 +1,6 @@
 <div>
 	<div title="Pop out" class="button button-topright button-popout"></div>
-	<div class=content>
+	<div class="content">
 		<h2 class="title" data-bind="textContent: RequestUtils.getFullPath(request)"></h2>
 		<div class="subtitle" data-bind="textContent: RequestUtils.getQueryString(request)"></div>
 		<pre class="raw raw-request"><!--
@@ -12,4 +12,3 @@
 		--><span data-bind="textContent: ResponseUtils.getRawHeaders(response)"></span><!--
 		--><span data-bind="displayContent: response"></span></pre>
 	</div>
-</div>

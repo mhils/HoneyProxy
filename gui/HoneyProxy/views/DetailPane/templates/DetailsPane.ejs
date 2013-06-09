@@ -1,8 +1,60 @@
 <div>
-<div title="Pop out" class="button button-topright button-popout"></div>
-<div title="Filter for similar requests" data-bind='data-search: "similarTo:"+id+",3"' class="button button-topright button-similar searchlink"></div>
-<div class=content>
+	<div title="Pop out" class="button button-topright button-popout"></div>
+	<div title="Filter for similar requests" data-bind='data-search: "similarTo:"+id+",3"' class="button button-topright button-similar searchlink"></div>
+	<div class="content">
 
+		<h2 class="title" data-bind="textContent: RequestUtils.getFullPath(request)"></h2>
+		<div class="subtitle" data-bind="textContent: RequestUtils.getQueryString(request)"></div>
+
+		<table class="headers">
+			<tbody>
+				<tr data-bind="hide: request.client_conn.address[0] === '127.0.0.1'">
+					<td class="title">Client Connection:</td><td data-bind="textContent: request.client_conn.address.join(':')"></td></tr>
+				<tr><td class="title">Request URL:</td><td data-bind="textContent: RequestUtils.getFullPath(request)"></td></tr>
+				<tr><td class="title">Request Method:</td><td data-bind="textContent: request.method"></td></tr>
+				<tr><td class="title">Status Code:</td><td data-bind="textContent: response.code"></td></tr>
+				<tr><td colspan="2">&nbsp;</td></tr>
+			</tbody>
+
+			<tbody data-bind="headerTable: request">
+			
+			<tbody data-bind="show: RequestUtils.hasContent(request)">
+				<tr>
+					<td class="title">Request Data:</td>
+					<td><a class="button button-text button-download" data-bind="href: RequestUtils.getDownloadUrl(request)">
+						Download (<span data-bind="textContent: RequestUtils.getContentLengthFormatted(request)"></span>)</a></td>
+				</tr>		 	
+			</tbody>
+
+			<tbody data-bind="formDataTable: request">
+				FIXME Formdata
+			</tbody>
+
+			<tbody data-bind="checksumTable: request">
+				FIXME Checksums
+			</tbody>
+			
+			<tbody data-bind="headerTable: response">
+
+			<tbody data-bind="show: ResponseUtils.hasContent(response)">
+				<tr>
+					<td class="title">Response Data:</td>
+					<td><a class="button button-text button-download" data-bind="href: ResponseUtils.getDownloadUrl(response)">
+						Download (<span data-bind="textContent: ResponseUtils.getContentLengthFormatted(response)"></span>)</a></td>
+				</tr>		 	
+			</tbody>
+	 	
+	 		<tbody data-bind="show: response.cert">
+	 			<tr><td colspan=2 class="title">Server certificate:</td></tr>
+			 	<tr><td colspan=2>
+					<pre class="raw raw-cert" data-bind="textContent: response.cert"></pre>
+				</td></tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+	<!--
 	<% function printChecksums(r){ %>
 		<% for(var item in r.contentChecksums){ %>
 			<tr>
@@ -28,72 +80,4 @@
 	
 	<% function download(r){ %>
 		<td><a class="button button-text button-download" href="<%- r.downloadUrl %>">Download (<%- r.contentLengthFormatted %>)</a></td>
-	<% } %>
-
-	<h2 class=title data-bind="textContent: RequestUtils.getFullPath(request)"></h2>
-	<div class=subtitle data-bind="textContent: RequestUtils.getQueryString(request)"></div>
-	
-	<table class=headers>
-		<tbody>
-			<tr><td class=title>Request URL:</td><td data-bind="textContent: RequestUtils.getFullPath(request)"></td></tr>
-			<tr><td class=title>Request Method:</td><td data-bind="textContent: request.method"></td></tr>
-			<tr><td class=title>Status Code:</td><td data-bind="textContent: response.code"></td></tr>
-			<tr><td>&nbsp;</td><td></td></tr>
-		</tbody>
-
-
-		<tbody>
-			<%- "FIXME" /*printHeaders("Request Headers:",model.request)*/ %>
-		</tbody>
-		
-
-		
-		<% /* if(model.request.hasContent) { %>
-			<tbody>
-				<tr>
-					<td class=title>Request Data:</td>
-					<% download(model.request); %>
-				</tr>		 	
-			</tbody>
-		<% } %>
-
-		<tbody data-dojo-attach-point='requestContentNode'>
-		</tbody>
-		
-		<% if(model.request.hasPayload) { %>
-			<tbody>
-				<% printChecksums(model.request); %>	
-			</tbody>
-		<% } %>	
-		
-		<tbody>
-			<% printHeaders("Response Headers:",model.response); %>
-		</tbody>
-		
-		<% if(model.response.hasContent) { %>
-			<tbody>
-				<tr>
-					<td class=title>Response Data:</td>
-					<% download(model.response); %>
-				</tr>
-				 <% printChecksums(model.response); %>			 	
-			</tbody>
-		<% } %>
- 	
- 		<% if(model.request.client_conn.address[0] !== "127.0.0.1") { %>
-	 		<tbody>
-	 			<tr><td class=title>Client Connection:</td><td><%- model.request.client_conn.address.join(":") %></td></tr>
-			</tbody>
-		<% } %>
- 	
-	 	<% if(model.response.cert) { %>
-	 		<tbody>
-	 			<tr><td colspan=2 class=title>Server certificate:</td></tr>
-			 	<tr><td colspan=2>
-					<pre class="raw raw-cert"><%- model.response.cert %></pre>
-				</td></tr>
-			</tbody>
-		<% } */ %>
-	</table>
-</div>
-</div>
+	<% } %> -->

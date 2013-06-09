@@ -1,9 +1,23 @@
-define(["dojo/dom-construct", "dojo/on", "highlight","./MessageUtils"], function (domConstruct, on, hljs, MessageUtils) {
+define(["dojo/dom-construct", "dojo/on", "lodash", "highlight","./MessageUtils"], function (domConstruct, on, _, hljs, MessageUtils) {
   var bindings = {};
   
   var askPretty  = 1024 * 15,
       autoPretty = 1024 * 300;
   
+  bindings.headerTable = function(type, node, message){
+
+    var content = '<tr><td class="title" colspan=2>R' + message._attr.substr(1) + ' Headers:</td></tr> ';
+    var headers = message.headers;
+    for(var i=0;i<headers.length;i++) {
+      content += (
+        '<tr class="request-headers">'+
+          '<td class="header-name">' + _.escape(headers[i][0]) + '</td>' +
+          '<td class="header-value">' + _.escape(headers[i][1]) + '</td>' +
+        '</tr>');
+    }
+    node.innerHTML = content;
+  };
+
   // displayContent factory function.
   // This allows us to specify a transform on the content before it gets handled.
   bindings._displayContent = function(contentTransform){

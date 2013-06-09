@@ -1,9 +1,6 @@
-define([ "dojo/_base/declare", "dojo/dom-construct", "./_DetailViewPane", 
- "dojo/text!./templates/PreviewPane.ejs" ], function(declare, domConstruct,
-	_DetailViewPane, template) {
-	return declare([ _DetailViewPane ], {
+define([ "./_DetailViewPane", "dojo/text!./templates/PreviewPane.ejs" ], function(_DetailViewPane, template) {
+	return _DetailViewPane.createSubclass([],{
 		templateString: template,
 		title: "Preview"
 	});
-	
 });

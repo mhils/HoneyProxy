@@ -1,12 +1,6 @@
-define(["dojo/_base/declare", "./_DetailViewPane", "dojo/promise/all",
-		"../../utilities", "dojo/text!./templates/RawPane.ejs"
-], function(declare,
-	_DetailViewPane, all, util, template) {
-
-	var RawPane = declare([_DetailViewPane], {
-		title: "Raw",
-		templateString: template
+define([ "./_DetailViewPane", "dojo/text!./templates/RawPane.ejs" ], function(_DetailViewPane, template) {
+	return _DetailViewPane.createSubclass([],{
+		templateString: template,
+		title: "Raw"
 	});
-	return RawPane;
-
 });
