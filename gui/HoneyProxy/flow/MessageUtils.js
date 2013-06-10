@@ -38,29 +38,33 @@ define(["lodash", "dojo/_base/lang", "dojo/Deferred", "../util/formatSize"], fun
 
       if (!MessageUtils.hasContent(message)) {
         def.resolve("");
-      } else if (!options.always && !options.range && message.contentLength > 1024 * 1024 * 1) {
+        return def;
+      }
+      if (!options.always && !options.range && message.contentLength > 1024 * 1024 * 1) {
         if (!window.confirm("This request is pretty big and might cause performance issues (" +
           MessageUtils.getContentLengthFormatted(message) +
-          ") if we load it. Press OK to continue anyway."))
+          ") if we load it. Press OK to continue anyway.")) {
+
           def.resolve("--- big chunk of data ---");
-      } else {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', MessageUtils.getViewUrl(message), true);
-        xhr.responseType = options.responseType;
-
-        if (options.range)
-          xhr.setRequestHeader("Range", options.range);
-
-        xhr.onload = function() {
-          def.resolve(this.response, this);
-        };
-
-        xhr.send();
-
-        def.then(undefined, function() {
-          xhr.abort();
-        });
+          return def;
+        }
       }
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', MessageUtils.getViewUrl(message), true);
+      xhr.responseType = options.responseType;
+
+      if (options.range)
+        xhr.setRequestHeader("Range", options.range);
+
+      xhr.onload = function() {
+        def.resolve(this.response, this);
+      };
+
+      xhr.send();
+
+      def.then(undefined, function() {
+        xhr.abort();
+      });
       return def;
     },
     getContentLengthFormatted: function(message) {
@@ -96,13 +100,13 @@ define(["lodash", "dojo/_base/lang", "dojo/Deferred", "../util/formatSize"], fun
       return rawHeader;
     },
     getRawFirstLine: function(message) {
-      if(message._attr === "request"){
+      if (message._attr === "request") {
         return [message.method, message.path, "HTTP/" + message.httpversion.join(".")]
           .join(" ") + "\n";
-        } else {
-          return ["HTTP/" + message.httpversion.join("."),message.code,message.msg]
-          .join(" ")+"\n";
-        }
+      } else {
+        return ["HTTP/" + message.httpversion.join("."), message.code, message.msg]
+          .join(" ") + "\n";
+      }
     }
   };
 

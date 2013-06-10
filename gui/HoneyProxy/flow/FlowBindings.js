@@ -32,7 +32,7 @@ define(["dojo/dom-construct", "dojo/on", "lodash", "highlight", "./MessageUtils"
       node.classList.remove("preview-loading");
 
       function load() {
-        node._contentLoading = MessageUtils.getContent(message).then(function(content) {
+        node._contentLoading = MessageUtils.getContent(message,{always: true}).then(function(content) {
           delete node._contentLoading;
           content = contentTransform ? contentTransform(content) : content;
           node.textContent = content;

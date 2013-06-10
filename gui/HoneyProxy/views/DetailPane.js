@@ -1,13 +1,15 @@
 /**
  * Shows details when clicking on a flow.
  */
-define(["dojo/_base/declare", "dijit/layout/TabContainer", "dojo/_base/array",
-		"./DetailPane/RawPane", "./DetailPane/PreviewPane",
+define(["dojo/_base/declare",
+		"dijit/layout/TabContainer",
+		"./_CloseableTabContainer",
+		"./DetailPane/RawPane",
+		"./DetailPane/PreviewPane",
 		"./DetailPane/DetailsPane"
-], function(
-	declare, TabContainer, array, RawPane, PreviewPane, DetailsPane) {
+], function(declare, TabContainer, _CloseableTabContainer, RawPane, PreviewPane, DetailsPane) {
 
-	return declare([TabContainer], {
+	return declare([TabContainer, _CloseableTabContainer], {
 		postCreate: function() {
 			this.inherited(arguments);
 			var preview = new PreviewPane();
@@ -19,24 +21,18 @@ define(["dojo/_base/declare", "dijit/layout/TabContainer", "dojo/_base/array",
 
 			this.domNode.classList.add("detailPane");
 			//Scroll to top when switching tab.
-			this.watch("selectedChildWidget", function() {
+			this.own(
+				this.watch("selectedChildWidget", function() {
 				this.containerNode.scrollTop = 0;
-			});
+			}));
 
 		},
-		style: "height: 100%; width: 100%;",
 		setModel: function(model) {
-			if (this.get("model") == model)
+			if (this.get("model") === model)
 				return;
 			this.set("model", model);
-			array.forEach(this.getChildren(), function(c) {
+			this.getChildren().forEach(function(c) {
 
-				if(!c.notify) { /*FIXME: Remove legacy */
-					c.set("model",model);
-
-
-					return
-				}
 				var oldValue = c.model;
 				c.model = model;
 				if (oldValue) {
@@ -50,7 +46,7 @@ define(["dojo/_base/declare", "dijit/layout/TabContainer", "dojo/_base/array",
 					c.notify({
 						type: "new",
 						object: c,
-						name: "model",
+						name: "model"
 					});
 				}
 

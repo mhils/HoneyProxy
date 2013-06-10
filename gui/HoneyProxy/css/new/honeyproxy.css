@@ -1,0 +1,150 @@
+@import "bootstrap.css";
+.claro .dijitContentPane {
+  padding: 0;
+}
+/*
+.claro .dijitStackContainer-child {
+	height: 100%;
+}*/
+.claro .dijitTabContainerTop-tabs .dijitTab,
+.claro .dijitTabContainerTop-tabs .dijitTabChecked {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+.claro .dijitTabContainerTop-tabs .dijitTabChecked {
+  padding-bottom: 1px;
+}
+#appLayout {
+  height: 100%;
+  width: 100%;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+.sidebar {
+  border-left: solid #cccccc 1px;
+  padding: 20px;
+  background-color: #f7f7f7;
+  overflow-y: auto;
+}
+#grid {
+  border-right: solid #cccccc 1px;
+  border-bottom: solid #cccccc 1px;
+}
+#tutorial {
+  padding: 30px;
+}
+.dgrid-content .text-right {
+  text-align: right;
+}
+.dgrid-row-odd {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.dgrid-selected {
+  /* remove yellow Chrome outline */
+
+  outline: 0;
+}
+.dgrid-content .dgrid-cell {
+  cursor: pointer;
+  /* don't break lines */
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  /* no horizontal borders */
+
+  border-left: none;
+  border-right: none;
+}
+.dgrid-hider-toggle {
+  /* center toggle */
+
+  margin: 3px 2px;
+}
+.field-ssl {
+  width: 10px;
+}
+.field-ssl.https {
+  background-color: rgba(0, 185, 0, 0.5);
+}
+.field-icon {
+  width: 32px;
+}
+.dgrid-content .field-icon {
+  background-image: url(../images/resourcePlainIcon.png);
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  min-height: 32px;
+}
+.flow-html .field-icon,
+.flow-xml .field-icon,
+.flow-text .field-icon {
+  background-image: url(../images/resourceDocumentIcon.png);
+}
+.flow-image .field-icon {
+  background-image: url(../images/resourceImageIcon.png);
+}
+.flow-css .field-icon {
+  background-image: url(../images/resourceCSSIcon.png);
+}
+.flow-javascript .field-icon {
+  background-image: url(../images/resourceJSIcon.png);
+}
+.flow-pe .field-icon {
+  background-image: url(../images/resourceExecutableIcon.png);
+}
+.flow-java .field-icon {
+  background-image: url(../images/resourceJavaIcon.png);
+}
+.flow-flash .field-icon {
+  background-image: url(../images/resourceFlashIcon.png);
+}
+.flow-redirect .field-icon {
+  background-image: url(../images/resourceRedirectIcon.png);
+}
+.flow-not-modified .field-icon {
+  background-image: url(../images/resourceNotModifiedIcon.png);
+}
+.detailPane {
+  height: 300px;
+}
+.detailPane .dijitTabPane {
+  padding: 1px 10px 20px;
+}
+.detailPane .dijitTabPaneWrapper {
+  overflow: auto;
+}
+dl {
+  cursor: default;
+  font-size: 11px;
+  margin: 0;
+  width: 100%;
+}
+dd,
+dt {
+  width: 50%;
+  margin: 0;
+  display: inline-block;
+  vertical-align: top;
+}
+dd {
+  padding-left: 8px;
+  text-align: left;
+}
+dt {
+  font-weight: bold;
+  text-align: right;
+  color: #4d4d4d;
+}
+.preview-image img {
+  display: block;
+  margin: 0 auto 10px;
+}
+.preview-empty {
+  display: none;
+}

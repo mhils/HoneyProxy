@@ -24,8 +24,17 @@ define(["dojo/_base/declare",
 				field: "id",
 				hidden: true
 			}, {
+				label: "SSL",
+				className: "field-ssl",
+				resizable: false,
+				renderCell: function(flow, value, node) {
+					node.classList.add(flow.request.scheme);
+				},
+				renderHeaderCell: function(node){ node.textContent = ""; }
+			}, {
 				label: "Icon",
 				className: "field-icon",
+				resizable: false,
 				get: function() {return "";},
 				renderHeaderCell: function(node){ node.textContent = ""; }
 			}, {
@@ -51,7 +60,7 @@ define(["dojo/_base/declare",
 					return flow.response.code;
 				}
 			},{
-				label: "Type",
+				label: "Response Type",
 				get: function(flow) {
 					var contentType = ResponseUtils.getContentType(flow.response);
 					if(contentType) {
@@ -78,7 +87,14 @@ define(["dojo/_base/declare",
 				}
 			}
 		],
-		selectionMode: "single", // for Selection; only select a single row at a time
+		selectionMode: "singleRefresh",
+		// only select a single row at a time. In contrast to "single", 
+		// a select event will always be triggered 
+		// (workaround when DetailPane is closed and user clicks the same flow again)
+		_singleRefreshSelectionHandler: function(event, target){
+			this.clearSelection();
+			this.select(target);
+		},
 		cellNavigation: false,
 		noDataMessage: tutorial
 	});

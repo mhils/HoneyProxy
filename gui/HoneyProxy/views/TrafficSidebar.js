@@ -1,8 +1,8 @@
-define([ "dojo/_base/declare", "../util/_DynamicTemplatedWidget",
+define([ "dojo/_base/declare", "../util/_ReactiveTemplatedWidget",
 		"dojo/text!./templates/TrafficSidebar.ejs" ], function(declare,
-	_DynamicTemplatedWidget, template) {
+	_ReactiveTemplatedWidget, template) {
 	
-	return declare([ _DynamicTemplatedWidget ], {
+	return declare([ _ReactiveTemplatedWidget ], {
 		templateString: template
 	});
 	

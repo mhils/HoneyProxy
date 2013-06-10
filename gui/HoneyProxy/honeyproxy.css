@@ -2,5 +2,5 @@
 @import url("../lib/codemirror/codemirror.css");
 @import url("../lib/codemirror/addon/hint/simple-hint.css");
 @import url("../lib/dijit/themes/claro/claro.css");
-@import url("./css/style.css");
+@import url("./css/new/honeyproxy.css");
 /* Imports are evil, but the buildscript combines it all */
