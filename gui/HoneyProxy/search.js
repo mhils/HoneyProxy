@@ -10,7 +10,7 @@
  * that don't match. Highlighting means applying a filter to the flows and
  * marking all flows that match.
  */
-define([ "lodash", "./traffic" ], function(_, traffic) {
+define([ "lodash", "jquery", "./traffic" ], function(_, $, traffic) {
 	//var parseExp = /([\w\.]+)(==|<|>|~=)(.+)/;
 	
 	function parseSearchString(string) {

@@ -39,11 +39,14 @@ define(["dojo/_base/declare",
 				renderHeaderCell: function(node){ node.textContent = ""; }
 			}, {
 				label: "Request Path",
+				className: "field-request-path",
 				renderCell: function(flow, value, node) {
 					//node.textContent = RequestUtils.getFilename(flow.request);
-					var filenameNode = document.createElement("div");
+					var filenameNode = document.createElement("span");
 					filenameNode.textContent = RequestUtils.getFilename(flow.request);
 					node.appendChild(filenameNode);
+
+					node.appendChild(document.createElement("br"));
 
 					var fullPathNode = document.createElement("small");
 					fullPathNode.textContent = RequestUtils.getFullPath(flow.request);
@@ -51,16 +54,19 @@ define(["dojo/_base/declare",
 				}
 			}, {
 				label: "Method",
+				className: "field-method",
 				get: function(flow) {
 					return flow.request.method;
 				}
 			},{
 				label: "Status",
+				className: "field-status.text-right",
 				get: function(flow) {
 					return flow.response.code;
 				}
 			},{
 				label: "Response Type",
+				className: "field-response-type",
 				get: function(flow) {
 					var contentType = ResponseUtils.getContentType(flow.response);
 					if(contentType) {
@@ -81,9 +87,9 @@ define(["dojo/_base/declare",
 					var date = new Date(flow.request.timestamp_start*1000);
 					//ugly but performant
 					node.innerHTML = (
-						'<div class="timestamp" title="UNIX Timestamp: ' + flow.request.timestamp_start + '">' + 
+						'<span class="timestamp" title="UNIX Timestamp: ' + flow.request.timestamp_start + '">' + 
 							date.toLocaleTimeString() + ', ' + ("0"+date.getDate()).slice(-2) + '.' + ("0"+(date.getMonth()+1)).slice(-2) +
-						'.</div><small class="duration">' + Math.floor((flow.response.timestamp_end - flow.request.timestamp_start) * 1000) + 'ms</small>');
+						'.</span><br><small class="duration">' + Math.floor((flow.response.timestamp_end - flow.request.timestamp_start) * 1000) + 'ms</small>');
 				}
 			}
 		],

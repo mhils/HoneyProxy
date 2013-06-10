@@ -17,11 +17,13 @@ define([ "./config", "dojo/json", "dojo/topic", "dojo/Deferred" ], function(
 				console.debug("WebSocket connection authenticated.");
 				break;
 			case "read":
+				console.error("FIXME: legacy code");
+				/* 
 				if (e.id in Backbone._syncrequests) {
 					var req = Backbone._syncrequests[e.id];
 					window.clearTimeout(req.onError);
 					req.success(e.data);
-				}
+				} */
 				break;
 			case "newflow":
 				topic.publish("HoneyProxy/newFlow", e.data);
@@ -55,6 +57,7 @@ define([ "./config", "dojo/json", "dojo/topic", "dojo/Deferred" ], function(
 	 * instead. WebSocket should be used for communicating newly arrived flows,
 	 * but it's clearly not made for a 1:1 request/response model.
 	 */
+	 /*
 	Backbone._syncrequests = {};
 	Backbone.sync = function(method, model, options) {
 		if (method != "read") {
@@ -76,6 +79,7 @@ define([ "./config", "dojo/json", "dojo/topic", "dojo/Deferred" ], function(
 		websocket.send(msg);
 		
 	};
+	*/
 	
 	return websocket;
 });

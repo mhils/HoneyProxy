@@ -4,7 +4,6 @@ define(["dojo/_base/declare",
 ], function(declare, aspect, DetailPane) {
 	return declare([], {
 		showDetails: function(flow) {
-			console.log("Show details...");
 
 			var self = this;
 
@@ -16,7 +15,8 @@ define(["dojo/_base/declare",
 					splitter: true
 				});
 				this.detailView.setModel(flow);
-				aspect.before(this.detailView,"destroy",function(){
+				var signal = aspect.before(this.detailView,"destroy",function(){
+					signal.remove();
 					self.removeChild(self.detailView);
 					delete self.detailView;
 				});

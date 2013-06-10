@@ -3,8 +3,10 @@
 	<div title="Filter for similar requests" data-bind='data-search: "similarTo:"+id+",3"' class="button button-topright button-similar searchlink"></div>
 	<div class="content">
 
-		<h2 class="title" data-bind="textContent: RequestUtils.getFullPath(request)"></h2>
-		<div class="subtitle" data-bind="textContent: RequestUtils.getQueryString(request)"></div>
+		<h5 class="no-text-overflow">
+			<span data-bind="textContent: RequestUtils.getFullPath(request)"></span><br>
+			<small data-bind="textContent: RequestUtils.getQueryString(request)"></small>
+		</h5>
 
 		<table class="headers">
 			<tbody>

@@ -2,8 +2,13 @@
 	<div title="Pop out" class="button button-topright button-popout"></div>
 	<a data-bind="href: ResponseUtils.getDownloadUrl(response)" title="Download" class="button button-topright button-download"></a>
 	<div class="content">
-		<h2 class="title" data-bind="textContent: RequestUtils.getFullPath(request)"></h2>
-		<div class="subtitle" data-bind="textContent: RequestUtils.getQueryString(request)"></div>
+
+		<h5 class="no-text-overflow">
+			<span data-bind="textContent: RequestUtils.getFullPath(request)"></span><br>
+			<small data-bind="textContent: RequestUtils.getQueryString(request)"></small>
+		</h5>
+		
 		<div data-bind="widget: new model.View({model: model})"></div>
+
 	</div>
 </div>

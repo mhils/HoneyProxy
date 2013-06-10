@@ -3,6 +3,7 @@
   padding: 0;
 }
 /*
+TODO: Figure out why this has been in the old stylesheet;
 .claro .dijitStackContainer-child {
 	height: 100%;
 }*/
@@ -13,6 +14,11 @@
 }
 .claro .dijitTabContainerTop-tabs .dijitTabChecked {
   padding-bottom: 1px;
+}
+.no-text-overflow {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 #appLayout {
   height: 100%;
@@ -31,11 +37,13 @@ body {
   background-color: #f7f7f7;
   overflow-y: auto;
 }
-#grid {
+.dgrid.dgrid-grid {
+  border-top: none;
+  border-left: none;
   border-right: solid #cccccc 1px;
   border-bottom: solid #cccccc 1px;
 }
-#tutorial {
+.dgrid-no-data {
   padding: 30px;
 }
 .dgrid-content .text-right {
@@ -45,25 +53,19 @@ body {
   background-color: rgba(0, 0, 0, 0.05);
 }
 .dgrid-selected {
-  /* remove yellow Chrome outline */
-
   outline: 0;
 }
-.dgrid-content .dgrid-cell {
-  cursor: pointer;
-  /* don't break lines */
-
+.dgrid-cell {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  /* no horizontal borders */
-
+}
+.dgrid-content .dgrid-cell {
+  cursor: pointer;
   border-left: none;
   border-right: none;
 }
 .dgrid-hider-toggle {
-  /* center toggle */
-
   margin: 3px 2px;
 }
 .field-ssl {
@@ -74,6 +76,21 @@ body {
 }
 .field-icon {
   width: 32px;
+}
+.field-status {
+  width: 50px;
+}
+.field-response-type {
+  width: 130px;
+}
+.field-method {
+  width: 60px;
+}
+.field-size {
+  width: 80px;
+}
+.field-time {
+  width: 120px;
 }
 .dgrid-content .field-icon {
   background-image: url(../images/resourcePlainIcon.png);
@@ -110,6 +127,12 @@ body {
 .flow-not-modified .field-icon {
   background-image: url(../images/resourceNotModifiedIcon.png);
 }
+.header {
+  height: 41px;
+}
+.header .brand {
+  margin-left: 0;
+}
 .detailPane {
   height: 300px;
 }
@@ -118,28 +141,6 @@ body {
 }
 .detailPane .dijitTabPaneWrapper {
   overflow: auto;
-}
-dl {
-  cursor: default;
-  font-size: 11px;
-  margin: 0;
-  width: 100%;
-}
-dd,
-dt {
-  width: 50%;
-  margin: 0;
-  display: inline-block;
-  vertical-align: top;
-}
-dd {
-  padding-left: 8px;
-  text-align: left;
-}
-dt {
-  font-weight: bold;
-  text-align: right;
-  color: #4d4d4d;
 }
 .preview-image img {
   display: block;

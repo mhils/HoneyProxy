@@ -1,15 +1,18 @@
 // General Layout
 
-#grid {
+.dgrid.dgrid-grid {
+ 	border-top: none;
+ 	border-left: none;
 	border-right: @lightSeperator;
     border-bottom: @lightSeperator;
 }
- 
-#tutorial {
+
+//Move quickstart away from the borders
+.dgrid-no-data {
 	padding: 30px;
 }
 
-//Table Layout
+//Fix: .dgrid-content overrides text-right by default
 .dgrid-content .text-right {
 	text-align: right;
 }
@@ -18,29 +21,30 @@
 	background-color: hsla(0, 0%, 0%, 0.05);
 }
 
+//Remove yellow Chrome outline
 .dgrid-selected {
-	/* remove yellow Chrome outline */
 	outline: 0;
+}
+
+//Forbid overflow to assure that all rows have the same height.
+.dgrid-cell {
+	.no-text-overflow;
 }
 
 .dgrid-content .dgrid-cell {
 	cursor: pointer;
 
-	/* don't break lines */
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-
-	/* no horizontal borders */
+	// No vertical borders
     border-left: none;
     border-right: none;
 }
 
 .dgrid-hider-toggle {
-	/* center toggle */
+	// center the hider toggle in the upper right corner
 	margin: 3px 2px;
 }
 
+//### Row Styling ###
 .field-ssl {
 	width: 10px;
 	&.https {
@@ -50,7 +54,23 @@
 .field-icon {
 	width: 32px;
 }
+.field-status {
+	width: 50px;
+}
+.field-response-type {
+	width: 130px;
+}
+.field-method {
+	width: 60px;
+}
+.field-size {
+	width: 80px;
+}
+.field-time {
+	width: 120px;
+}
 
+//### Icon Row ###
 .dgrid-content .field-icon {
 	background-image: url(../images/resourcePlainIcon.png);
 	background-repeat: no-repeat;
