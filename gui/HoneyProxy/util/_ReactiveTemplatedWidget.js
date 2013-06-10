@@ -6,16 +6,11 @@ define([
     "dojo/dom-construct",
     "dojo/query",
     "dijit/_WidgetBase",
+    "dijit/registry",
     "./Observer"
-], function(declare, domConstruct, query, _WidgetBase, Observer) {
+], function(declare, domConstruct, query, _WidgetBase, registry, Observer) {
 
   var default_bindings = {
-    "replaceNode": function(type, node, value) {
-      if (!value)
-        value = domConstruct.create("div");
-      domConstruct.place(value, node, "only");
-      node.dataset.suppressBind = true;
-    },
     "bind": function(type, node, value) {
       var obj = value[0];
       var prop = value[1];
@@ -23,16 +18,35 @@ define([
     }
   };
 
-  var hide = function(type, node, value) {
+  var replaceNode = function(type, node, value) {
+    if (!value)
+      value = domConstruct.create("div");
+    domConstruct.place(value, node, "only");
+    node.dataset.suppressBind = true;
+  };
+  default_bindings.replaceNode = replaceNode;
+  default_bindings.widget = function(type, node, value) {
+    var widget;
+    if(node.firstChild)
+      widget = registry.byNode(node.firstChild);
+    if(widget)
+      widget.destroyRecursive(false);
     if(value){
+      this.own(value);
+    }
+    replaceNode(type,node,value ? value.domNode : undefined);
+  };
+
+  var hide = function(type, node, value) {
+    if (value) {
       node.classList.add("hide");
     } else {
       node.classList.remove("hide");
     }
   };
   default_bindings.hide = hide;
-  default_bindings.show = function(type, node, value){
-    hide(type,node,!value);
+  default_bindings.show = function(type, node, value) {
+    hide(type, node, !value);
   };
 
   var eventListenerBinding = function(type, node, func) {
@@ -43,14 +57,14 @@ define([
     default_bindings[event] = eventListenerBinding;
   });
 
-  var _ReactiveTemplatedWidget = declare([_WidgetBase,Observer.ObservablePolyfillMixin], {
+  var _ReactiveTemplatedWidget = declare([_WidgetBase, Observer.ObservablePolyfillMixin], {
     _bindings: default_bindings,
     constructor: function() {
       this.context = this.context || {};
       this.context.view = this;
       this.updateBindings = this.updateBindings.bind(this);
-      Observer.observe(this, function(records){
-        if(records.name === "model" || records.name === "context")
+      Observer.observe(this, function(records) {
+        if (records.name === "model" || records.name === "context")
           this.updateBindings();
       });
     },
@@ -112,16 +126,16 @@ define([
     updateBindings: function() {
       var self = this;
 
-      if(this.observedModel && this.model !== this.observedModel){
+      if (this.observedModel && this.model !== this.observedModel) {
         //console.log("unobserve old model");
-        Observer.unobserve(this.observedModel,this.updateBindings);
+        Observer.unobserve(this.observedModel, this.updateBindings);
       }
-      if(this.model && this.model !== this.observedModel){
+      if (this.model && this.model !== this.observedModel) {
         //console.log("observe new model");
-        Observer.observe(this.model,this.updateBindings);
+        Observer.observe(this.model, this.updateBindings);
         this.observedModel = this.model;
       }
-      if(this.requiresModel && !this.model){
+      if (this.requiresModel && !this.model) {
         return;
       }
 
@@ -130,10 +144,10 @@ define([
         this.updateBinding(binding[0], node, value);
       };
 
-      this.node_bindings.forEach(function(binding_info){
+      this.node_bindings.forEach(function(binding_info) {
         var node = binding_info[0];
         var bindings = binding_info[1];
-        bindings.forEach(handleBinding.bind(self,node));
+        bindings.forEach(handleBinding.bind(self, node));
       });
     },
     buildRendering: function() {
@@ -158,11 +172,17 @@ define([
 
         var raw_bindings = node.dataset.bind.split(";");
         var bindings = raw_bindings.map(self._parseBinding.bind(self));
-        self.node_bindings.push([node,bindings]);
+        self.node_bindings.push([node, bindings]);
       });
 
       this.updateBindings();
 
+      this.inherited(arguments);
+    },
+    destroy: function(){
+      if(this.observedModel) {
+        Observer.unobserve(this.observedModel, this.updateBindings);
+      }
       this.inherited(arguments);
     }
   });
