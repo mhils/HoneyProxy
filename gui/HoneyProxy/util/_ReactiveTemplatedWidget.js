@@ -4,11 +4,12 @@
 define([
     "dojo/_base/declare",
     "dojo/dom-construct",
+    "dojo/on",
     "dojo/query",
     "dijit/_WidgetBase",
     "dijit/registry",
     "./Observer"
-], function(declare, domConstruct, query, _WidgetBase, registry, Observer) {
+], function(declare, domConstruct, on, query, _WidgetBase, registry, Observer) {
 
   var default_bindings = {
     "bind": function(type, node, value) {
@@ -27,14 +28,14 @@ define([
   default_bindings.replaceNode = replaceNode;
   default_bindings.widget = function(type, node, value) {
     var widget;
-    if(node.firstChild)
+    if (node.firstChild)
       widget = registry.byNode(node.firstChild);
-    if(widget)
+    if (widget)
       widget.destroyRecursive(false);
-    if(value){
+    if (value) {
       this.own(value);
     }
-    replaceNode(type,node,value ? value.domNode : undefined);
+    replaceNode(type, node, value ? value.domNode : undefined);
   };
 
   var hide = function(type, node, value) {
@@ -50,7 +51,7 @@ define([
   };
 
   var eventListenerBinding = function(type, node, func) {
-    node.addEventListener(type, func.bind(this));
+    this.own( on(node, type, func) );
   };
 
   ["click", "load"].forEach(function(event) {
@@ -61,7 +62,6 @@ define([
     _bindings: default_bindings,
     constructor: function() {
       this.context = this.context || {};
-      this.context.view = this;
       this.updateBindings = this.updateBindings.bind(this);
       Observer.observe(this, function(records) {
         if (records.name === "model" || records.name === "context")
@@ -105,6 +105,7 @@ define([
     _eval: function(expr) {
       /*jshint evil:true, withstmt:true*/
       with({
+        view: this,
         model: this.model
       }) {
         with(this.context) {
@@ -179,8 +180,8 @@ define([
 
       this.inherited(arguments);
     },
-    destroy: function(){
-      if(this.observedModel) {
+    destroy: function() {
+      if (this.observedModel) {
         Observer.unobserve(this.observedModel, this.updateBindings);
       }
       this.inherited(arguments);

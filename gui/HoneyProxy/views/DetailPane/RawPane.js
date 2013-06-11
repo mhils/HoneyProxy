@@ -1,7 +1,7 @@
 define(["dojo/_base/lang",
 		"./_DetailViewPane",
 		"../../flow/FlowBindings",
-		"dojo/text!./templates/RawPane.ejs"
+		"dojo/text!./templates/RawPane.html"
 ], function(lang, _DetailViewPane, FlowBindings, template) {
 
 	//remove prettifyTransform from displayContent

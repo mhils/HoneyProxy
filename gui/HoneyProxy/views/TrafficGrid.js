@@ -49,7 +49,8 @@ define(["dojo/_base/declare",
 					node.appendChild(document.createElement("br"));
 
 					var fullPathNode = document.createElement("small");
-					fullPathNode.textContent = RequestUtils.getFullPath(flow.request);
+					var queryString = RequestUtils.getQueryString(flow.request);
+					fullPathNode.textContent = RequestUtils.getFullPath(flow.request) + ( queryString ? "?"+queryString : "");
 					node.appendChild(fullPathNode);
 				}
 			}, {

@@ -20,6 +20,9 @@ TODO: Figure out why this has been in the old stylesheet;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.valign-middle {
+  vertical-align: middle;
+}
 #appLayout {
   height: 100%;
   width: 100%;
@@ -139,13 +142,35 @@ body {
 .detailPane .dijitTabPane {
   padding: 1px 10px 20px;
 }
+.detailPane .nav {
+  margin-bottom: 0;
+}
 .detailPane .dijitTabPaneWrapper {
   overflow: auto;
 }
-.preview-image img {
-  display: block;
-  margin: 0 auto 10px;
-}
 .preview-empty {
   display: none;
+}
+.details table {
+  font-size: 12px;
+  table-layout: fixed;
+  width: 100%;
+}
+.details td {
+  vertical-align: top;
+  padding: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.details td.valign-middle {
+  vertical-align: middle;
+}
+.details tr td:first-child {
+  color: #545454;
+  font-weight: bold;
+  width: 150px;
+}
+.details pre {
+  display: inline-block;
 }

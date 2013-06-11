@@ -6,18 +6,44 @@
 	padding: 1px 10px 20px;
 }
 
+//Fix: Navbar pushes content down because of the clearfix.
+.detailPane .nav {
+    margin-bottom: 0;
+}
+
 //Scroll bar for detailpane
 .detailPane .dijitTabPaneWrapper {
 	overflow: auto;
 }
 
-// FIXME: empty: use bindings;
-// FIXME: img: look for bootstrap classes;
-.preview-image img {
-	display: block;
-	margin: 0 auto 10px;
-}
-
+//### Preview ###
 .preview-empty {
 	display: none;
+}
+
+//### Details ###
+.details {
+	table {
+		font-size: 12px;
+		table-layout: fixed;
+		width: 100%;
+	}
+	td {
+		vertical-align: top;
+		&.valign-middle {
+			vertical-align: middle;
+		}
+		padding: 0;
+		.no-text-overflow;
+	}
+	tr td:first-child {
+		color: #545454;
+		font-weight: bold;
+		width: 150px;
+		
+	}
+	pre {
+		//Server Certificate
+		display: inline-block;
+	}
 }
