@@ -1,11 +1,11 @@
 /**
  * Main View
  */
-/*jshint unused:false */
 define(["require",
         "dojo/_base/declare",
         "dijit/layout/BorderContainer", 
-        "./_DetailViewMixin"],function(require,declare,BorderContainer,_DetailViewMixin) {
+        "./_DetailViewMixin"],
+        function(require,declare,BorderContainer,_DetailViewMixin) {
 	return declare([BorderContainer, _DetailViewMixin], {
 		design: "sidebar",
 		_onShow: function(){
@@ -23,7 +23,7 @@ define(["require",
                "dojo/on",
                "dijit/layout/ContentPane",
                "./ReportEditor",
-               "./ReportOutput",],
+               "./ReportOutput"],
                function(domConstruct,on,ContentPane,ReportEditor,ReportOutput){
 				
         //Little Proxy object for the real detail view to be used in Report Scripts
@@ -44,7 +44,6 @@ define(["require",
 				self.reportOutput = reportOutput;
 				
 				var reportEditor = new ReportEditor({
-					id: "reportEditor",
 					region: "right",
 					splitter: true,
 					detailViewObj: detailViewObj
@@ -96,16 +95,13 @@ define(["require",
 				self.reportEditor._onShow(); //TODO: little bit dirty. maybe replace with .watch("selected"). See how dojo 2.0 handles this
 			});
 			}
-		},
-		selectFlow: function(flowId){
+		}
+		/*
+		, selectFlow: function(flowId){
 			require(["./../traffic","./../MainLayout"],(function(traffic,MainLayout){
 				var model = traffic.get(flowId);
 				this.detailView.setModel(model);
 			}).bind(this));
-		},
-		postCreate: function(){
-			this.inherited(arguments);
-		}
-		
+		}*/
 	});
 });

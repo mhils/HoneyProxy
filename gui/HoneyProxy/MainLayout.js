@@ -8,11 +8,10 @@ define([
 		"./views/HeaderPane",
 		"./views/TrafficPane",
 		"./views/ReportPane",
-		"./views/DumpedFilesPane",
-	"./traffic",
+		"./traffic",
 		"./config",
 		"dojo/domReady!"
-], function(exports, query, BorderContainer, TabContainer, StackContainer, ContentPane, HeaderPane, TrafficPane, ReportPane, DumpedFilesPane, traffic, config) {
+], function(exports, query, BorderContainer, TabContainer, StackContainer, ContentPane, HeaderPane, TrafficPane, ReportPane, traffic, config) {
 
 	//appLayout covers everything
 	var appLayout = new BorderContainer({
@@ -54,12 +53,6 @@ define([
 	//populate main
 	main.addChild(trafficPane);
 	main.addChild(reportPane);
-
-	if (config.get("dumpdir") === true) {
-		//Dumpfiles Browser Pane
-		var dumpedFilesPane = new DumpedFilesPane();
-		main.addChild(dumpedFilesPane);
-	}
 
 	appLayout.startup();
 
@@ -103,7 +96,7 @@ define([
 		main.selectChild(main.getChildren()[index]);
 	};
 	exports.header = header;
-	
+
 	exports.trafficPane = trafficPane;
 
 	return exports;

@@ -11,8 +11,7 @@ require(
 		"HoneyProxy/util/versionCheck",
 		"HoneyProxy/util/sampleFlow",
 		"HoneyProxy/util/requestAuthenticator",
-		"HoneyProxy/search",
-		"HoneyProxy/popOut"
+		"HoneyProxy/search"
 ], function(when, on, topic, MainLayout, websocket, FlowFactory, flowStore, versionCheck, sampleFlow) {
 
 	//Debug

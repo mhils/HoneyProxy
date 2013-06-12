@@ -2,11 +2,9 @@
 .claro .dijitContentPane {
   padding: 0;
 }
-/*
-TODO: Figure out why this has been in the old stylesheet;
 .claro .dijitStackContainer-child {
-	height: 100%;
-}*/
+  height: 100%;
+}
 .claro .dijitTabContainerTop-tabs .dijitTab,
 .claro .dijitTabContainerTop-tabs .dijitTabChecked {
   padding-top: 0px;
@@ -173,4 +171,26 @@ body {
 }
 .details pre {
   display: inline-block;
+}
+.reportEditor {
+  width: 50%;
+  /*
+	span.CodeMirror-matchhighlight { 
+	background: #e9e9e9; 
+	}
+	.CodeMirror-focused span.CodeMirror-matchhighlight { 
+		background: #e7e4ff !important;
+	}*/
+
+}
+.reportEditor .progress {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.reportEditor .bar:empty {
+  display: none;
+}
+.reportEditor .CodeMirror {
+  background-color: white;
+  height: auto;
 }

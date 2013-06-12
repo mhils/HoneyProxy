@@ -54,7 +54,7 @@ define([
     this.own( on(node, type, func) );
   };
 
-  ["click", "load"].forEach(function(event) {
+  ["click", "load", "change"].forEach(function(event) {
     default_bindings[event] = eventListenerBinding;
   });
 
