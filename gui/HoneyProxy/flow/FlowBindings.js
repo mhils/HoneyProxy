@@ -12,15 +12,16 @@ define([
 
   bindings.headerTable = function(type, node, message) {
 
-    var html = '<tr><td colspan=2><h5>R' + message._attr.substr(1) + ' Headers:</h5></td></tr> ';
+    var html = '<tr><td colspan="2"><h5>R' + message._attr.substr(1) + ' Headers:</h5></td></tr> ';
     var headers = message.headers;
     for (var i = 0; i < headers.length; i++) {
       html += (
-        '<tr class="request-headers">' +
-        '<td class="header-name">' + _.escape(headers[i][0]) + '</td>' +
-        '<td class="header-value">' + _.escape(headers[i][1]) + '</td>' +
+        '<tr>' +
+        '<td>' + _.escape(headers[i][0]) + '</td>' +
+        '<td>' + _.escape(headers[i][1]) + '</td>' +
         '</tr>');
     }
+    node.classList.add("header");
     node.innerHTML = html;
   };
 
@@ -33,7 +34,7 @@ define([
       for (var algo in message.contentChecksums[item]) {
         var checksum = _.escape(message.contentChecksums[item][algo]);
         html += '<li>' + _.escape(algo) +
-          ': <span class="value">' + checksum + '</span>';
+          ': <span>' + checksum + '</span>';
         //VirusTotal Integration
         if (algo === "sha256") {
           html += ' <a target="_blank" href="https://www.virustotal.com/de/file/' + checksum + '/analysis/">[VT]</a>';
