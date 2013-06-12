@@ -16,7 +16,7 @@ require([
   var hostcount = 0; //number of known hosts
   var data = [];  
   // Iterate over all flows and sum up content lengths
-  traffic.each(function(flow){
+  traffic.query().forEach(function(flow){
     var host = flow.request.host;
     
     if(!(host in hosts))
@@ -34,7 +34,7 @@ require([
   // Create the chart within it's "holding" node
   a = document.createElement("div");
   a.style.width = "100%";
-  outNode.appendChild(a); 
+  out.appendChild(a); 
   var chart = new Chart(a,{
     title: "Requests over time"
   });
@@ -80,7 +80,7 @@ require([
   chart.connectToPlot( "default", function(evt){
     if(!(evt.type === "onclick" && evt.element === "marker"))
       return;
-    detailView.show(data[evt.index].flow);
+    detailView.showDetails(data[evt.index].flow);
     chart.resize();
   })
   

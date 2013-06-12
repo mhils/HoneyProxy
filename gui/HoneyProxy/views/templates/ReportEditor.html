@@ -2,26 +2,20 @@
 
 	<h5>Report Editor</h5>
 
-	<div class="btn-toolbar text-right" >
-		<div class="progress progress-striped active span2">
-		  <div class="bar" style="width: 100%;" data-bind="bind: [view,'active']"></div>
+		<div class="progress progress-striped active span2 text-right">
+		  <div class="bar" data-bind="bind: [view,'active']"></div>
 		  <div class="muted text-center" data-bind="bind: [view,'status']"></div>
 		</div>
-	  	<select class=btn data-bind="bind: [view,'scriptSelect']"></select>
-	    <a class="btn" href="#"><i class="icon-file"></i></a>
-	    <a class="btn" href="#"><i class="icon-trash"></i></a>
+
+	<div class="btn-toolbar text-right" >
+
+	  	<select class="btn span3" data-bind="options: view.files; select: view.filename; change: view.fileChange.bind(view)"></select>
+	    <a class="btn" href="#" data-bind="hide: this.readonly; click: view.newFileClick.bind(view)"    title="New File"   ><i class="icon-file" ></i></a>
+	    <a class="btn" href="#" data-bind="hide: this.readonly; click: view.deleteFileClick.bind(view)" title="Delete File"><i class="icon-trash"></i></a>
 	</div>
 
 	<textarea data-bind="bind: [view,'code']"></textarea>
 	<br>
-	<div class="btn btn-primary" data-bind="click: view.submitClick.bind(view)">Generate Report</div>
+	<div class="btn btn-primary" data-bind="click: view.submitClick.bind(view)"><i class="icon-wrench icon-white"></i> Generate Report</div>
 
-	<!-- <div data-dojo-type="dijit/Toolbar" class="dijitToolbar reportEditorToolbar"  style="display:none"data-dojo-attach-point="toolbarNode">
-
-	<select class="editor-loadselect" data-dojo-attach-point="scriptSelectionNode"></select>
-	<button data-dojo-type="dijit/form/Button" type="button" class="newScript" data-dojo-attach-point="newScriptButton" data-dojo-props="iconClass:' dijitIconNewTask', showLabel: false">New</button>
-	<button data-dojo-type="dijit/form/Button" type="button" class="deleteScript" data-dojo-attach-point="deleteScriptButton" data-dojo-props="iconClass:' dijitIconClear', showLabel: false">Delete</button>
-	<div class="editor-status" data-dojo-attach-point="statusNode"></div> -->
-
-	
 </div>

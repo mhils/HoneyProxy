@@ -4,18 +4,33 @@
 define([
     "dojo/_base/declare",
     "dojo/dom-construct",
+    "dojo/aspect",
     "dojo/on",
     "dojo/query",
     "dijit/_WidgetBase",
     "dijit/registry",
     "./Observer"
-], function(declare, domConstruct, on, query, _WidgetBase, registry, Observer) {
+], function(declare, domConstruct, aspect, on, query, _WidgetBase, registry, Observer) {
 
   var default_bindings = {
     "bind": function(type, node, value) {
       var obj = value[0];
       var prop = value[1];
       obj[prop] = node;
+    },
+    "options": function(type, node, optionArray) {
+      optionArray = optionArray || [];
+      var optionsFragment = document.createDocumentFragment();
+      optionArray.forEach(function(optionName){
+        var option = document.createElement("option");
+        option.value = option.textContent = optionName;
+        optionsFragment.appendChild(option);
+      });
+      domConstruct.place(optionsFragment,node,"only");
+    }, 
+    "select": function(type, node, value){
+      //query('option:not([value="'+value+'"])', node).removeAttr("selected");
+      query('option[value="'+value+'"]', node).attr("selected","selected");
     }
   };
 
@@ -27,6 +42,9 @@ define([
   };
   default_bindings.replaceNode = replaceNode;
   default_bindings.widget = function(type, node, value) {
+    if (value && node.firstChild === value.domNode)
+      return;
+
     var widget;
     if (node.firstChild)
       widget = registry.byNode(node.firstChild);
@@ -51,7 +69,13 @@ define([
   };
 
   var eventListenerBinding = function(type, node, func) {
-    this.own( on(node, type, func) );
+    var evt_handle = on(node, type, func);
+    //Remove event handler before updating the next bindings
+    var asp_handle = aspect.before(this,"updateBindings",function(){
+      evt_handle.remove();
+      asp_handle.remove();
+    });
+    this.own( evt_handle, asp_handle );
   };
 
   ["click", "load", "change"].forEach(function(event) {

@@ -11,35 +11,34 @@
  * Consider that when analyzing your data.
  */
 require([ 
-  "dojo/dom-construct",
   "dojo/promise/all",
   "dojo/request",
-  "dojo/Deferred",
-  "dojo/on"
-], function(domConstruct, all, request, Deferred, on) {
- 
-  if(traffic.length === 0)
+], function(all, request) {
+  var resultSet = traffic.query();
+  
+  if(resultSet.length === 0)
     return alert("No requests found!");
   
-  var attrfunc = function(flow){ return flow.request.fullPath; }; //displayed text
+  var attrfunc = function(flow){ return RequestUtils.getFullPath(flow.request); }; //displayed text
   
   var i = 0,
-      progressNode = domConstruct.create("div",{},outNode,"only"),
-      tree = {}, // Master treeObj. flow.request.fullPath -> treeObj
+      progressNode = domConstruct.create("div",{},out,"only"),
+      tree = {}, // Master treeObj. RequestUtils.getFullPath(flow.request) -> treeObj
       items = {}, // Contains all tree items. flow.id -> treeObj
       lastIds = [], //keeps all flow ids of previous requests (up to lastIdCount)
       lastIdCount = 300,
       promises = []; //collects all request promises. See post_extract.js for more details on this pattern
       
   
-  traffic.each(function(flow){
+  resultSet.forEach(function(flow){
     var _i = ++i;
     
     //initialize treeObj for this flow
     var item = items[flow.id] = {};
     
     //TODO: Enhance Search API with nested requests and do better filtering here.
-    var value = flow.request.filename.length < 6 ? flow.request.host : flow.request.filename;
+    var filename = RequestUtils.getFilename(flow.request);
+    var value = filename < 6 ? flow.request.host : filename;
     var promise = request.post("/api/search/",{
       data : {
         idsOnly: true,
@@ -69,7 +68,7 @@ require([
         items[flow.id] = parent[attr]; //replace own reference with the existing request so that new flows will end on the new one.
       }
       
-      progressNode.textContent = Math.floor(10000*_i/traffic.length)/100+"%";
+      progressNode.textContent = Math.floor(10000*_i/resultSet.length)/100+"%";
       
     });
     
@@ -86,11 +85,11 @@ require([
   
   //wait for all promises to be finished
   all(promises).then(function(){
-    var pre = domConstruct.create("pre",{},outNode,"only");
+    var pre = domConstruct.create("pre",{},out,"only");
     pre.innerHTML = JSON.stringify(tree, undefined, "\t")
     .replace(/: {},?/g,""); //remove empty elements. comment this line to generate valid JSON
     on(pre, ".openDetail:click",function(){
-      detailView.show(traffic.get(parseInt(this.dataset.flowId)));
+      detailView.showDetails(traffic.get(parseInt(this.dataset.flowId)));
     });
   });
     

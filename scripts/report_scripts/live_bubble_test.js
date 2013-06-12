@@ -31,7 +31,7 @@ require(["d3"],function(d3){
     return host.index;
   }
   
-  traffic.each(function(flow){
+  traffic.query().forEach(function(flow){
     var source = flow.request.client_conn.address[0];
     var target = flow.request.host;
     var edgeName = source + "-" + target;
@@ -58,7 +58,7 @@ require(["d3"],function(d3){
   var minTime, //We cannot calculate minTime before because we never know whether a timestamp is a latest timestamp
       maxTime;
   
-  _.each(hosts,function(host){
+  hosts.forEach(function(host){
     minTime = Math.min(minTime || Number.POSITIVE_INFINITY,host.timestamp);
     maxTime = Math.max(maxTime || Number.NEGATIVE_INFINITY,host.timestamp);
   });
@@ -67,8 +67,8 @@ require(["d3"],function(d3){
   
   // ----
   
-  width = Math.max( $(outNode).width() * 0.85, 480 );  //width
-  height = Math.max( $(outNode).height() * 0.85, 300 ); //height
+  width = Math.max( $(out).width() * 0.85, 480 );  //width
+  height = Math.max( $(out).height() * 0.85, 300 ); //height
   
   var radiusScale = 
       d3.scale.log()
@@ -82,7 +82,7 @@ require(["d3"],function(d3){
   //console.log(minTime,maxTime);
   
   var svg = d3
-  .select(outNode)
+  .select(out)
   .append("svg")
   .attr("height", height)
   .attr("width", width);

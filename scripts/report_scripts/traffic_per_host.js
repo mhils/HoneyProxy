@@ -21,7 +21,7 @@ require([
   var total = 0;
   
   // Iterate over all flows and sum up content lengths
-  traffic.each(function(flow){
+  traffic.query().forEach(function(flow){
     var host = flow.request.host;
     
     //host = /google|gstatic/.test(host) ? "google" : "facebook";
@@ -64,7 +64,7 @@ require([
   a = document.createElement("div");
   a.style.width = "100%";
   a.style.height = "100%";
-  outNode.appendChild(a); 
+  out.appendChild(a); 
   var chart = new Chart(a,{
     title: "Traffic per host"
   });

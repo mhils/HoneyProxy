@@ -4,5 +4,5 @@ for(k in require.modules)
   k.indexOf("ReportScripts") === 0 && delete require.modules[k];
 
 require(["require","./dep"], function(require,dep) {
-  outNode.textContent = dep+"!";
+  out.textContent = dep+"!";
 });

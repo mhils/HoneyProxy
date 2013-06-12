@@ -174,23 +174,41 @@ body {
 }
 .reportEditor {
   width: 50%;
-  /*
-	span.CodeMirror-matchhighlight { 
-	background: #e9e9e9; 
-	}
-	.CodeMirror-focused span.CodeMirror-matchhighlight { 
-		background: #e7e4ff !important;
-	}*/
-
 }
 .reportEditor .progress {
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin-top: 6px;
+  margin-bottom: 4px;
+}
+.reportEditor .bar {
+  overflow: hidden;
+  transition: width 2s;
+  width: 100%;
 }
 .reportEditor .bar:empty {
-  display: none;
+  width: 0%;
+  transition: width 0s;
 }
 .reportEditor .CodeMirror {
-  background-color: white;
   height: auto;
+}
+.reportEditor .CodeMirror-lines {
+  background-color: white;
+}
+.reportEditor span.CodeMirror-matchhighlight {
+  background-color: #fff7c0;
+}
+.reportOutput {
+  padding: 15px;
+  border-right: solid #cccccc 1px;
+  border-bottom: solid #cccccc 1px;
+}
+.reportOutput .out {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+.reportOutput ul.nav {
+  margin-top: -15px;
+  position: absolute;
+  right: 0;
 }

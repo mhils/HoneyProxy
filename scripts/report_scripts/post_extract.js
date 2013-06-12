@@ -2,18 +2,16 @@
  * This report script summarizes all POSTed form data in a JSON array.
  * Great for a quick check to see whether there are any interesting POST requests in your data.
  */
-require([
-  "dojo/dom-construct",
-  "dojo/promise/all",
-  "dojo/on"
-], function(domConstruct, all, on) {
+require(["dojo/promise/all"], function(all) {
+  
+  var resultSet = traffic.query();
   
   //filter all requests for POST requests with form data
-  var requests = traffic.filter(function(flow){
-    return flow.request.method === "POST" && flow.request.hasFormData;
+  var requests = resultSet.filter(function(flow){
+    return flow.request.method === "POST" && RequestUtils.hasFormData(flow.request);
   });
   
-  console.log("Matched requests: "+requests.length+" of "+traffic.length);
+  console.log("Matched requests: "+requests.length+" of "+resultSet.length);
   if(requests.length === 0)
     return alert("No POST requests found!");
   
@@ -40,7 +38,7 @@ require([
       
     }
     
-    var key = "<span class=openDetail data-flow-id="+parseInt(flow.id)+">"+_.escape(flow.request.fullPath)+"</span>";
+    var key = "<span class=openDetail data-flow-id="+parseInt(flow.id)+">"+_.escape(RequestUtils.getFullPath(flow.request))+"</span>";
    	data[key] = prettyData;
   }
   
@@ -52,19 +50,19 @@ require([
   var promises = []; 	
   
   //For reach request, request its form data and push the returned promise into promises.
-  _.each(requests,function(flow){
-    var promise = flow.request.getFormData().then(handleFormData.bind(undefined, flow));
+  requests.forEach(function(flow){
+    var promise = RequestUtils.getFormData(flow.request).then(handleFormData.bind(undefined, flow));
     promises.push(promise);
   });
   
   //dojo/promise/all() gets fulfilled when all passed promises are fulfilled.
   all(promises).then(function(){
-    var pre = domConstruct.create("pre",{},outNode,"only");
+    var pre = domConstruct.create("pre",{},out,"only");
     //flowJSON formats flows
     pre.innerHTML = JSON.stringify(data,undefined,"\t");
     //Register event listener for flows and open detail view when clicked.
     on(pre, ".openDetail:click",function(){
-      detailView.show(traffic.get(parseInt(this.dataset.flowId)));
+      detailView.showDetails(traffic.get(parseInt(this.dataset.flowId)));
     });
   });
   
