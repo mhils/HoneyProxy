@@ -5,7 +5,7 @@
  */
 define(["./AbstractView",
         "../simpleMatcher",
-         "dojo/text!./templates/BasicContentView.ejs"], 
+         "dojo/text!./templates/BasicContentView.html"], 
          function(AbstractView, simpleMatcher, template) {
            
   var BasicContentView = AbstractView.createSubclass([],{

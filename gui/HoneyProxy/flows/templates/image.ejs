@@ -1,8 +1,0 @@
-<div class=preview-image>
-	<img src="<%- model.response.viewUrl %>" alt="preview" data-dojo-attach-point="imageNode" >
-	<dl>
-		<dt>Dimensions</dt><dd data-dojo-attach-point="dimensionsNode"></dd>
-		<dt>File size</dt><dd><%- model.response.contentLengthFormatted %></dd>
-		<dt>Mime</dt><dd><%- model.response.getHeader(/Content-Type/i) %></dd>
-	</dl>
-</div>

@@ -1,5 +1,5 @@
 define(["./AbstractView",
-        "dojo/text!./templates/BinaryView.ejs"], 
+        "dojo/text!./templates/BinaryView.html"], 
         function(AbstractView, template) {
            
   var BinaryView = AbstractView.createSubclass([],{

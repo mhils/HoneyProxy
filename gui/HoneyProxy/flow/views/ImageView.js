@@ -3,7 +3,7 @@
  * loading file content as an image and subscribing to .load() events to display filesize etc.
  */
 define([ "dojo/_base/declare","./AbstractView", "../simpleMatcher", 
-         "dojo/text!./templates/ImageView.ejs"], 
+         "dojo/text!./templates/ImageView.html"], 
          function(declare, AbstractView, simpleMatcher, template) {
    
   var ImageView = declare([AbstractView], {

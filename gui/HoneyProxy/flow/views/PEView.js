@@ -4,7 +4,7 @@
  * this.
  */
 define(["dojo/_base/declare", "lodash", "./BinaryView", "../simpleMatcher",
-        "dojo/text!./templates/PEView.ejs"],
+        "dojo/text!./templates/PEView.html"],
         function(declare, _, BinaryView, simpleMatcher, template) {
            
   var PEView = declare([BinaryView],{

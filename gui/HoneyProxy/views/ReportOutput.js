@@ -5,6 +5,7 @@ define(["dojo/_base/declare",
 ], function(declare, _PopoutMixin, _ReactiveTemplatedWidget, template) {
 
 	return declare([_ReactiveTemplatedWidget, _PopoutMixin], {
+		title: "Report", //title for _PopoutMixin
 		templateString: template
 	});
 
