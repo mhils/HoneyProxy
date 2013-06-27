@@ -22,92 +22,88 @@ define(["dojo/when", "dojo/_base/lang", "dojo/_base/declare", "dojo/store/JsonRe
 
 			return function(listener, includeObjectUpdates) {
 				if (listeners.push(listener) === 1) { // first listener was added, create the query checker and updater
-					queryUpdater = function(changed, existingId) {
+					queryUpdater = function( /*changed, existingId*/ ) {
 						when(results, function(resultsArray) {
-							options = lang.mixin({},results.options);
+							var options = lang.mixin({}, results.options);
 							options.plain = true;
-							when(store.query(results.query,options),function(newResults){
-								var i, l, in_new = {};
+							when(store.query(results.query, options), function(newResults) { //re-query store to obtain new results
+								var _in_old, _in_new;
 
-								newResults.forEach(function(e,i){
-									in_new[store.getIdentity(e)] = i;
-								});
+								//lazy computed identity -> element mapping
+								//for performance reasons these mappings can be omitted if id_is === id_should for all elements.
+								var in_old = function(){
+									if(!_in_old) {
+										_in_old = {};
+										resultsArray.forEach(function(e) {
+											_in_old[store.getIdentity(e)] = e;
+										});
+									}
+									return _in_old;
+								};
+								var in_new = function(){
+									if(!_in_new) {
+										_in_new = {};
+										newResults.forEach(function(e) {
+											_in_new[store.getIdentity(e)] = true;
+										});
+									}
+									return _in_new;
+								};
 
-								for(i=0, l=resultsArray.length; i<l; i++) {
+								var remove = function(i) {
 									var obj = resultsArray[i];
-									var id = store.getIdentity(obj);
-									if(id in in_new){
-										var move_to = in_new[id];
-										if(move_to !== i) {
-											var swap = resultsArray[move_to];
-											resultsArray[move_to] = resultsArray[i]
-											resultsArray[i] = swap;
-											i--;
-										}
-										if((move_to !== i) || includeObjectUpdates) {
-											callListeners(listeners,obj,i+1,move_to);
-											callListeners(listeners,swap,move_to, i+1);
-										}
+									resultsArray.splice(i, 1);
+									callListeners(listeners, obj, i, -1);
+								};
+								var insert = function(i, obj) {
+									resultsArray.splice(i, 0, obj);
+									callListeners(listeners, obj, -1, i);
+								};
+
+								//Not-so trivial algorithm transforming resultsArray into an array
+								//where ident(resultsArray[i]) === ident(newResults[i]) for every i.
+								//Worst Case complexity is O(n^2), but we do much better usually.
+								for (var i = 0; i < resultsArray.length && i < newResults.length; i++) {
+									//Contract: ident(resultsArray[x]) === ident(newResults[x]) for x < i.
+
+									var obj_is = resultsArray[i];
+									var id_is = store.getIdentity(obj_is);
+									var obj_new = newResults[i];
+									var id_should = store.getIdentity(obj_new);
+
+									//trivial case: already in the right position
+									if (id_is === id_should) {
+										if (includeObjectUpdates)
+											callListeners(listeners, obj_is, i, i);
+										continue;
 									}
-								} 
 
-								resultsArray.forEach(function(e,i){
-									var id = store.getIdentity(e);
-									olds[id] = [e,i];
-									if(!(id in in_new)){
-										callListeners(listeners,e,i,-1);
+									//Remove elements that are not present in the new set.
+									if (!(id_is in in_new())) {
+										remove(i);
+										i--;
+										continue;
 									}
 
-									id_map[store.getIdentity(e)] = [i,e];
-								})
+									//less trivial case: element exists in resultsArray, but in a different position.
+									//=> remove there and insert at our position.
+									if (id_should in in_old()) {
+										var obj_move = in_old()[id_should];
+										var oldIndex = resultsArray.indexOf(obj_move);
+										remove(oldIndex);
+										insert(i, obj_move);
+										continue;
 
-								resultsArray.forEach(function(e,i){
-									id_map[store.getIdentity(e)] = [i,e];
-								})
-								newResults = newResults.map(function(e,i){
-									var id = store.getIdentity(e);
-									if(id in id_map) {
-										old_i = id_map[id][0];
-										old_e = id_map[id][1];
-										delete id_map[id];
-
-									}
-									return (id in id_map) ? id_map[i] : e; 
-								});
-
-								//Replace array contents with real results
-								resultsArray.length = 0;
-								resultsArray.push.apply(resultsArray, newResults);
-							});
-
-							/*
-							if (changed) {
-								when((!changed ? -1 : store.getIndex(store.getIdentity(changed), results.query, results.options)), function(newIndex) {
-
-									var oldIndex = results.indexOf(existingId);
-									var removedObject;
-
-									if(oldIndex > -1 && newIndex > -1){ //Move
-										console.log("Move element from %d to %d",oldIndex,newIndex);
-										resultsArray.splice(oldIndex, 1);
-										resultsArray.splice(newIndex, 0, changed);
-									} else if(oldIndex > -1) { //Remove
-										console.log("Remove element from %d",oldIndex);
-										removedObject = resultsArray[oldIndex];
-										resultsArray.splice(oldIndex, 1);
-									} else if(newIndex > -1) { //Add
-										console.log("Insert element at %d",newIndex);
-										resultsArray.splice(newIndex, 0, changed);
+									//element doesn't exist in resultsArray. We need to make a flow out of it as we are querying the store plainly.
 									} else {
-										//Change doesn't affect the result set
-										return;
+										FlowFactory.makeFlow(obj_new);
+										insert(i, obj_new);
+										continue;
 									}
 
-									if(includeObjectUpdates || (oldIndex !== newIndex))
-										callListeners(listeners, removedObject || changed, oldIndex, newIndex);
-								});
-							}
-							*/
+
+								}
+							});
 						});
 
 					};
@@ -131,11 +127,13 @@ define(["dojo/when", "dojo/_base/lang", "dojo/_base/declare", "dojo/store/JsonRe
 			};
 		},
 		query: function(query, options) {
-			var store = this;
 			var results = this.inherited(arguments);
-			//transform json objects into flows
-			if (options.plain)
+			options = options || {};
+
+			if (options.plain) //used to speed up observe queries
 				return results;
+
+			//transform json objects into flows
 			results.then(function(resultsArray) {
 				resultsArray.forEach(function(flowData) {
 					FlowFactory.makeFlow(flowData);
@@ -148,8 +146,11 @@ define(["dojo/when", "dojo/_base/lang", "dojo/_base/declare", "dojo/store/JsonRe
 			results.observe = this._observeFunc(results);
 			return results;
 		},
-		notify: function(changed, existingId) {
-			console.error("FIXME unimplemented", arguments);
+		notify: function(object, existingId) {
+			var updaters = this.queryUpdaters.slice();
+			for(var i = 0, l = updaters.length; i < l; i++){
+				updaters[i](object, existingId);
+			}
 		},
 		on: function() {
 			console.error("FIXME unimplemented", arguments);

@@ -3,7 +3,7 @@
  */
 define(
 ["../flow/FlowFactory"], function(FlowFactory) {
-	return FlowFactory.createFlow({
+	var flow = {
 		"id": 1,
 		"version": [0, 9],
 		"view": true, //TODO
@@ -46,5 +46,7 @@ define(
 			"httpversion": [1, 1]
 		},
 		"error": null
-	});
+	};
+	FlowFactory.makeFlow(flow);
+	return flow;
 });
