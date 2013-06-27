@@ -5,7 +5,7 @@ define(["dojo/_base/declare", "lodash", "../util/Observer", "./views/all"], func
 			declare.safeMixin(this, args);
 			this.defaultView = this.defaultView || this.views[this.views.length - 1];
 		},
-		createFlow: function(flow) {
+		makeFlow: function(flow) {
 
 			Object.defineProperty(flow, "filters", {
 				value: new Observer.ObservablePolyfillMixin(),

@@ -1,6 +1,8 @@
-define(["./flow/FlowStore","dojo/store/Observable"],function(FlowStore, Observable){
+define(["./flow/FlowStore"],function(FlowStore){
 	
-	var flowStore = new Observable(new FlowStore());
+	var flowStore = new FlowStore({
+		target: "/api/flows/"
+	});
 
 	return flowStore;
 });

@@ -20,14 +20,9 @@ require(
 		sampleFlow: sampleFlow
 	};
 
-	when(websocket.authenticated, function() {
-		flowStore.fetch();
-	});
-
-
-	topic.subscribe("HoneyProxy/newFlow", function(flowData) {
-		var flow = FlowFactory.createFlow(flowData);
-		flowStore.add(flow);
+	topic.subscribe("HoneyProxy/newFlow", function(flow) {
+		FlowFactory.makeFlow(flow);
+		flowStore.notify(flow);
 	});
 
 	window.setTimeout(versionCheck, 3000);
