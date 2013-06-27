@@ -58,6 +58,7 @@ define([
 
 	//TODO: When refactoring, replace with code that doesn't depend on domReady
 	//TODO: When refactoring, remove all references to specific Views and make views lazy-load
+	/*
 	var fixme = traffic.query();
 	fixme.on = function(type, callback, context) {
 		switch (type) {
@@ -79,7 +80,7 @@ define([
 				throw "unimplemented";
 		}
 		return fixme.observe();
-	};
+	};*/
 	/*
 	var trafficView = new TrafficView({
 		collection: fixme,

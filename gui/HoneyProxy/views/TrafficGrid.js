@@ -103,6 +103,11 @@ define(["dojo/_base/declare",
 			this.select(target);
 		},
 		cellNavigation: false,
-		noDataMessage: tutorial
+		noDataMessage: tutorial,
+		loadingMessage: "<i>Loading...</i>",
+		farOffRemoval: 2000, /* Pixels! If this gets too small, dgrid fails. */
+		minRowsPerPage: 50,
+		maxRowsPerPage: 250,
+		queryRowsOverlap: 1
 	});
 });

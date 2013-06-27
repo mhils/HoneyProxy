@@ -23,7 +23,7 @@ define(["dojo/when", "dojo/_base/lang", "dojo/_base/declare", "dojo/store/JsonRe
 
 			return function(listener, includeObjectUpdates) {
 				if (listeners.push(listener) === 1) { // first listener was added, create the query checker and updater
-					queryUpdater = function( /*changed, existingId*/ ) {
+					queryUpdater = function( changed, existingId ) {
 						when(results, function(resultsArray) {
 							var options = lang.mixin({}, results.options);
 							options.plain = true;
@@ -75,7 +75,7 @@ define(["dojo/when", "dojo/_base/lang", "dojo/_base/declare", "dojo/store/JsonRe
 
 									//trivial case: already in the right position
 									if (id_is === id_should) {
-										if (includeObjectUpdates)
+										if (includeObjectUpdates && existingId === id_is)
 											callListeners(listeners, obj_is, i, i);
 										continue;
 									}
@@ -109,17 +109,20 @@ define(["dojo/when", "dojo/_base/lang", "dojo/_base/declare", "dojo/store/JsonRe
 						});
 
 					};
-					store.queryUpdaters.push(queryUpdater);
 
+					console.log("add queryUpdater #%d",store.queryUpdaters.length);
+					store.queryUpdaters.push(queryUpdater);
 				}
 
 				var handle = {};
 				handle.cancel = function() {
+					console.log("handle.cancel");
 					// remove this listener
 					var index = listeners.indexOf(listener);
 					if (index > -1) { // check to make sure we haven't already called cancel
 						listeners.splice(index, 1);
 						if (!listeners.length) {
+							console.log("remove queryUpdater");
 							// no more listeners, remove the query updater too
 							store.queryUpdaters.splice(store.queryUpdaters.indexOf(queryUpdater), 1);
 						}
@@ -129,16 +132,21 @@ define(["dojo/when", "dojo/_base/lang", "dojo/_base/declare", "dojo/store/JsonRe
 			};
 		},
 		query: function(query, options) {
+			console.log("query", query, options)
 			var results = this.inherited(arguments);
 			options = options || {};
-
-			if (options.plain) //used to speed up observe queries
-				return results;
 
 			//FIXME: Return to JsonRest solution
 			results.total = results.then(function(resultsArray){
 				return resultsArray.length;
 			});
+			results.then(function(resultsArray) {
+				resultsArray.splice(0,options.start);
+				resultsArray.splice(options.count,resultsArray.length - options.count);
+			});
+
+			if (options.plain) //used to speed up observe queries
+				return results;
 
 			//transform json objects into flows
 			results.then(function(resultsArray) {

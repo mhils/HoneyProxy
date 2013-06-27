@@ -17,7 +17,8 @@ require(
 	//Debug
 	window.HoneyProxy = {
 		flowStore: flowStore,
-		sampleFlow: sampleFlow
+		sampleFlow: sampleFlow,
+		MainLayout: MainLayout
 	};
 
 	topic.subscribe("HoneyProxy/newFlow", function(flow) {
