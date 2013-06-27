@@ -1,7 +1,7 @@
 /**
  * Implements dojo/store/api/Store
  */
-define(["dojo/when", "dojo/_base/declare", "dojo/store/JsonRest", "./FlowFactory"], function(when, declare, JsonRest, FlowFactory) {
+define(["dojo/when", "dojo/_base/lang", "dojo/_base/declare", "dojo/store/JsonRest", "./FlowFactory"], function(when, lang, declare, JsonRest, FlowFactory) {
 
 	var callListeners = function(listeners, object, removedFrom, insertedInto) {
 		var copyListeners = listeners.slice();
@@ -14,9 +14,8 @@ define(["dojo/when", "dojo/_base/declare", "dojo/store/JsonRest", "./FlowFactory
 	var FlowStore = declare([JsonRest], {
 		constructor: function() {
 			this.queryUpdaters = [];
-			this.revision = 0;
 		},
-		_observeFunc: function(queryRevision, results) {
+		_observeFunc: function(results) {
 			var store = this;
 			var listeners = [],
 				queryUpdater;
@@ -25,9 +24,63 @@ define(["dojo/when", "dojo/_base/declare", "dojo/store/JsonRest", "./FlowFactory
 				if (listeners.push(listener) === 1) { // first listener was added, create the query checker and updater
 					queryUpdater = function(changed, existingId) {
 						when(results, function(resultsArray) {
-							if (++queryRevision !== store.revision) {
-								throw new Error("Query is out of date, you must observe() the query prior to any data modifications");
-							}
+							options = lang.mixin({},results.options);
+							options.plain = true;
+							when(store.query(results.query,options),function(newResults){
+								var i, l, in_new = {};
+
+								newResults.forEach(function(e,i){
+									in_new[store.getIdentity(e)] = i;
+								});
+
+								for(i=0, l=resultsArray.length; i<l; i++) {
+									var obj = resultsArray[i];
+									var id = store.getIdentity(obj);
+									if(id in in_new){
+										var move_to = in_new[id];
+										if(move_to !== i) {
+											var swap = resultsArray[move_to];
+											resultsArray[move_to] = resultsArray[i]
+											resultsArray[i] = swap;
+											i--;
+										}
+										if((move_to !== i) || includeObjectUpdates) {
+											callListeners(listeners,obj,i+1,move_to);
+											callListeners(listeners,swap,move_to, i+1);
+										}
+									}
+								} 
+
+								resultsArray.forEach(function(e,i){
+									var id = store.getIdentity(e);
+									olds[id] = [e,i];
+									if(!(id in in_new)){
+										callListeners(listeners,e,i,-1);
+									}
+
+									id_map[store.getIdentity(e)] = [i,e];
+								})
+
+								resultsArray.forEach(function(e,i){
+									id_map[store.getIdentity(e)] = [i,e];
+								})
+								newResults = newResults.map(function(e,i){
+									var id = store.getIdentity(e);
+									if(id in id_map) {
+										old_i = id_map[id][0];
+										old_e = id_map[id][1];
+										delete id_map[id];
+
+									}
+									return (id in id_map) ? id_map[i] : e; 
+								});
+
+								//Replace array contents with real results
+								resultsArray.length = 0;
+								resultsArray.push.apply(resultsArray, newResults);
+							});
+
+							/*
 							if (changed) {
 								when((!changed ? -1 : store.getIndex(store.getIdentity(changed), results.query, results.options)), function(newIndex) {
 
@@ -54,12 +107,12 @@ define(["dojo/when", "dojo/_base/declare", "dojo/store/JsonRest", "./FlowFactory
 										callListeners(listeners, removedObject || changed, oldIndex, newIndex);
 								});
 							}
-
+							*/
 						});
 
 					};
 					store.queryUpdaters.push(queryUpdater);
-					
+
 				}
 
 				var handle = {};
@@ -81,6 +134,8 @@ define(["dojo/when", "dojo/_base/declare", "dojo/store/JsonRest", "./FlowFactory
 			var store = this;
 			var results = this.inherited(arguments);
 			//transform json objects into flows
+			if (options.plain)
+				return results;
 			results.then(function(resultsArray) {
 				resultsArray.forEach(function(flowData) {
 					FlowFactory.makeFlow(flowData);
@@ -90,28 +145,10 @@ define(["dojo/when", "dojo/_base/declare", "dojo/store/JsonRest", "./FlowFactory
 			results.query = query;
 			results.options = options;
 
-			results.observe = this._observeFunc(this.revision, results);
-			results.indexOf = function(id) {
-				if (!id)
-					return -1;
-				return when(results, function(resultsArray) {
-					for (var i = 0, l = resultsArray.length; i < l; i++) {
-						var object = resultsArray[i];
-						if (store.getIdentity(object) === id) {
-							return i;
-						}
-					}
-					return -1;
-				});
-			};
+			results.observe = this._observeFunc(results);
 			return results;
 		},
-		getIndex: function(id, query, options) {
-			console.warn("getIndex", arguments);
-			return -1;
-		},
 		notify: function(changed, existingId) {
-			this.revision++;
 			console.error("FIXME unimplemented", arguments);
 		},
 		on: function() {
