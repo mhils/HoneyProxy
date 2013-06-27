@@ -4,6 +4,7 @@
 define(["dojo/when", "dojo/_base/lang", "dojo/_base/declare", "dojo/store/JsonRest", "./FlowFactory"], function(when, lang, declare, JsonRest, FlowFactory) {
 
 	var callListeners = function(listeners, object, removedFrom, insertedInto) {
+		console.log("callListeners", arguments);
 		var copyListeners = listeners.slice();
 		for (var i = 0, l = copyListeners.length; i < l; i++) {
 			var listener = copyListeners[i];
@@ -27,6 +28,7 @@ define(["dojo/when", "dojo/_base/lang", "dojo/_base/declare", "dojo/store/JsonRe
 							var options = lang.mixin({}, results.options);
 							options.plain = true;
 							when(store.query(results.query, options), function(newResults) { //re-query store to obtain new results
+
 								var _in_old, _in_new;
 
 								//lazy computed identity -> element mapping
@@ -63,13 +65,13 @@ define(["dojo/when", "dojo/_base/lang", "dojo/_base/declare", "dojo/store/JsonRe
 								//Not-so trivial algorithm transforming resultsArray into an array
 								//where ident(resultsArray[i]) === ident(newResults[i]) for every i.
 								//Worst Case complexity is O(n^2), but we do much better usually.
-								for (var i = 0; i < resultsArray.length && i < newResults.length; i++) {
+								for (var i = 0; i < resultsArray.length || i < newResults.length; i++) {
 									//Contract: ident(resultsArray[x]) === ident(newResults[x]) for x < i.
 
 									var obj_is = resultsArray[i];
-									var id_is = store.getIdentity(obj_is);
+									var id_is = obj_is ? store.getIdentity(obj_is) : undefined;
 									var obj_new = newResults[i];
-									var id_should = store.getIdentity(obj_new);
+									var id_should = obj_new ? store.getIdentity(obj_new) : undefined;
 
 									//trivial case: already in the right position
 									if (id_is === id_should) {
@@ -79,7 +81,7 @@ define(["dojo/when", "dojo/_base/lang", "dojo/_base/declare", "dojo/store/JsonRe
 									}
 
 									//Remove elements that are not present in the new set.
-									if (!(id_is in in_new())) {
+									if (id_is && !(id_is in in_new())) {
 										remove(i);
 										i--;
 										continue;
@@ -132,6 +134,11 @@ define(["dojo/when", "dojo/_base/lang", "dojo/_base/declare", "dojo/store/JsonRe
 
 			if (options.plain) //used to speed up observe queries
 				return results;
+
+			//FIXME: Return to JsonRest solution
+			results.total = results.then(function(resultsArray){
+				return resultsArray.length;
+			});
 
 			//transform json objects into flows
 			results.then(function(resultsArray) {
