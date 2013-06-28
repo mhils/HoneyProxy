@@ -132,11 +132,18 @@ define(["dojo/when", "dojo/_base/lang", "dojo/_base/declare", "dojo/store/JsonRe
 			};
 		},
 		query: function(query, options) {
-			console.log("query", query, options)
+			console.log("query", query, options);
 			var results = this.inherited(arguments);
 			options = options || {};
 
 			//FIXME: Return to JsonRest solution
+
+			results.then(function(resultsArray){
+				//workaround for  https://github.com/SitePen/dgrid/issues/363
+				if(options.start + options.count === resultsArray.length)
+					options.count += 1;
+				//console.log("start: %d, count: %d, sum: %d, total: %d",options.start, options.count, options.start + options.count, resultsArray.length);
+			});
 			results.total = results.then(function(resultsArray){
 				return resultsArray.length;
 			});
