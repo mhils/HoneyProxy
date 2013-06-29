@@ -173,9 +173,6 @@ define(["dojo/when", "dojo/_base/lang", "dojo/_base/declare", "dojo/store/JsonRe
 			for(var i = 0, l = updaters.length; i < l; i++){
 				updaters[i](object, existingId);
 			}
-		},
-		on: function() {
-			console.error("FIXME unimplemented", arguments);
 		}
 	});
 	return FlowStore;

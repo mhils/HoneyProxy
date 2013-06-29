@@ -24,4 +24,4 @@
 	url = https://github.com/kriszyp/put-selector.git
 [submodule "gui/lib/dgrid"]
 	path = gui/lib/dgrid
-	url = https://github.com/SitePen/dgrid.git
+	url = https://github.com/mhils/dgrid.git
