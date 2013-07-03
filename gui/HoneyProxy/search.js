@@ -141,7 +141,7 @@ define([ "lodash", "jquery", "./traffic" ], function(_, $, traffic) {
 		$("#includeContent").on("change",
 			searchFields.trigger.bind(searchFields, "blur"));
 		
-		traffic.on("add", function(flow) {
+		/*traffic.on("add", function(flow) {
 			//premium handling of the filter to avoid flickering
 			if ($("#filter").data("active") === true)
 				flow.addFilterClass("filter-hide");
@@ -152,7 +152,7 @@ define([ "lodash", "jquery", "./traffic" ], function(_, $, traffic) {
 					_search($el, [ flow.get("id") ]);
 				}
 			});
-		});
+		});*/
 	});
 	
 	return {

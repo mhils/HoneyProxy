@@ -21,26 +21,33 @@ define([
     "options": function(type, node, optionArray) {
       optionArray = optionArray || [];
       var optionsFragment = document.createDocumentFragment();
-      optionArray.forEach(function(optionName){
+      optionArray.forEach(function(optionName) {
         var option = document.createElement("option");
         option.value = option.textContent = optionName;
         optionsFragment.appendChild(option);
       });
-      domConstruct.place(optionsFragment,node,"only");
-    }, 
-    "select": function(type, node, value){
+      domConstruct.place(optionsFragment, node, "only");
+    },
+    "select": function(type, node, value) {
       //query('option:not([value="'+value+'"])', node).removeAttr("selected");
-      query('option[value="'+value+'"]', node).attr("selected","selected");
+      query('option[value="' + value + '"]', node).attr("selected", "selected");
+    },
+    "css": function(type, node, value) {
+      if (value)
+        node.style[value[0]] = value[1];
+    },
+    "on": function(type, node, value) {
+      eventListenerBinding.call(this, value[0], node, value[1]);
     }
   };
 
-  var replaceNode = function(type, node, value) {
+  var appendChild = function(type, node, value) {
     if (!value)
       value = domConstruct.create("div");
     domConstruct.place(value, node, "only");
     node.dataset.suppressBind = true;
   };
-  default_bindings.replaceNode = replaceNode;
+  default_bindings.appendChild = appendChild;
   default_bindings.widget = function(type, node, value) {
     if (value && node.firstChild === value.domNode)
       return;
@@ -53,7 +60,42 @@ define([
     if (value) {
       this.own(value);
     }
-    replaceNode(type, node, value ? value.domNode : undefined);
+    appendChild(type, node, value ? value.domNode : undefined);
+  };
+
+  var children = function(type, node, value) {
+    var self = this;
+
+    //remove existing nodes
+    Array.prototype.slice.call(node.children).forEach(function(e) {
+      if (value.indexOf(e) === -1) {
+        var widget = registry.byNode(e);
+        if (widget)
+          widget.destroyRecursive(false);
+      } else {
+        e._existed = true;
+      }
+      node.removeChild(e);
+    });
+
+    //Add new ones
+    value.forEach(function(e) {
+      node.appendChild(e);
+      if (e._existed) {
+        delete e._existed;
+      } else {
+        var widget = registry.byNode(e);
+        if (widget)
+          self.own(widget);
+      }
+    });
+  };
+
+  default_bindings.children = children;
+  default_bindings.widgets = function(type, node, value) {
+    children.call(this, type, node, value.map(function(e) {
+      return e.domNode ? e.domNode : e;
+    }));
   };
 
   var hide = function(type, node, value) {
@@ -71,11 +113,11 @@ define([
   var eventListenerBinding = function(type, node, func) {
     var evt_handle = on(node, type, func);
     //Remove event handler before updating the next bindings
-    var asp_handle = aspect.before(this,"updateBindings",function(){
+    var asp_handle = aspect.before(this, "updateBindings", function() {
       evt_handle.remove();
       asp_handle.remove();
     });
-    this.own( evt_handle, asp_handle );
+    this.own(evt_handle, asp_handle);
   };
 
   ["click", "load", "change"].forEach(function(event) {

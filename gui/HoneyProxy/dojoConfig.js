@@ -58,6 +58,10 @@ var dojoConfig = {
     location: "./lib/put-selector",
     destLocation:"./lib/put-selector"
 	}, {
+    name: "bootstrap",
+    location: "./lib/bootstrap",
+    destLocation:"./lib/bootstrap"
+	}, {
     name: "legacy",
     location: "./lib/legacy",
     destLocation:"./lib/legacy"

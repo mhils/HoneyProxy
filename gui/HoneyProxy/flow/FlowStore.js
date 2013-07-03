@@ -175,5 +175,9 @@ define(["dojo/when", "dojo/_base/lang", "dojo/_base/declare", "dojo/store/JsonRe
 			}
 		}
 	});
+	//TODO: notify dgrid if total count has changed
+	//https://github.com/SitePen/dgrid/issues/363
+
+
 	return FlowStore;
 });
