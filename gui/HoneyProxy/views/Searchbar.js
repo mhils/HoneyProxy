@@ -9,27 +9,54 @@ define(["dojo/_base/declare",
 	_ReactiveTemplatedWidget,
 	template,
 	templateButton) {
-
+        
 	var FilterButton = declare([_ReactiveTemplatedWidget], {
 		templateString: templateButton,
 		empty: true,
-		value: function() {
-			return this.inputNode.value.trim();
-		},
+        query: "",
+        value: "",
+        state: "active",
+        postCreate: function(){
+            this.inherited(arguments);
+            this.updateStatus();
+        },
 		onSubmit: function(event) {
-			event.preventDefault();
-			if (this.query !== this.value()) {
-				this.query = this.value();
+			event && event.preventDefault();
+			if (this.query !== this.value) {
+				this.query = this.value;
 				this.notify({name: "query"});
-				this.onBlur();
+				this.updateStatus();
 			}
 		},
+        onClick: function(event) {
+          if(this.state === "closable") {
+              event.preventDefault();
+              this.inputNode.value = "";
+              this.onInput();
+              this.onSubmit();
+          }
+        },
 		onInput: function() {
-			this.empty = (this.value() === "");
-			this.updateBindings();
+            this.value = this.inputNode.value.trim();
+			this.empty = (this.value === "");
+            this.notify({name: "value"});
+			this.updateStatus();
 		},
-		onBlur: function() {
-			this.highlightSubmit = (this.value() !== this.query);
+        onFocus: function(){
+          this.focused = true;
+          this.updateStatus();
+        },
+        onBlur: function(){
+          this.focused = false;
+          //Uncomment the next two lines to disable autosearch on focus lost
+          if(this.value !== this.query)
+            this.onSubmit();
+          this.updateStatus();
+        },
+		updateStatus: function() {
+            this.state = (this.value === this.query) ? 
+                (this.focused || this.empty ? "done" : "closable") :
+                (this.focused ? "active" : "warn");
 			this.updateBindings();
 		}
 	});
@@ -60,41 +87,72 @@ define(["dojo/_base/declare",
 		},
 		addFilter: function(options) {
 			var self = this;
+            options.last = true;
 			var filter = new FilterButton(options);
 			this.own(Observer.observe(filter, function(records) {
 				if (records.name === "query")
 					self.onSubmit(filter);
+                if (records.name === "value")
+					self.onInput(filter);
 			},true));
+
+            var last = this.filters[this.filters.length-1];
+            if(last) {
+                last.last = false;
+                last.updateStatus();
+            }
 			this.filters.push(filter);
-			this.filtersNode.style.opacity = 0;
+            this.updateBindings();
+            filter.domNode.style.opacity = "0.0";
 			this.filtersNode.appendChild(filter.domNode);
-			this.filtersNode.style.opacity = 1;
-			this.updateBindings();
+            
+            window.setTimeout(function(){
+                filter.domNode.style.opacity = "";
+            },0);
+            
 		},
 		removeFilter: function(filter) {
 			this.colors.unshift(filter.color);
 			filter.destroyRecursive(false);
+            var index = this.filters.indexOf(filter);
+            if(index == this.filters.length-1) {
+                this.filters[index-1].last = true;
+                this.filters[index-1].updateStatus();
+            }
 			this.filters.splice(this.filters.indexOf(filter), 1);
 			this.updateBindings();
 		},
+        onInput: function(filter) {
+            var last = this.filters[this.filters.length - 1];
+            var secondToLast = this.filters[this.filters.length - 2];
+            //Add new one if last one has content
+			if (!last.empty && this.colors.length > 0) {
+				this.addFilter({
+					color: this.colors.shift()
+				});
+                this.getParent().resize();
+			}
+            if (filter !== last && !last.fixed && last.empty && secondToLast.empty) {
+				//Remove last one if we just cleared the second last one
+				this.removeFilter(last);
+                this.getParent().resize();
+			}
+        },
 		onSubmit: function(filter) {
 			var last = this.filters[this.filters.length - 1];
 			var secondToLast = this.filters[this.filters.length - 2];
 
 			//remove filter if empty and not last
 			if (!filter.fixed && filter.empty && last !== filter) {
+                var focusIndex = Math.max(0,this.filters.indexOf(filter)-1);
 				this.removeFilter(filter);
+                this.filters[focusIndex].inputNode.focus();
+                this.getParent().resize();
 			} else if (!last.fixed && last.empty && secondToLast.empty) {
-				//Remove last one if we just cleared either the last one or the second last one
+				//Remove last one if we just cleared either the second last one
 				this.removeFilter(last);
+                this.getParent().resize();
 			}
-			//Add new one if last one has content
-			if (!last.empty && this.colors.length > 0) {
-				this.addFilter({
-					color: this.colors.shift()
-				});
-			}
-			this.getParent().resize();
 
 			var query = {};
 			this.filters.forEach(function(filter) {

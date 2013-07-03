@@ -129,7 +129,7 @@ define([
     this.own(evt_handle, asp_handle);
   };
 
-  ["click", "load", "change","input","submit","blur"].forEach(function(event) {
+  ["click", "load", "change","input","submit","blur","focus","mouseover","mouseout"].forEach(function(event) {
     default_bindings[event] = eventListenerBinding;
   });
 
