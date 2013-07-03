@@ -1,5 +1,12 @@
-<div class="btn-group">
-  <button disabled class="btn btn-mini">
-  	<i data-bind="className: model.isfilter ?  'icon-filter' : 'icon-sign-blank'; css: ['color',model.color]"></i> <span data-bind="textContent: model.query"></span></button>
-  <button class="btn btn-mini" data-bind="click: view.onClick"><span class="close">&times;</span></button>
-</div>
+<form class="query input-prepend input-append span3" data-bind="toggleClass: ['empty',view.empty,'always-visible',view.alwaysVisible];
+														 submit: view.onSubmit.bind(view)">
+	<span class="add-on" data-bind="css: ['color',view.color];">
+		<i data-bind="className: view.filter?'icon-filter':'icon-tag'"></i></span>
+	<input type="text" class="span2" data-bind="bind: [view,'inputNode'];
+												input: view.onInput.bind(view);
+												blur: view.onBlur.bind(view);
+												placeholder: view.filter?'Filter':'Highlight'">
+	<button class="btn" tabindex="-1" data-bind="toggleClass: ['btn-info',view.highlightSubmit];
+												 title: view.highlightSubmit ? 'This query has not been submitted yet.' : 'Submit'">
+		<i class="icon-caret-right"></i></button>
+</form>

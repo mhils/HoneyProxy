@@ -27,8 +27,12 @@ define(["dojo/_base/declare"], function(declare) {
 
 
 
-  Observer.observe = function(obj, observer) {
+  Observer.observe = function(obj, observer, ownable) {
     obj._observe.push(observer);
+    if(ownable)
+      return {"remove": function(){
+        Observer.unobserve(obj,observer);
+      }};
   };
   Observer.unobserve = function(obj, observer) {
     var index = obj._observe.indexOf(observer);

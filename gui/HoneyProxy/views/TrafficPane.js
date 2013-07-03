@@ -1,15 +1,17 @@
 /**
  * Main traffic view. Shows traffic table, search and details
  */
-define(["dojo/_base/declare",
+define(["dojo/aspect",
+		"dojo/_base/declare",
 		"dijit/layout/BorderContainer",
+		"../util/Observer",
 		"./_DetailViewMixin",
 		"dijit/layout/ContentPane",
 		"./Searchbar",
 		"./TrafficGrid",
 		"./TrafficSidebar",
 		"HoneyProxy/traffic"
-], function(declare, BorderContainer, _DetailViewMixin, ContentPane, Searchbar, TrafficGrid, TrafficSidebar, flowStore) {
+], function(aspect, declare, BorderContainer, Observer, _DetailViewMixin, ContentPane, Searchbar, TrafficGrid, TrafficSidebar, flowStore) {
 
 	return declare([BorderContainer, _DetailViewMixin], {
 		design: "sidebar",
@@ -23,25 +25,16 @@ define(["dojo/_base/declare",
 				region: "top",
 				splitter: false
 			});
+			this.own(Observer.observe(this.searchbar,function(record){
+				if(record.name === "query")
+					self.grid.set("query",self.searchbar.query);
+			},true));
+			this.addChild(this.searchbar);
 
 			//Main Traffic Grid
 			this.grid = new TrafficGrid({
 				store: flowStore
 			});
-
-			this.gridPane = new ContentPane({
-				region: "center",
-				splitter: true,
-				content: this.grid
-			});
-
-			//Sidebar
-			this.sidebar = new TrafficSidebar({
-				region: "right",
-				splitter: true
-			});
-
-
 			//Wire Grid Selection to DetailView
 			this.grid.on("dgrid-select", function(event) {
 				//if details have been hidden, don't open them on keyboard navigation
@@ -59,12 +52,22 @@ define(["dojo/_base/declare",
 				self.showDetails(self.grid.row(selectedRow).data);
 			});
 
-
-
-			//populate trafficPane
-			this.addChild(this.searchbar);
+			//Grid Pane Wrapper
+			this.gridPane = new ContentPane({
+				region: "center",
+				splitter: true,
+				content: this.grid
+			});
 			this.addChild(this.gridPane);
+
+			/*
+			//Sidebar
+			this.sidebar = new TrafficSidebar({
+				region: "right",
+				splitter: true
+			});
 			this.addChild(this.sidebar);
+			*/
 		}
 	});
 });

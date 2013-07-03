@@ -38,6 +38,15 @@ define([
     },
     "on": function(type, node, value) {
       eventListenerBinding.call(this, value[0], node, value[1]);
+    },
+    "toggleClass": function(type, node, value) {
+      value = value.slice();
+      while(value.length > 0){
+        var className = value.shift();
+        var show = !!value.shift();
+        (show ? node.classList.add : node.classList.remove).call(node.classList,className);
+      }
+      
     }
   };
 
@@ -120,7 +129,7 @@ define([
     this.own(evt_handle, asp_handle);
   };
 
-  ["click", "load", "change"].forEach(function(event) {
+  ["click", "load", "change","input","submit","blur"].forEach(function(event) {
     default_bindings[event] = eventListenerBinding;
   });
 
