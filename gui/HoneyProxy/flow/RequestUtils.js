@@ -1,9 +1,17 @@
-define(["dojo/_base/lang", "dojo/Deferred", "./MessageUtils", "../utilities"], function(lang, Deferred, MessageUtils, utilities) {
+define(["dojo/_base/lang", "dojo/Deferred", "./MessageUtils"], function(lang, Deferred, MessageUtils) {
 	"use strict";
 
 	var defaultPorts = {
 		"http": 80,
 		"https": 443
+	};
+
+	var _parseParameter = function(pairStr) {
+		var param = {};
+		var pair = pairStr.split("=", 2);
+		param.name = pair[0];
+		param.value = (pair.length === 1) ? "" : pair[1];
+		return param;
 	};
 
 	var RequestUtils = lang.mixin({}, MessageUtils);
@@ -24,7 +32,7 @@ define(["dojo/_base/lang", "dojo/Deferred", "./MessageUtils", "../utilities"], f
 	RequestUtils.getFormData = function(request) {
 		var def = new Deferred();
 		RequestUtils.getContent(request).then(function(data) {
-			data = utilities.parseParameters(data);
+			data = data.split("&").map(_parseParameter);
 			def.resolve(data);
 		});
 		return def;
