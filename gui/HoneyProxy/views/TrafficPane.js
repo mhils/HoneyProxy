@@ -1,17 +1,15 @@
 /**
  * Main traffic view. Shows traffic table, search and details
  */
-define(["dojo/aspect",
-		"dojo/_base/declare",
+define(["dojo/_base/declare",
 		"dijit/layout/BorderContainer",
-		"../util/Observer",
 		"./_DetailViewMixin",
+		"../util/Observer",
 		"dijit/layout/ContentPane",
 		"./Searchbar",
 		"./TrafficGrid",
-		"./TrafficSidebar",
-		"HoneyProxy/traffic"
-], function(aspect, declare, BorderContainer, Observer, _DetailViewMixin, ContentPane, Searchbar, TrafficGrid, TrafficSidebar, flowStore) {
+		"../traffic"
+], function(declare, BorderContainer, _DetailViewMixin, Observer, ContentPane, Searchbar, TrafficGrid, flowStore) {
 
 	return declare([BorderContainer, _DetailViewMixin], {
 		design: "sidebar",
@@ -59,15 +57,6 @@ define(["dojo/aspect",
 				content: this.grid
 			});
 			this.addChild(this.gridPane);
-
-			/*
-			//Sidebar
-			this.sidebar = new TrafficSidebar({
-				region: "right",
-				splitter: true
-			});
-			this.addChild(this.sidebar);
-			*/
 		}
 	});
 });

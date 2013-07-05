@@ -1,21 +1,29 @@
 require(["d3"],function(d3){
+
+  //Node Opacity: Last Activity
+  //Node radius:  Content Size
+  //Node Color:   Random
+  //Line Color:   Request Count
   
-  //Color:
-  //    Red <--> Blue
-  // Client <--> Server
-  //
-  //Opacity:     Last activity
-  //Node radius: Content size
-  //Line width:  Request count
+  // There is no proper destructor. :(
+  // Reload the page if you experience performance issues.
+  
+  var flows = traffic.query();
   
   var hostMapping = {},
       hosts = [],
       linkMapping = {},
       links = [],
-      maxSize = 0;
+      minTime,
+      maxTime,
+      maxSize,
+      maxRequestCount,
+      start = function(){};
   
-  
+  /* ### Prepare data ### */
   function addHost(addr,message){
+    
+    //Add new element if neccessary
     if(!(addr in hostMapping)){
       hostMapping[addr] = {
         index: hosts.length
@@ -24,23 +32,33 @@ require(["d3"],function(d3){
         name: addr,
         size: 0,
         sourceCount: 0,
-        targetCount: 0,
-        timestamp: 0
+        targetCount: 0
       });
     }
+    
+    //set element props
     var host = hostMapping[addr];
     var data = hosts[host.index];
     data.size += message.contentLength;
-    maxSize = Math.max(maxSize, data.size);
-    data.timestamp = Math.max(data.timestamp, message.timestamp_end);
+    data.timestamp = Math.max(data.timestamp || 0, message.timestamp_end);
+    
+    //set general min max props
+    maxSize = Math.max(maxSize || 0, data.size);
+    minTime = Math.min(minTime || Number.POSITIVE_INFINITY,message.timestamp_end);
+    maxTime = Math.max(maxTime || Number.NEGATIVE_INFINITY,message.timestamp_end);
+    
     //data.flows.push(flow);
     return host.index;
   }
-  
-  traffic.query().forEach(function(flow){
+  function getLinkName(flow){
     var source = flow.request.client_conn.address[0];
     var target = flow.request.host;
-    var linkName = source + "-" + target;
+    return source + "-" + target;
+  }
+  function addFlow(flow){
+    var source = flow.request.client_conn.address[0];
+    var target = flow.request.host;
+    var linkName = getLinkName(flow);
     
     var sourceIndex = addHost(source,flow.request);
     hosts[sourceIndex].sourceCount++;
@@ -57,84 +75,113 @@ require(["d3"],function(d3){
     }
     var link = links[linkMapping[linkName]];
     link.requestCount++;
+    maxRequestCount = Math.max(maxRequestCount || 10, link.requestCount);
+  }
+  
+  /* ### Graph Styling ### */
+  var radiusScale = d3.scale.log().range([3, 10]);
+  var opacityScale = d3.scale.pow().exponent(2).range([0.1,1]);
+  var colorScale = d3.scale.category20();
+  var linkColorScale = d3.interpolateRgb("#666", "#C73C3C");
+  
+  function updateNodeSelectionStyle(nodes){
+    radiusScale.domain([1, maxSize]);
+    opacityScale.domain([minTime,maxTime]);
+    nodes.attr("r", function(d){ return radiusScale(d.size+1);})
+         .style("opacity",function(d) { return opacityScale(d.timestamp); });
+  }
+  function updateLinkSelectionStyle(links){
+   links.attr("stroke", function(d) { return linkColorScale(d.requestCount/maxRequestCount); });
+    links.each(function(d){
+      if(d.highlight){
+        d.highlight = false;
+        d3.select(this).transition().attr("stroke","yellow")
+         							 .transition().attr("stroke", function(d) { return linkColorScale(d.requestCount/maxRequestCount); });
+      }
+    });
+  }
+  
+  /* ### Draw graph ### */
+  flows.forEach(addFlow).then(function(){
+        
+    //viewport size
+    var width = Math.max( $(out).width() * 0.85, 480 );  //width
+    var height = Math.max( $(out).height() * 0.85, 300 ); //height
+ 
+    var svg = d3
+      .select(out)
+      .append("svg")
+      .attr("height", height)
+      .attr("width", width);
+    
+    var node = svg.selectAll("circle"),
+    		link = svg.selectAll("line");
+    
+    var force = d3.layout.force()
+      .charge(-100)
+      .linkDistance(100)
+      .on("tick", tick)
+      .nodes(hosts)
+      .links(links)
+      .size([width, height]);
+    
+    
+    start = function(){
+    
+      link = link.data(force.links())
+      link.enter().append("line")
+      							.style("stroke-width","1px")
+      							.each(function(d){d.node = d3.select(this);})
+      							.call(updateLinkSelectionStyle);
+      
+      node = node.data(force.nodes());
+      node.enter().append("circle")
+      							.style("fill", function(d) { return colorScale(d.name); })
+      							.call(force.drag)
+      						.append("title")
+										.text(function(d) { return d.name; });
+      
+      force.start();
+    };
+    start();
+    
+    //To keep performance up, update not more than 20 nodes and links per second
+    var i=0, j=0;
+    function updateStyles(){
+      var c = 0;
+      while(c < 10){
+        c++;
+        i = (i+1) % link[0].length;
+        j = (j+1) % node[0].length;
+        updateLinkSelectionStyle(d3.select(link[0][i]));
+        updateNodeSelectionStyle(d3.select(node[0][j]));
+      }
+      window.setTimeout(updateStyles,200,i,j);
+    }
+    window.setInterval(updateStyles, 500);
+
+    function tick() {
+      node.attr("cx", function(d) { return d.x; })
+      		.attr("cy", function(d) { return d.y; })
+      
+      link.attr("x1", function(d) { return d.source.x; })
+      		.attr("y1", function(d) { return d.source.y; })
+      		.attr("x2", function(d) { return d.target.x; })
+      		.attr("y2", function(d) { return d.target.y; });
+    }
     
   });
   
-  
-  var minTime, //We cannot calculate minTime before because we never know whether a timestamp is a latest timestamp
-      maxTime;
-  
-  hosts.forEach(function(host){
-    minTime = Math.min(minTime || Number.POSITIVE_INFINITY,host.timestamp);
-    maxTime = Math.max(maxTime || Number.NEGATIVE_INFINITY,host.timestamp);
-  });
-  
-  //console.debug(hostMapping,hosts,links);
-  
-  // ----
-  
-  width = Math.max( $(out).width() * 0.85, 480 );  //width
-  height = Math.max( $(out).height() * 0.85, 300 ); //height
-  
-  var radiusScale = 
-      d3.scale.log()
-  .domain([1, maxSize])
-  .range([3, 10]);
-  var opacityScale = 
-      d3.scale.linear()
-  .domain([minTime,maxTime])
-  .range([0.5,1]);
-  
-  //console.log(minTime,maxTime);
-  
-  var svg = d3
-  .select(out)
-  .append("svg")
-  .attr("height", height)
-  .attr("width", width);
-  
-  var force = d3.layout.force()
-  .charge(-100)
-  .linkDistance(50)
-  .size([width, height]);
-  
-  force
-  .nodes(hosts)
-  .links(links)
-  .start();
-  
-  var link = svg.selectAll(".link")
-  .data(links)
-  .enter().append("line")
-  .attr("class", "link")
-  .style("stroke-width", function(d) { return Math.log(d.requestCount+1); })
-  .attr("stroke", "#999");
-  
-  var node = svg.selectAll(".node")
-  .data(hosts)
-  .enter().append("circle")
-  .attr("r", function(d){ return radiusScale(d.size+1);})
-  .style("fill", function(d) {  
-    var total = parseFloat(d.sourceCount+d.targetCount);
-    console.log(d,total,255*d.sourceCount/total);
-    return d3.rgb(255*d.sourceCount/total,
-                  0,
-                  255*d.targetCount/total);
-  })
-  .style("opacity",function(d) { return opacityScale(d.timestamp); })
-  .call(force.drag);
-  
-  node.append("title")
-  .text(function(d) { return d.name; });
-  
-  force.on("tick", function() {
-    link.attr("x1", function(d) { return d.source.x; })
-    .attr("y1", function(d) { return d.source.y; })
-    .attr("x2", function(d) { return d.target.x; })
-    .attr("y2", function(d) { return d.target.y; });
+  /* ### live observe ### */
+  flows.observe(function(flow){
+    addFlow(flow);
+    start();
     
-    node.attr("cx", function(d) { return d.x; })
-    .attr("cy", function(d) { return d.y; });
+    //highlight link
+    var linkName = getLinkName(flow);
+    var link = links[linkMapping[linkName]];
+    link.highlight = true;
+    updateLinkSelectionStyle(link.node);
+    
   });
-  
 });

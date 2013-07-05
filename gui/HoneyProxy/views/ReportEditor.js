@@ -170,12 +170,14 @@ define(["lodash",
 		deleteFileClick: function() {
 			var del = window.prompt("Do you really want to delete " + this.filename + "?\nEnter \"" + this.filename + "\" to continue.");
 			if (del === this.filename) {
-				var index = this.files.indexOf(this.filename);
-				this.files.splice(index, 1); //Remove file from list
-				var nextIndex = index % this.files.length; //modulo in case we're deleting the last file
-				this.setStatus("Delete...", true);
-				request.del(this.api_path + this.filename).then(function() {
-					this.load(this.files[nextIndex]);
+				this.save().then(function() { //We need to save here as .load() calls .save() and .save() should be already done.
+					var index = this.files.indexOf(this.filename);
+					this.files.splice(index, 1); //Remove file from list
+					var nextIndex = index % this.files.length; //modulo in case we're deleting the last file
+					this.setStatus("Delete...", true);
+					request.del(this.api_path + this.filename).then(function() {
+						this.load(this.files[nextIndex]);
+					});
 				});
 			}
 		},
