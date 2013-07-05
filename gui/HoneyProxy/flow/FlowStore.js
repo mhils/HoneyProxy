@@ -110,7 +110,7 @@ define(["dojo/when", "dojo/_base/lang", "dojo/_base/declare", "dojo/store/JsonRe
 
 					};
 
-					console.log("add queryUpdater #%d",store.queryUpdaters.length);
+					console.log("add queryUpdater #"+(store.queryUpdaters.length+1));
 					store.queryUpdaters.push(queryUpdater);
 				}
 

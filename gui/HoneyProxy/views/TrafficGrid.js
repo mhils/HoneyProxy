@@ -117,7 +117,7 @@ define(["dojo/_base/declare",
 		loadingMessage: '<i class="icon-spinner icon-spin icon-large"></i>',
 		farOffRemoval: 2000,
 		/* Pixels! If this gets too small, dgrid fails. */
-		minRowsPerPage: 50,
+		minRowsPerPage: 100,
 		maxRowsPerPage: 250,
 		queryRowsOverlap: 1
 	});
