@@ -32,12 +32,37 @@
 
 from optparse import OptionParser,OptionGroup
 from ConfigParser import ConfigParser
-from lib.dnslib import *
-from lib.IPy import IP
+from dnslib import *
+from IPy import IP
 
 import threading, random, operator, time
 import SocketServer, socket, sys, os
 import binascii
+
+from libmproxy.flow import Flow, Request, Response, ClientConnect
+from netlib.odict import ODictCaseless
+ctx = None
+server = None
+def add_flow(address,request,response):
+    flow = Flow(
+            Request(
+                client_conn=ClientConnect(address), 
+                httpversion=[1,1], 
+                host="dnschef",
+                port=53, 
+                scheme="dns", 
+                method="DNS", 
+                path="/%s/%s-record" % (str(request.q.qname),str(QTYPE[request.q.qtype]).lower()), 
+                headers=ODictCaseless([["Content-Type","dnschef/%srecord" % str(QTYPE[request.q.qtype]).lower()]]),
+                content=str(request)))
+    flow.response = Response(flow.request,
+                        [1,1],
+                        200, "FAKE-HTTP",
+                        ODictCaseless([["Content-Type","dnschef/%s-record" % str(QTYPE[request.q.qtype]).lower()]]),
+                        str(response), 
+                        None)
+    ctx._master.load_flow(flow)
+
 
 # DNSHandler Mixin. The class contains generic functions to parse DNS requests and
 # calculate an appropriate response based on user parameters.
@@ -210,6 +235,8 @@ class UDPHandler(DNSHandler, SocketServer.BaseRequestHandler):
     def handle(self):
         (data,socket) = self.request
         response = self.parse(data)
+
+        add_flow(self.client_address,DNSRecord.parse(data),DNSRecord.parse(response))
         
         if response:
             socket.sendto(response, self.client_address)
@@ -224,6 +251,8 @@ class TCPHandler(DNSHandler, SocketServer.BaseRequestHandler):
         # TCP DNS protocol
         data = data[2:]
         response = self.parse(data)
+
+        add_flow(self.client_address,DNSRecord.parse(data),DNSRecord.parse(response))
         
         if response:
             # Calculate and add the additional "length" parameter
@@ -259,6 +288,7 @@ class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
 # Initialize and start the DNS Server        
 def start_cooking(interface, nametodns, nameservers, tcp=False, ipv6=False, port="53"):
     try:
+        global server
         if tcp:
             print "[*] DNSChef is running in TCP mode"
             server = ThreadedTCPServer((interface, int(port)), TCPHandler, nametodns, nameservers, ipv6)
@@ -273,14 +303,21 @@ def start_cooking(interface, nametodns, nameservers, tcp=False, ipv6=False, port
         server_thread.start()
         
         # Loop in the main thread
-        while True: time.sleep(100)
+        #while True: time.sleep(100)
 
     except (KeyboardInterrupt, SystemExit):
         server.shutdown()
         print "[*] DNSChef is shutting down."
         sys.exit()
-    
-if __name__ == "__main__":
+
+def done(ctx):
+    if server:
+        print "[*] DNSChef is shutting down."
+        server.shutdown()
+
+def start(_ctx, argv=[]): #FIXME remove mitmproxy 0.9 compatibility
+    global ctx
+    ctx = _ctx
 
     header  = "          _                _          __  \n"
     header += "         | | version 0.2  | |        / _| \n"
@@ -314,7 +351,7 @@ if __name__ == "__main__":
     rungroup.add_option("-q", "--quiet", action="store_false", dest="verbose", default=True, help="Don't show headers.")
     parser.add_option_group(rungroup)
 
-    (options,args) = parser.parse_args()
+    (options,args) = parser.parse_args(argv)
  
     # Print program header
     if options.verbose:
