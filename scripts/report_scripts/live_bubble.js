@@ -174,8 +174,10 @@ require(["d3"],function(d3){
   
   /* ### live observe ### */
   flows.observe(function(flow){
+    var oldl = links.length;
     addFlow(flow);
-    start();
+    if(oldl !== links.length)
+    	start();
     
     //highlight link
     var linkName = getLinkName(flow);
