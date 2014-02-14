@@ -1,4 +1,7 @@
-# HoneyProxy
+# This project has moved.
+HoneyProxy is getting merged into mitmproxy: [mitmproxy/mitmproxy@integrate_honeyproxy](https://github.com/mitmproxy/mitmproxy/tree/integrate_honeyproxy)
+
+HoneyProxy
 ==========
 
 HoneyProxy is a lightweight man-in-the-middle proxy that helps you analyze HTTP(S) traffic flows. It is tailored to the needs of 
