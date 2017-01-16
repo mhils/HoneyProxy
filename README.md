@@ -1,5 +1,5 @@
 # This project has moved.
-HoneyProxy is getting merged into mitmproxy: [mitmproxy/mitmproxy@integrate_honeyproxy](https://github.com/mitmproxy/mitmproxy/tree/integrate_honeyproxy)
+HoneyProxy is now part of mitmproxy: http://docs.mitmproxy.org/en/stable/mitmweb.html
 
 HoneyProxy
 ==========
